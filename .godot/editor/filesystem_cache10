@@ -1,6 +1,7 @@
 78098b89c88a74ebe8c20117b8754620
-::res://::1786885648
+::res://::1786885796
 CupDropZone.gd::GDScript::6761207197343368870::1786885137::0::1::::CupDropZone<>Panel<><>0<>0<><>::
+export_presets.cfg::TextFile::-1::1786885796::0::1::::<><><>0<>0<><>::
 Game.gd::GDScript::9004300241502429210::1786885137::0::1::::<>Node2D<><>0<>0<><>::
 Game.tscn::PackedScene::-1::1786885137::0::1::::<><><>0<>0<><>::res://Game.gd<>res://theme/style_translucent_panel.tres<>res://theme/style_customer_backdrop.tres<>res://theme/style_dashed_challenge_panel.tres<>res://theme/style_locked_button.tres<>res://theme/style_dark_button.tres<>res://CupDropZone.gd<>res://assets/characters/Player.png<>res://assets/audio/gameplay_theme.mp3<>res://IngredientIcon.tscn
 GameState.gd::GDScript::6613308516197941278::1786885137::0::1::::<>Node<><>0<>0<><>::
@@ -12,7 +13,7 @@ LevelCard.tscn::PackedScene::-1::1786885137::0::1::::<><><>0<>0<><>::res://Level
 LevelSelect.gd::GDScript::2065619158217833062::1786885137::0::1::::<>Node2D<><>0<>0<><>::
 LevelSelect.tscn::PackedScene::-1::1786885137::0::1::::<><><>0<>0<><>::res://LevelSelect.gd<>res://theme/style_locked_button.tres<>res://LevelCard.tscn<>res://theme/style_tab_button.tres
 MainMenu.gd::GDScript::7169990104882855869::1786885137::0::1::::<>Node2D<><>0<>0<><>::
-MainMenu.tscn::PackedScene::7581076994102121157::1786885485::0::1::::<><><>0<>0<><>::uid://dafgxpbjjvmwj::::res://MainMenu.gd<>uid://nqoiy0dp2dwx::::res://assets/audio/menu_theme.mp3
+MainMenu.tscn::PackedScene::7581076994102121157::1786885685::0::1::::<><><>0<>0<><>::uid://dafgxpbjjvmwj::::res://MainMenu.gd<>uid://nqoiy0dp2dwx::::res://assets/audio/menu_theme.mp3
 Results.gd::GDScript::4843936978129329761::1786885137::0::1::::<>Node2D<><>0<>0<><>::
 Results.tscn::PackedScene::-1::1786885137::0::1::::<><><>0<>0<><>::res://Results.gd<>res://theme/style_card_panel.tres<>res://theme/style_light_button.tres<>res://theme/style_dark_button.tres<>res://theme/style_locked_button.tres
 Settings.gd::GDScript::2264994125473582086::1786885137::0::1::::<>Node2D<><>0<>0<><>::
@@ -53,3 +54,7 @@ style_locked_button.tres::StyleBoxFlat::-1::1786885138::0::1::::<><><>0<>0<><>::
 style_owned_button.tres::StyleBoxFlat::-1::1786885138::0::1::::<><><>0<>0<><>::
 style_tab_button.tres::StyleBoxFlat::-1::1786885138::0::1::::<><><>0<>0<><>::
 style_translucent_panel.tres::StyleBoxFlat::-1::1786885138::0::1::::<><><>0<>0<><>::
+::res://web/::1786885798
+game.apple-touch-icon.png::CompressedTexture2D::2400163307740709519::1786885798::1786885877::1::::<><><>0<>0<>9079de1dbd9d358d3285af0b247e22b5<>res://.godot/imported/game.apple-touch-icon.png-65b692a3b1252f0e4b38579ac9ac7654.ctex::
+game.icon.png::CompressedTexture2D::8619395594976476487::1786885798::1786885877::1::::<><><>0<>0<>3936aee7c8bd76b940c8329822a9125a<>res://.godot/imported/game.icon.png-5c1907fae3b183b9899092bb76d9b5f6.ctex::
+game.png::CompressedTexture2D::1778039453786997558::1786885798::1786885877::1::::<><><>0<>0<>4a6dc98980e73a24ae51e371c8a2faee<>res://.godot/imported/game.png-73c81309b59d8efd2ce52ec90aac6d97.ctex::
