@@ -1,62 +1,25 @@
 extends Node2D
 
 # หน้าเมนูหลัก: WACHI JELLATO / เกมใหม่ / เล่นต่อ / ตั้งค่า / ออก
+# โครงสร้างหน้าจอทั้งหมดอยู่ใน MainMenu.tscn แล้ว สคริปต์นี้แค่ผูกปุ่มกับตรรกะ
 
-const BG_COLOR := Color8(255, 214, 224)
-const MENU_MUSIC_PATH := "res://assets/audio/menu_theme.mp3"
-
-var bg_music: AudioStreamPlayer
+@onready var new_game_button: Button = $NewGameButton
+@onready var continue_button: Button = $ContinueButton
+@onready var settings_button: Button = $SettingsButton
+@onready var quit_button: Button = $QuitButton
+@onready var bg_music: AudioStreamPlayer = $BGMusic
 
 
 func _ready() -> void:
-	_build_ui()
-	_setup_audio()
+	new_game_button.pressed.connect(_on_new_game)
+	continue_button.pressed.connect(_on_continue)
+	settings_button.pressed.connect(_on_settings)
+	quit_button.pressed.connect(_on_quit)
 
-
-func _setup_audio() -> void:
-	bg_music = AudioStreamPlayer.new()
-	var stream := load(MENU_MUSIC_PATH)
-	if stream:
-		if stream is AudioStreamMP3:
-			stream.loop = true
-		bg_music.stream = stream
-		bg_music.volume_db = -10
-		add_child(bg_music)
-		if GameState.music_enabled:
-			bg_music.play()
-
-
-func _build_ui() -> void:
-	var bg := ColorRect.new()
-	bg.color = BG_COLOR
-	bg.size = Vector2(960, 640)
-	add_child(bg)
-
-	var title := UIUtils.make_label("WACHI JELLATO", Vector2(0, 90), 52, Color8(120, 60, 20))
-	title.size = Vector2(960, 80)
-	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	add_child(title)
-
-	var subtitle := UIUtils.make_label("🍨 ร้านไอศกรีมของคุณ 🍨", Vector2(0, 165), 22, Color8(150, 90, 40))
-	subtitle.size = Vector2(960, 40)
-	subtitle.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	add_child(subtitle)
-
-	var btn_new := UIUtils.make_button("เกมใหม่", Vector2(360, 260), Vector2(240, 55), Color8(255, 183, 197))
-	btn_new.pressed.connect(_on_new_game)
-	add_child(btn_new)
-
-	var btn_continue := UIUtils.make_button("เล่นต่อ", Vector2(360, 330), Vector2(240, 55), Color8(183, 224, 255))
-	btn_continue.pressed.connect(_on_continue)
-	add_child(btn_continue)
-
-	var btn_settings := UIUtils.make_button("ตั้งค่า", Vector2(360, 400), Vector2(240, 55), Color8(200, 230, 190))
-	btn_settings.pressed.connect(_on_settings)
-	add_child(btn_settings)
-
-	var btn_quit := UIUtils.make_button("ออก", Vector2(360, 470), Vector2(240, 55), Color8(230, 230, 230))
-	btn_quit.pressed.connect(_on_quit)
-	add_child(btn_quit)
+	if bg_music.stream and bg_music.stream is AudioStreamMP3:
+		bg_music.stream.loop = true
+	if GameState.music_enabled:
+		bg_music.play()
 
 
 func _on_new_game() -> void:

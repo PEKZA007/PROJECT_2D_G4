@@ -1,13 +1,10 @@
 extends Node2D
 
 # ------------------------------------------------------------
-#  ฉากเล่นเกมหลัก
-#  - นาฬิกานับถอยหลังของด่าน (บนซ้าย) / จำนวนลูกค้า X/Y (บนขวา)
-#  - กล่องคำสั่งลูกค้า + แถบความอดทน (ซ้าย)
-#  - ลากวัตถุดิบจากถาดด้านล่างลงถ้วย -> เข้าสู่มินิเกมจับจังหวะ
-#    (กด SPACE ให้ตรงโซนสีเขียว) ถึงจะตักสำเร็จ จากนั้นมีคูลดาวน์
-#    ก่อนตักครั้งถัดไปได้ -> เมื่อวัตถุดิบครบตรงออเดอร์ กด SPACE
-#    (ตอนไม่ได้อยู่ในมินิเกมตัก) เพื่อเสิร์ฟ
+#  ฉากเล่นเกมหลัก — โครงสร้าง UI ทั้งหมดอยู่ใน Game.tscn แล้ว
+#  (HUD, กล่องคำสั่งลูกค้า, คิวลูกค้า, ถ้วย, แผงจับจังหวะตัก, ถาดวัตถุดิบ)
+#  สคริปต์นี้เหลือแค่ตรรกะเกม: คูลดาวน์การตัก, มินิเกมจับจังหวะ (กด SPACE
+#  ให้ตรงโซนสีเขียว), การเสิร์ฟ, รางวัลตามมูลค่ารสชาติ, และจบด่าน
 # ------------------------------------------------------------
 
 enum ScoopState { IDLE, CHALLENGE, COOLDOWN }
@@ -30,10 +27,7 @@ const CUSTOMER_TEXTURE_PATHS := [
 	"res://assets/characters/CustomerE.png",
 	"res://assets/characters/CustomerF.png",
 ]
-const PLAYER_TEXTURE_PATH := "res://assets/characters/Player.png"
-const GAMEPLAY_MUSIC_PATH := "res://assets/audio/gameplay_theme.mp3"
 const CHALLENGE_TIME_LIMIT := 3.0
-const TRAY_SLOT_COUNT := 8
 
 var level: Dictionary
 var level_id: int
@@ -66,23 +60,32 @@ var zone_end := 0.6
 var challenge_timeout := 0.0
 var cooldown_time_left := 0.0
 
-# node refs
-var timer_label: Label
-var progress_label: Label
-var order_label: Label
-var patience_bar: ProgressBar
-var cup_label: Label
-var message_label: Label
-var combo_label: Label
-var scoop_status_label: Label
-var queue_portraits: Array = []
 var customer_textures: Array = []
-var bg_music: AudioStreamPlayer
 
-var challenge_panel: Panel
-var challenge_track: ColorRect
-var challenge_zone: ColorRect
-var challenge_marker: ColorRect
+# --- Node references (all real nodes, defined in Game.tscn) ---
+@onready var timer_label: Label = $TimerLabel
+@onready var progress_label: Label = $ProgressLabel
+@onready var combo_label: Label = $ComboLabel
+@onready var message_label: Label = $MessageLabel
+@onready var order_label: Label = $OrderLabel
+@onready var patience_bar: ProgressBar = $PatienceBar
+@onready var cup_label: Label = $CupLabel
+@onready var cup_zone: Panel = $CupZone
+@onready var scoop_status_label: Label = $ScoopStatusLabel
+@onready var clear_button: Button = $ClearButton
+@onready var serve_button: Button = $ServeButton
+@onready var bg_music: AudioStreamPlayer = $BGMusic
+@onready var tray: HBoxContainer = $Tray
+
+@onready var challenge_panel: Panel = $ChallengePanel
+@onready var challenge_pending_label: Label = $ChallengePanel/PendingEmoji
+@onready var challenge_track: ColorRect = $ChallengePanel/ChallengeTrack
+@onready var challenge_zone: ColorRect = $ChallengePanel/ChallengeZone
+@onready var challenge_marker: ColorRect = $ChallengePanel/ChallengeMarker
+
+@onready var queue_portraits: Array = [
+	$QueueSlot1/Portrait, $QueueSlot2/Portrait, $QueueSlot3/Portrait,
+]
 
 
 func _ready() -> void:
@@ -97,22 +100,30 @@ func _ready() -> void:
 		if tex:
 			customer_textures.append(tex)
 
-	_build_ui()
+	clear_button.pressed.connect(_on_clear_cup)
+	serve_button.pressed.connect(_serve)
+	cup_zone.ingredient_dropped.connect(_on_ingredient_dropped)
+
 	_setup_audio()
+	_setup_tray()
 	_spawn_customer()
+	_update_hud()
+	_update_scoop_status_label()
 
 
 func _setup_audio() -> void:
-	bg_music = AudioStreamPlayer.new()
-	var stream := load(GAMEPLAY_MUSIC_PATH)
-	if stream:
-		if stream is AudioStreamMP3:
-			stream.loop = true
-		bg_music.stream = stream
-		bg_music.volume_db = -10
-		add_child(bg_music)
-		if GameState.music_enabled:
-			bg_music.play()
+	if bg_music.stream and bg_music.stream is AudioStreamMP3:
+		bg_music.stream.loop = true
+	if GameState.music_enabled:
+		bg_music.play()
+
+
+func _setup_tray() -> void:
+	var avail := _available_flavor_keys()
+	var icons := tray.get_children()
+	for i in icons.size():
+		var key: String = avail[i % avail.size()]
+		icons[i].setup(key, INGREDIENTS[key]["emoji"])
 
 
 func _available_flavor_keys() -> Array:
@@ -127,180 +138,6 @@ func _available_flavor_keys() -> Array:
 
 func _scoop_cooldown_duration() -> float:
 	return 0.35 if GameState.upgrade_fast_scoop else 0.65
-
-
-func _build_ui() -> void:
-	var bg := ColorRect.new()
-	bg.color = Color8(179, 229, 252)
-	bg.size = Vector2(960, 640)
-	add_child(bg)
-
-	var counter := ColorRect.new()
-	counter.color = Color8(141, 85, 36)
-	counter.position = Vector2(0, 500)
-	counter.size = Vector2(960, 140)
-	add_child(counter)
-
-	# --- Top HUD ---
-	timer_label = UIUtils.make_label("00:00", Vector2(20, 15), 26, Color8(40, 40, 40))
-	add_child(timer_label)
-
-	progress_label = UIUtils.make_label("", Vector2(820, 15), 22, Color8(40, 40, 40))
-	add_child(progress_label)
-
-	combo_label = UIUtils.make_label("", Vector2(400, 15), 20, Color8(200, 80, 20))
-	add_child(combo_label)
-
-	message_label = UIUtils.make_label("", Vector2(230, 45), 18, Color8(150, 40, 40))
-	message_label.size = Vector2(500, 26)
-	message_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	add_child(message_label)
-
-	# --- Order box ---
-	add_child(UIUtils.make_panel(Vector2(30, 90), Vector2(300, 95), Color8(255, 255, 255, 210), 14))
-	add_child(UIUtils.make_label("คำสั่งลูกค้า", Vector2(45, 98), 16, Color8(120, 120, 120)))
-	order_label = UIUtils.make_label("", Vector2(45, 122), 18, Color8(30, 30, 30))
-	order_label.size = Vector2(270, 55)
-	order_label.autowrap_mode = TextServer.AUTOWRAP_WORD
-	add_child(order_label)
-
-	add_child(UIUtils.make_label("ความอดทน", Vector2(30, 195), 14, Color8(120, 120, 120)))
-	patience_bar = ProgressBar.new()
-	patience_bar.position = Vector2(30, 216)
-	patience_bar.size = Vector2(300, 18)
-	patience_bar.show_percentage = false
-	add_child(patience_bar)
-
-	# --- Customer queue portraits ---
-	var slot_specs := [
-		{"panel_pos": Vector2(430, 130), "panel_size": Vector2(130, 130), "tex_size": Vector2(150, 200), "alpha": 1.0},
-		{"panel_pos": Vector2(610, 165), "panel_size": Vector2(95, 95), "tex_size": Vector2(105, 140), "alpha": 0.65},
-		{"panel_pos": Vector2(750, 165), "panel_size": Vector2(95, 95), "tex_size": Vector2(105, 140), "alpha": 0.65},
-	]
-	for spec in slot_specs:
-		var panel_pos: Vector2 = spec["panel_pos"]
-		var panel_size: Vector2 = spec["panel_size"]
-		var backdrop := UIUtils.make_panel(panel_pos, panel_size, Color8(255, 224, 178), int(panel_size.x / 2))
-		add_child(backdrop)
-
-		var tex_size: Vector2 = spec["tex_size"]
-		var portrait := TextureRect.new()
-		portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-		portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-		portrait.size = tex_size
-		portrait.position = panel_pos + (panel_size - tex_size) / 2.0
-		portrait.modulate = Color(1, 1, 1, spec["alpha"])
-		add_child(portrait)
-		queue_portraits.append(portrait)
-
-	# --- Player avatar (decorative) ---
-	var player_portrait := TextureRect.new()
-	player_portrait.texture = load(PLAYER_TEXTURE_PATH)
-	player_portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	player_portrait.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	player_portrait.position = Vector2(10, 358)
-	player_portrait.size = Vector2(130, 175)
-	add_child(player_portrait)
-
-	var player_tag := UIUtils.make_label("Player", Vector2(10, 534), 14, Color.WHITE)
-	player_tag.size = Vector2(130, 20)
-	player_tag.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	add_child(player_tag)
-
-	# --- Cup drop zone ---
-	add_child(UIUtils.make_panel(Vector2(400, 330), Vector2(220, 110), Color8(255, 255, 255, 220), 16))
-	add_child(UIUtils.make_label("ถ้วยไอศกรีม (ลากวัตถุดิบมาวาง)", Vector2(390, 305), 13, Color8(90, 90, 90)))
-
-	var cup_zone := Panel.new()
-	cup_zone.set_script(load("res://CupDropZone.gd"))
-	cup_zone.position = Vector2(400, 330)
-	cup_zone.size = Vector2(220, 110)
-	cup_zone.self_modulate = Color(1, 1, 1, 0)
-	cup_zone.ingredient_dropped.connect(_on_ingredient_dropped)
-	add_child(cup_zone)
-
-	cup_label = Label.new()
-	cup_label.position = Vector2(400, 330)
-	cup_label.size = Vector2(220, 110)
-	cup_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	cup_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	cup_label.add_theme_font_size_override("font_size", 24)
-	cup_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	add_child(cup_label)
-
-	# --- Rhythm scoop-challenge overlay (sits on top of the cup, hidden by default) ---
-	challenge_panel = Panel.new()
-	challenge_panel.position = Vector2(400, 330)
-	challenge_panel.size = Vector2(220, 110)
-	var cp_style := StyleBoxFlat.new()
-	cp_style.bg_color = Color8(255, 255, 255, 245)
-	cp_style.set_corner_radius_all(16)
-	challenge_panel.add_theme_stylebox_override("panel", cp_style)
-	challenge_panel.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	challenge_panel.visible = false
-	add_child(challenge_panel)
-
-	var instruction := UIUtils.make_label("กด SPACE ให้ตรงจังหวะ!", Vector2(10, 8), 13, Color8(60, 60, 60))
-	instruction.size = Vector2(200, 20)
-	instruction.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	challenge_panel.add_child(instruction)
-
-	var pending_label := Label.new()
-	pending_label.name = "PendingEmoji"
-	pending_label.position = Vector2(10, 28)
-	pending_label.size = Vector2(200, 26)
-	pending_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	pending_label.add_theme_font_size_override("font_size", 20)
-	challenge_panel.add_child(pending_label)
-
-	challenge_track = ColorRect.new()
-	challenge_track.color = Color8(225, 225, 225)
-	challenge_track.position = Vector2(10, 62)
-	challenge_track.size = Vector2(200, 18)
-	challenge_panel.add_child(challenge_track)
-
-	challenge_zone = ColorRect.new()
-	challenge_zone.color = Color8(120, 220, 140)
-	challenge_zone.position = Vector2(10, 62)
-	challenge_zone.size = Vector2(40, 18)
-	challenge_panel.add_child(challenge_zone)
-
-	challenge_marker = ColorRect.new()
-	challenge_marker.color = Color8(40, 40, 40)
-	challenge_marker.size = Vector2(4, 26)
-	challenge_marker.position = Vector2(10, 58)
-	challenge_panel.add_child(challenge_marker)
-
-	var clear_btn := UIUtils.make_button("ล้าง", Vector2(400, 450), Vector2(100, 34), Color8(230, 230, 230), 14)
-	clear_btn.pressed.connect(_on_clear_cup)
-	add_child(clear_btn)
-
-	var serve_btn := UIUtils.make_button("เสิร์ฟ ✔️ (Space)", Vector2(700, 445), Vector2(230, 50), Color8(50, 50, 50), 18, Color.WHITE)
-	serve_btn.pressed.connect(_serve)
-	add_child(serve_btn)
-
-	# --- Scoop status line (above tray) ---
-	scoop_status_label = UIUtils.make_label("", Vector2(170, 528), 15, Color.WHITE)
-	scoop_status_label.size = Vector2(600, 22)
-	add_child(scoop_status_label)
-
-	# --- Ingredient tray (only shows unlocked flavors) ---
-	var tray := HBoxContainer.new()
-	tray.position = Vector2(40, 555)
-	tray.add_theme_constant_override("separation", 12)
-	add_child(tray)
-	var avail := _available_flavor_keys()
-	for i in TRAY_SLOT_COUNT:
-		var key: String = avail[i % avail.size()]
-		var info: Dictionary = INGREDIENTS[key]
-		var icon := Panel.new()
-		icon.set_script(load("res://IngredientIcon.gd"))
-		icon.custom_minimum_size = Vector2(64, 64)
-		icon.setup(key, info["emoji"])
-		tray.add_child(icon)
-
-	_update_hud()
-	_update_scoop_status_label()
 
 
 func _update_hud() -> void:
@@ -434,8 +271,7 @@ func _start_scoop_challenge(key: String) -> void:
 func _show_challenge_ui() -> void:
 	challenge_panel.visible = true
 	cup_label.visible = false
-	var pending_label: Label = challenge_panel.get_node("PendingEmoji")
-	pending_label.text = "กำลังตัก %s" % INGREDIENTS[scoop_pending_key]["emoji"]
+	challenge_pending_label.text = "กำลังตัก %s" % INGREDIENTS[scoop_pending_key]["emoji"]
 	challenge_zone.position.x = 10 + zone_start * 200
 	challenge_zone.size.x = (zone_end - zone_start) * 200
 	challenge_marker.position.x = 10 + marker_t * 200 - 2
