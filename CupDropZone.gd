@@ -1,9 +1,9 @@
 extends Panel
 class_name CupDropZone
 
-# พื้นที่ถ้วยไอศกรีม - ปล่อยวัตถุดิบที่ลากมาตรงนี้
+# พื้นที่วางภาชนะเจลาโต้ - ปล่อยของที่ลากมาตรงนี้ (ภาชนะ / รสเจลาโต้ / ท็อปปิ้ง)
 
-signal ingredient_dropped(key: String, emoji: String)
+signal ingredient_dropped(key: String, emoji: String, kind: String)
 
 
 func _can_drop_data(_at_position: Vector2, data) -> bool:
@@ -11,4 +11,4 @@ func _can_drop_data(_at_position: Vector2, data) -> bool:
 
 
 func _drop_data(_at_position: Vector2, data) -> void:
-	ingredient_dropped.emit(data["ingredient"], data["emoji"])
+	ingredient_dropped.emit(data["ingredient"], data["emoji"], data.get("kind", "flavor"))

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="Script" path="res://Game.gd" id="1"]
 [ext_resource type="StyleBoxFlat" path="res://theme/style_translucent_panel.tres" id="2"]
@@ -10,318 +10,471 @@
 [ext_resource type="Texture2D" path="res://assets/characters/Player.png" id="8"]
 [ext_resource type="AudioStream" path="res://assets/audio/gameplay_theme.mp3" id="9"]
 [ext_resource type="PackedScene" path="res://IngredientIcon.tscn" id="10"]
+[ext_resource type="PackedScene" path="res://PausePanel.tscn" id="11"]
+[ext_resource type="Texture2D" path="res://assets/gelato/cabinet/shop_backdrop.png" id="12"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1")
 
 [node name="Background" type="ColorRect" parent="."]
-offset_right = 960.0
-offset_bottom = 640.0
+offset_left = 0.0
+offset_right = 1920.0
+offset_bottom = 1080.0
 color = Color(0.701961, 0.898039, 0.988235, 1)
 
+[node name="BackdropArt" type="TextureRect" parent="."]
+offset_left = 0.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+texture = ExtResource("12")
+
 [node name="Counter" type="ColorRect" parent="."]
-offset_top = 500.0
-offset_right = 960.0
-offset_bottom = 640.0
+offset_left = 0.0
+offset_top = 843.75
+offset_right = 1920.0
+offset_bottom = 1080.0
 color = Color(0.552941, 0.333333, 0.141176, 1)
 
 [node name="TimerLabel" type="Label" parent="."]
-offset_left = 20.0
-offset_top = 15.0
-offset_right = 320.0
-offset_bottom = 50.0
-theme_override_font_sizes/font_size = 26
+offset_left = 183.75
+offset_top = 25.312
+offset_right = 690.0
+offset_bottom = 84.375
+theme_override_font_sizes/font_size = 44
 theme_override_colors/font_color = Color(0.156863, 0.156863, 0.156863, 1)
 text = "⏱ 00:00"
 
 [node name="ProgressLabel" type="Label" parent="."]
-offset_left = 700.0
-offset_top = 15.0
-offset_right = 940.0
-offset_bottom = 50.0
-theme_override_font_sizes/font_size = 22
+offset_left = 1331.25
+offset_top = 25.312
+offset_right = 1736.25
+offset_bottom = 84.375
+theme_override_font_sizes/font_size = 38
 theme_override_colors/font_color = Color(0.156863, 0.156863, 0.156863, 1)
 horizontal_alignment = 2
 text = ""
 
 [node name="ComboLabel" type="Label" parent="."]
-offset_left = 330.0
-offset_top = 12.0
-offset_right = 630.0
-offset_bottom = 40.0
-theme_override_font_sizes/font_size = 20
+offset_left = 706.875
+offset_top = 20.25
+offset_right = 1213.125
+offset_bottom = 67.5
+theme_override_font_sizes/font_size = 34
 theme_override_colors/font_color = Color(0.784314, 0.313726, 0.0784314, 1)
 text = ""
 
 [node name="MessageLabel" type="Label" parent="."]
-offset_left = 230.0
-offset_top = 45.0
-offset_right = 730.0
-offset_bottom = 71.0
-theme_override_font_sizes/font_size = 18
+offset_left = 538.125
+offset_top = 75.938
+offset_right = 1381.875
+offset_bottom = 119.812
+theme_override_font_sizes/font_size = 30
 theme_override_colors/font_color = Color(0.588235, 0.156863, 0.156863, 1)
 horizontal_alignment = 1
 text = ""
 
 [node name="OrderBoxPanel" type="Panel" parent="."]
-offset_left = 30.0
-offset_top = 90.0
-offset_right = 330.0
-offset_bottom = 185.0
+offset_left = 200.625
+offset_top = 151.875
+offset_right = 706.875
+offset_bottom = 360.0
 theme_override_styles/panel = ExtResource("2")
 
 [node name="OrderBoxCaption" type="Label" parent="."]
-offset_left = 45.0
-offset_top = 98.0
-offset_right = 245.0
-offset_bottom = 118.0
-theme_override_font_sizes/font_size = 16
+offset_left = 225.938
+offset_top = 165.375
+offset_right = 563.438
+offset_bottom = 199.125
+theme_override_font_sizes/font_size = 27
 theme_override_colors/font_color = Color(0.470588, 0.470588, 0.470588, 1)
 text = "คำสั่งลูกค้า"
 
 [node name="OrderLabel" type="Label" parent="."]
-offset_left = 45.0
-offset_top = 122.0
-offset_right = 315.0
-offset_bottom = 177.0
-theme_override_font_sizes/font_size = 18
+offset_left = 225.938
+offset_top = 205.875
+offset_right = 681.562
+offset_bottom = 350.0
+theme_override_font_sizes/font_size = 24
 theme_override_colors/font_color = Color(0.117647, 0.117647, 0.117647, 1)
 autowrap_mode = 2
 text = ""
 
 [node name="PatienceCaption" type="Label" parent="."]
-offset_left = 30.0
-offset_top = 195.0
-offset_right = 230.0
-offset_bottom = 213.0
-theme_override_font_sizes/font_size = 14
+offset_left = 200.625
+offset_top = 370.0
+offset_right = 538.125
+offset_bottom = 400.0
+theme_override_font_sizes/font_size = 24
 theme_override_colors/font_color = Color(0.470588, 0.470588, 0.470588, 1)
 text = "ความอดทน"
 
 [node name="PatienceBar" type="ProgressBar" parent="."]
-offset_left = 30.0
-offset_top = 216.0
-offset_right = 330.0
-offset_bottom = 234.0
+offset_left = 200.625
+offset_top = 405.0
+offset_right = 706.875
+offset_bottom = 435.0
 show_percentage = false
 
 [node name="QueueSlot1" type="Control" parent="."]
-offset_left = 420.0
-offset_top = 95.0
-offset_right = 580.0
-offset_bottom = 295.0
+offset_left = 1300.0
+offset_top = 120.0
+offset_right = 1500.0
+offset_bottom = 320.0
 
 [node name="Backdrop" type="Panel" parent="QueueSlot1"]
-offset_left = 10.0
-offset_top = 35.0
-offset_right = 140.0
-offset_bottom = 165.0
+offset_left = 16.875
+offset_top = 40.0
+offset_right = 183.125
+offset_bottom = 200.0
 theme_override_styles/panel = ExtResource("3")
 
 [node name="Portrait" type="TextureRect" parent="QueueSlot1"]
-offset_right = 150.0
-offset_bottom = 200.0
+offset_right = 200.0
+offset_bottom = 250.0
 expand_mode = 1
 stretch_mode = 5
 
 [node name="QueueSlot2" type="Control" parent="."]
-offset_left = 605.0
-offset_top = 142.0
-offset_right = 705.0
-offset_bottom = 260.0
+offset_left = 1520.0
+offset_top = 140.0
+offset_right = 1680.0
+offset_bottom = 300.0
 
 [node name="Backdrop" type="Panel" parent="QueueSlot2"]
-offset_left = 5.0
-offset_top = 23.0
-offset_right = 100.0
-offset_bottom = 118.0
+offset_left = 8.438
+offset_top = 30.0
+offset_right = 141.562
+offset_bottom = 160.0
 theme_override_styles/panel = ExtResource("3")
 
 [node name="Portrait" type="TextureRect" parent="QueueSlot2"]
-offset_top = 0.5
-offset_right = 105.0
-offset_bottom = 140.5
+offset_top = 0.844
+offset_right = 148.0
+offset_bottom = 190.0
 modulate = Color(1, 1, 1, 0.65)
 expand_mode = 1
 stretch_mode = 5
 
 [node name="QueueSlot3" type="Control" parent="."]
-offset_left = 745.0
-offset_top = 142.0
-offset_right = 845.0
-offset_bottom = 260.0
+offset_left = 1710.0
+offset_top = 140.0
+offset_right = 1870.0
+offset_bottom = 300.0
 
 [node name="Backdrop" type="Panel" parent="QueueSlot3"]
-offset_left = 5.0
-offset_top = 23.0
-offset_right = 100.0
-offset_bottom = 118.0
+offset_left = 8.438
+offset_top = 30.0
+offset_right = 141.562
+offset_bottom = 160.0
 theme_override_styles/panel = ExtResource("3")
 
 [node name="Portrait" type="TextureRect" parent="QueueSlot3"]
-offset_top = 0.5
-offset_right = 105.0
-offset_bottom = 140.5
+offset_top = 0.844
+offset_right = 148.0
+offset_bottom = 190.0
 modulate = Color(1, 1, 1, 0.65)
 expand_mode = 1
 stretch_mode = 5
 
 [node name="PlayerPortrait" type="TextureRect" parent="."]
-offset_left = 10.0
-offset_top = 358.0
-offset_right = 140.0
-offset_bottom = 533.0
+offset_left = 166.875
+offset_top = 604.125
+offset_right = 386.25
+offset_bottom = 899.438
 texture = ExtResource("8")
 expand_mode = 1
 stretch_mode = 5
 
 [node name="PlayerTag" type="Label" parent="."]
-offset_left = 10.0
-offset_top = 534.0
-offset_right = 140.0
-offset_bottom = 554.0
-theme_override_font_sizes/font_size = 14
+offset_left = 166.875
+offset_top = 901.125
+offset_right = 386.25
+offset_bottom = 934.875
+theme_override_font_sizes/font_size = 24
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 horizontal_alignment = 1
 text = "Player"
 
-[node name="CupBackdrop" type="Panel" parent="."]
-offset_left = 400.0
-offset_top = 330.0
-offset_right = 620.0
-offset_bottom = 440.0
-theme_override_styles/panel = ExtResource("2")
-
-[node name="CupCaption" type="Label" parent="."]
-offset_left = 390.0
-offset_top = 305.0
-offset_right = 610.0
-offset_bottom = 325.0
-theme_override_font_sizes/font_size = 13
+[node name="StageCaption" type="Label" parent="."]
+offset_left = 785.0
+offset_top = 294.0
+offset_right = 1195.0
+offset_bottom = 328.0
+theme_override_font_sizes/font_size = 22
 theme_override_colors/font_color = Color(0.352941, 0.352941, 0.352941, 1)
-text = "ถ้วยไอศกรีม (ลากวัตถุดิบมาวาง)"
+horizontal_alignment = 1
+text = "เจลาโต้ของลูกค้า"
 
-[node name="CupZone" type="Panel" parent="."]
-offset_left = 400.0
+[node name="BuildStage" type="Control" parent="."]
+offset_left = 785.0
 offset_top = 330.0
-offset_right = 620.0
-offset_bottom = 440.0
-self_modulate = Color(1, 1, 1, 0)
-script = ExtResource("7")
+offset_right = 1195.0
+offset_bottom = 740.0
 
-[node name="CupLabel" type="Label" parent="."]
-offset_left = 400.0
-offset_top = 330.0
-offset_right = 620.0
-offset_bottom = 440.0
+[node name="LayerCup" type="TextureRect" parent="BuildStage"]
+offset_right = 410.0
+offset_bottom = 410.0
 mouse_filter = 2
-theme_override_font_sizes/font_size = 24
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LayerScoopBack" type="TextureRect" parent="BuildStage"]
+offset_right = 410.0
+offset_bottom = 410.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LayerScoopMid" type="TextureRect" parent="BuildStage"]
+offset_right = 410.0
+offset_bottom = 410.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LayerScoopFront" type="TextureRect" parent="BuildStage"]
+offset_right = 410.0
+offset_bottom = 410.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LayerContainerFront" type="TextureRect" parent="BuildStage"]
+offset_right = 410.0
+offset_bottom = 410.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LayerTopping" type="TextureRect" parent="BuildStage"]
+offset_right = 410.0
+offset_bottom = 410.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="EmptyStageLabel" type="Label" parent="BuildStage"]
+offset_right = 410.0
+offset_bottom = 410.0
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0.470588, 0.470588, 0.470588, 1)
 horizontal_alignment = 1
 vertical_alignment = 1
-text = ""
+autowrap_mode = 2
+text = "ลากภาชนะมาวางก่อนเลย 👇"
+
+[node name="DropZone" type="Panel" parent="."]
+offset_left = 785.0
+offset_top = 330.0
+offset_right = 1195.0
+offset_bottom = 740.0
+self_modulate = Color(1, 1, 1, 0)
+script = ExtResource("7")
 
 [node name="ChallengePanel" type="Panel" parent="."]
 visible = false
 mouse_filter = 2
-offset_left = 400.0
-offset_top = 330.0
-offset_right = 620.0
-offset_bottom = 440.0
+offset_left = 804.375
+offset_top = 292.188
+offset_right = 1175.625
+offset_bottom = 627.812
 theme_override_styles/panel = ExtResource("4")
 
+[node name="ScoopToolImage" type="TextureRect" parent="ChallengePanel"]
+offset_left = 110.625
+offset_top = 10.0
+offset_right = 260.625
+offset_bottom = 150.0
+mouse_filter = 2
+expand_mode = 1
+stretch_mode = 5
+
 [node name="Instruction" type="Label" parent="ChallengePanel"]
-offset_left = 10.0
-offset_top = 8.0
-offset_right = 210.0
-offset_bottom = 28.0
-theme_override_font_sizes/font_size = 13
+offset_left = 16.875
+offset_top = 163.5
+offset_right = 354.375
+offset_bottom = 197.25
+theme_override_font_sizes/font_size = 22
 theme_override_colors/font_color = Color(0.352941, 0.352941, 0.352941, 1)
 horizontal_alignment = 1
 text = "กด SPACE ให้ตรงจังหวะ!"
 
-[node name="PendingEmoji" type="Label" parent="ChallengePanel"]
-offset_left = 10.0
-offset_top = 28.0
-offset_right = 210.0
-offset_bottom = 54.0
-theme_override_font_sizes/font_size = 20
+[node name="PendingLabel" type="Label" parent="ChallengePanel"]
+offset_left = 16.875
+offset_top = 197.25
+offset_right = 354.375
+offset_bottom = 241.125
+theme_override_font_sizes/font_size = 26
+theme_override_colors/font_color = Color(0.235294, 0.156863, 0.0784314, 1)
 horizontal_alignment = 1
 text = ""
 
 [node name="ChallengeTrack" type="ColorRect" parent="ChallengePanel"]
-offset_left = 10.0
-offset_top = 62.0
-offset_right = 210.0
-offset_bottom = 80.0
+offset_left = 16.875
+offset_top = 254.625
+offset_right = 354.375
+offset_bottom = 285.0
 color = Color(0.882353, 0.882353, 0.882353, 1)
 
 [node name="ChallengeZone" type="ColorRect" parent="ChallengePanel"]
-offset_left = 10.0
-offset_top = 62.0
-offset_right = 50.0
-offset_bottom = 80.0
+offset_left = 16.875
+offset_top = 254.625
+offset_right = 84.375
+offset_bottom = 285.0
 color = Color(0.470588, 0.862745, 0.54902, 1)
 
 [node name="ChallengeMarker" type="ColorRect" parent="ChallengePanel"]
-offset_left = 8.0
-offset_top = 58.0
-offset_right = 12.0
-offset_bottom = 84.0
+offset_left = 13.5
+offset_top = 247.875
+offset_right = 20.25
+offset_bottom = 291.75
 color = Color(0.156863, 0.156863, 0.156863, 1)
 
 [node name="ClearButton" type="Button" parent="."]
-offset_left = 400.0
-offset_top = 450.0
-offset_right = 500.0
-offset_bottom = 484.0
+offset_left = 785.0
+offset_top = 759.375
+offset_right = 953.75
+offset_bottom = 816.75
 theme_override_styles/normal = ExtResource("5")
 theme_override_styles/hover = ExtResource("5")
 theme_override_styles/pressed = ExtResource("5")
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 24
+theme_override_colors/font_color = Color(0.235294, 0.156863, 0.0784314, 1)
+theme_override_colors/font_hover_color = Color(0.235294, 0.156863, 0.0784314, 1)
+theme_override_colors/font_pressed_color = Color(0.235294, 0.156863, 0.0784314, 1)
+theme_override_colors/font_focus_color = Color(0.235294, 0.156863, 0.0784314, 1)
 text = "ล้าง"
 
 [node name="ServeButton" type="Button" parent="."]
-offset_left = 700.0
-offset_top = 445.0
-offset_right = 930.0
-offset_bottom = 495.0
+offset_left = 1331.25
+offset_top = 750.938
+offset_right = 1719.375
+offset_bottom = 835.312
 theme_override_styles/normal = ExtResource("6")
 theme_override_styles/hover = ExtResource("6")
 theme_override_styles/pressed = ExtResource("6")
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 30
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 text = "เสิร์ฟ ✔️ (Space)"
 
 [node name="ScoopStatusLabel" type="Label" parent="."]
-offset_left = 170.0
-offset_top = 528.0
-offset_right = 770.0
-offset_bottom = 550.0
-theme_override_font_sizes/font_size = 15
+offset_left = 436.875
+offset_top = 850.0
+offset_right = 1449.375
+offset_bottom = 878.0
+theme_override_font_sizes/font_size = 22
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+horizontal_alignment = 1
 text = ""
 
+[node name="ContainerCaption" type="Label" parent="."]
+offset_left = 150.0
+offset_top = 884.0
+offset_right = 330.0
+offset_bottom = 946.0
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+vertical_alignment = 1
+text = "ภาชนะ"
+
+[node name="ContainerTray" type="HBoxContainer" parent="."]
+offset_left = 340.0
+offset_top = 884.0
+theme_override_constants/separation = 14
+
+[node name="Container1" parent="ContainerTray" instance=ExtResource("10")]
+custom_minimum_size = Vector2(62, 62)
+offset_right = 62.0
+offset_bottom = 62.0
+
+[node name="Container2" parent="ContainerTray" instance=ExtResource("10")]
+custom_minimum_size = Vector2(62, 62)
+offset_right = 62.0
+offset_bottom = 62.0
+
+[node name="Container3" parent="ContainerTray" instance=ExtResource("10")]
+custom_minimum_size = Vector2(62, 62)
+offset_right = 62.0
+offset_bottom = 62.0
+
+[node name="ToppingCaption" type="Label" parent="."]
+offset_left = 150.0
+offset_top = 954.0
+offset_right = 330.0
+offset_bottom = 1010.0
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+vertical_alignment = 1
+text = "ท็อปปิ้ง"
+
+[node name="ToppingTray" type="HBoxContainer" parent="."]
+offset_left = 340.0
+offset_top = 954.0
+theme_override_constants/separation = 14
+
+[node name="Topping1" parent="ToppingTray" instance=ExtResource("10")]
+custom_minimum_size = Vector2(56, 56)
+offset_right = 56.0
+offset_bottom = 56.0
+
+[node name="Topping2" parent="ToppingTray" instance=ExtResource("10")]
+custom_minimum_size = Vector2(56, 56)
+offset_right = 56.0
+offset_bottom = 56.0
+
+[node name="Topping3" parent="ToppingTray" instance=ExtResource("10")]
+custom_minimum_size = Vector2(56, 56)
+offset_right = 56.0
+offset_bottom = 56.0
+
+[node name="FlavorCaption" type="Label" parent="."]
+offset_left = 150.0
+offset_top = 1018.0
+offset_right = 330.0
+offset_bottom = 1074.0
+theme_override_font_sizes/font_size = 20
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+vertical_alignment = 1
+text = "รสเจลาโต้"
+
 [node name="Tray" type="HBoxContainer" parent="."]
-offset_left = 40.0
-offset_top = 555.0
-theme_override_constants/separation = 12
+offset_left = 340.0
+offset_top = 1018.0
+theme_override_constants/separation = 14
 
 [node name="Icon1" parent="Tray" instance=ExtResource("10")]
+custom_minimum_size = Vector2(56, 56)
+offset_right = 56.0
+offset_bottom = 56.0
 
 [node name="Icon2" parent="Tray" instance=ExtResource("10")]
+custom_minimum_size = Vector2(56, 56)
+offset_right = 56.0
+offset_bottom = 56.0
 
 [node name="Icon3" parent="Tray" instance=ExtResource("10")]
+custom_minimum_size = Vector2(56, 56)
+offset_right = 56.0
+offset_bottom = 56.0
 
 [node name="Icon4" parent="Tray" instance=ExtResource("10")]
+custom_minimum_size = Vector2(56, 56)
+offset_right = 56.0
+offset_bottom = 56.0
 
 [node name="Icon5" parent="Tray" instance=ExtResource("10")]
+custom_minimum_size = Vector2(56, 56)
+offset_right = 56.0
+offset_bottom = 56.0
 
 [node name="Icon6" parent="Tray" instance=ExtResource("10")]
-
-[node name="Icon7" parent="Tray" instance=ExtResource("10")]
-
-[node name="Icon8" parent="Tray" instance=ExtResource("10")]
+custom_minimum_size = Vector2(56, 56)
+offset_right = 56.0
+offset_bottom = 56.0
 
 [node name="BGMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("9")
 volume_db = -10.0
+
+[node name="PausePanel" parent="." instance=ExtResource("11")]

@@ -9,6 +9,7 @@ const OWNED_STYLE := preload("res://theme/style_owned_button.tres")
 const BUY_STYLE := preload("res://theme/style_dark_button.tres")
 
 @onready var icon_label: Label = $IconLabel
+@onready var icon_rect: TextureRect = $IconRect
 @onready var name_label: Label = $NameLabel
 @onready var value_label: Label = $ValueLabel
 @onready var action_button: Button = $ActionButton
@@ -23,7 +24,14 @@ func _ready() -> void:
 
 func configure(key: String, info: Dictionary, unlocked: bool) -> void:
 	flavor_key = key
-	icon_label.text = info["emoji"]
+	if info.has("thumb"):
+		icon_rect.texture = load(info["thumb"])
+		icon_rect.visible = true
+		icon_label.visible = false
+	else:
+		icon_label.text = info.get("emoji", "🍨")
+		icon_rect.visible = false
+		icon_label.visible = true
 	name_label.text = info["name"]
 	value_label.text = "มูลค่า +%d 🪙/ออเดอร์" % int(info["value"])
 

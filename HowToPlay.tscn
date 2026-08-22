@@ -1,0 +1,262 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://HowToPlay.gd" id="1"]
+[ext_resource type="StyleBoxFlat" path="res://theme/style_locked_button.tres" id="2"]
+[ext_resource type="StyleBoxFlat" path="res://theme/style_card_panel.tres" id="3"]
+[ext_resource type="StyleBoxFlat" path="res://theme/style_dark_button.tres" id="4"]
+
+[node name="HowToPlay" type="Node2D"]
+script = ExtResource("1")
+
+[node name="Background" type="ColorRect" parent="."]
+offset_left = 0.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0.878431, 0.917647, 0.941176, 1)
+
+[node name="BackButton" type="Button" parent="."]
+offset_left = 183.75
+offset_top = 33.75
+offset_right = 268.125
+offset_bottom = 118.125
+theme_override_styles/normal = ExtResource("2")
+theme_override_styles/hover = ExtResource("2")
+theme_override_styles/pressed = ExtResource("2")
+theme_override_font_sizes/font_size = 40
+theme_override_colors/font_color = Color(0.235294, 0.156863, 0.0784314, 1)
+theme_override_colors/font_hover_color = Color(0.235294, 0.156863, 0.0784314, 1)
+theme_override_colors/font_pressed_color = Color(0.235294, 0.156863, 0.0784314, 1)
+theme_override_colors/font_focus_color = Color(0.235294, 0.156863, 0.0784314, 1)
+text = "←"
+
+[node name="Title" type="Label" parent="."]
+offset_left = 0.0
+offset_top = 42.188
+offset_right = 1920.0
+offset_bottom = 126.562
+theme_override_font_sizes/font_size = 58
+theme_override_colors/font_color = Color(0.235294, 0.156863, 0.0784314, 1)
+horizontal_alignment = 1
+text = "วิธีเล่น"
+
+[node name="Card1" type="Panel" parent="."]
+offset_left = 220.0
+offset_top = 200.0
+offset_right = 680.0
+offset_bottom = 480.0
+theme_override_styles/panel = ExtResource("3")
+
+[node name="Icon1" type="Label" parent="Card1"]
+offset_top = 18.0
+offset_right = 460.0
+offset_bottom = 100.0
+theme_override_font_sizes/font_size = 56
+horizontal_alignment = 1
+text = "1️⃣ 🥤"
+
+[node name="StepTitle1" type="Label" parent="Card1"]
+offset_top = 108.0
+offset_right = 460.0
+offset_bottom = 150.0
+theme_override_font_sizes/font_size = 28
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+horizontal_alignment = 1
+text = "เลือกภาชนะก่อน"
+
+[node name="StepDesc1" type="Label" parent="Card1"]
+offset_left = 24.0
+offset_top = 158.0
+offset_right = 436.0
+offset_bottom = 268.0
+theme_override_font_sizes/font_size = 21
+theme_override_colors/font_color = Color(0.352941, 0.352941, 0.352941, 1)
+horizontal_alignment = 1
+autowrap_mode = 2
+text = "ลากภาชนะที่ลูกค้าสั่งมาวาง: โคน (1 รส) ถ้วยเล็ก (2 รส) หรือถ้วยใหญ่ (3 รส)"
+
+[node name="Card2" type="Panel" parent="."]
+offset_left = 730.0
+offset_top = 200.0
+offset_right = 1190.0
+offset_bottom = 480.0
+theme_override_styles/panel = ExtResource("3")
+
+[node name="Icon2" type="Label" parent="Card2"]
+offset_top = 18.0
+offset_right = 460.0
+offset_bottom = 100.0
+theme_override_font_sizes/font_size = 56
+horizontal_alignment = 1
+text = "2️⃣ 🍦"
+
+[node name="StepTitle2" type="Label" parent="Card2"]
+offset_top = 108.0
+offset_right = 460.0
+offset_bottom = 150.0
+theme_override_font_sizes/font_size = 28
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+horizontal_alignment = 1
+text = "ตักเจลาโต้ให้ตรงจังหวะ"
+
+[node name="StepDesc2" type="Label" parent="Card2"]
+offset_left = 24.0
+offset_top = 158.0
+offset_right = 436.0
+offset_bottom = 268.0
+theme_override_font_sizes/font_size = 21
+theme_override_colors/font_color = Color(0.352941, 0.352941, 0.352941, 1)
+horizontal_alignment = 1
+autowrap_mode = 2
+text = "ลากรสที่ลูกค้าสั่งมาวางบนภาชนะ แล้วกด SPACE ตอนตัวชี้อยู่ในโซนสีเขียวพอดี"
+
+[node name="Card3" type="Panel" parent="."]
+offset_left = 1240.0
+offset_top = 200.0
+offset_right = 1700.0
+offset_bottom = 480.0
+theme_override_styles/panel = ExtResource("3")
+
+[node name="Icon3" type="Label" parent="Card3"]
+offset_top = 18.0
+offset_right = 460.0
+offset_bottom = 100.0
+theme_override_font_sizes/font_size = 56
+horizontal_alignment = 1
+text = "3️⃣ 🍒"
+
+[node name="StepTitle3" type="Label" parent="Card3"]
+offset_top = 108.0
+offset_right = 460.0
+offset_bottom = 150.0
+theme_override_font_sizes/font_size = 28
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+horizontal_alignment = 1
+text = "ใส่ท็อปปิ้งตามสั่ง"
+
+[node name="StepDesc3" type="Label" parent="Card3"]
+offset_left = 24.0
+offset_top = 158.0
+offset_right = 436.0
+offset_bottom = 268.0
+theme_override_font_sizes/font_size = 21
+theme_override_colors/font_color = Color(0.352941, 0.352941, 0.352941, 1)
+horizontal_alignment = 1
+autowrap_mode = 2
+text = "หลังตักเจลาโต้อย่างน้อย 1 ครั้ง ลากท็อปปิ้งที่ลูกค้าขอมาใส่เพิ่มได้ตามสั่ง"
+
+[node name="Card4" type="Panel" parent="."]
+offset_left = 220.0
+offset_top = 520.0
+offset_right = 680.0
+offset_bottom = 800.0
+theme_override_styles/panel = ExtResource("3")
+
+[node name="Icon4" type="Label" parent="Card4"]
+offset_top = 18.0
+offset_right = 460.0
+offset_bottom = 100.0
+theme_override_font_sizes/font_size = 56
+horizontal_alignment = 1
+text = "4️⃣ ✔️"
+
+[node name="StepTitle4" type="Label" parent="Card4"]
+offset_top = 108.0
+offset_right = 460.0
+offset_bottom = 150.0
+theme_override_font_sizes/font_size = 28
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+horizontal_alignment = 1
+text = "เสิร์ฟให้ตรงออเดอร์"
+
+[node name="StepDesc4" type="Label" parent="Card4"]
+offset_left = 24.0
+offset_top = 158.0
+offset_right = 436.0
+offset_bottom = 268.0
+theme_override_font_sizes/font_size = 21
+theme_override_colors/font_color = Color(0.352941, 0.352941, 0.352941, 1)
+horizontal_alignment = 1
+autowrap_mode = 2
+text = "ครบตามที่ลูกค้าสั่งแล้ว กด SPACE หรือปุ่ม \"เสิร์ฟ\" เพื่อส่งออเดอร์ให้ลูกค้า"
+
+[node name="Card5" type="Panel" parent="."]
+offset_left = 730.0
+offset_top = 520.0
+offset_right = 1190.0
+offset_bottom = 800.0
+theme_override_styles/panel = ExtResource("3")
+
+[node name="Icon5" type="Label" parent="Card5"]
+offset_top = 18.0
+offset_right = 460.0
+offset_bottom = 100.0
+theme_override_font_sizes/font_size = 56
+horizontal_alignment = 1
+text = "5️⃣ ⏳"
+
+[node name="StepTitle5" type="Label" parent="Card5"]
+offset_top = 108.0
+offset_right = 460.0
+offset_bottom = 150.0
+theme_override_font_sizes/font_size = 28
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+horizontal_alignment = 1
+text = "อย่าให้ลูกค้าหมดความอดทน"
+
+[node name="StepDesc5" type="Label" parent="Card5"]
+offset_left = 24.0
+offset_top = 158.0
+offset_right = 436.0
+offset_bottom = 268.0
+theme_override_font_sizes/font_size = 21
+theme_override_colors/font_color = Color(0.352941, 0.352941, 0.352941, 1)
+horizontal_alignment = 1
+autowrap_mode = 2
+text = "แถบความอดทนของลูกค้าจะลดลงเรื่อยๆ ถ้าหมดก่อนเสิร์ฟ ลูกค้าจะเดินหนีและคอมโบจะรีเซ็ต"
+
+[node name="Card6" type="Panel" parent="."]
+offset_left = 1240.0
+offset_top = 520.0
+offset_right = 1700.0
+offset_bottom = 800.0
+theme_override_styles/panel = ExtResource("3")
+
+[node name="Icon6" type="Label" parent="Card6"]
+offset_top = 18.0
+offset_right = 460.0
+offset_bottom = 100.0
+theme_override_font_sizes/font_size = 56
+horizontal_alignment = 1
+text = "6️⃣ 🪙"
+
+[node name="StepTitle6" type="Label" parent="Card6"]
+offset_top = 108.0
+offset_right = 460.0
+offset_bottom = 150.0
+theme_override_font_sizes/font_size = 28
+theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+horizontal_alignment = 1
+text = "เก็บเหรียญไปอัปเกรด"
+
+[node name="StepDesc6" type="Label" parent="Card6"]
+offset_left = 24.0
+offset_top = 158.0
+offset_right = 436.0
+offset_bottom = 268.0
+theme_override_font_sizes/font_size = 21
+theme_override_colors/font_color = Color(0.352941, 0.352941, 0.352941, 1)
+horizontal_alignment = 1
+autowrap_mode = 2
+text = "ใช้เหรียญที่ได้ปลดล็อกรสชาติใหม่ อุปกรณ์ และของตกแต่งร้านในร้านค้า"
+
+[node name="StartButton" type="Button" parent="."]
+offset_left = 710.0
+offset_top = 930.0
+offset_right = 1210.0
+offset_bottom = 1012.0
+theme_override_styles/normal = ExtResource("4")
+theme_override_styles/hover = ExtResource("4")
+theme_override_styles/pressed = ExtResource("4")
+theme_override_font_sizes/font_size = 32
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+text = "เข้าใจแล้ว เริ่มเล่นเลย ▶"

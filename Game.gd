@@ -1,24 +1,15 @@
 extends Node2D
 
 # ------------------------------------------------------------
-#  ฉากเล่นเกมหลัก — โครงสร้าง UI ทั้งหมดอยู่ใน Game.tscn แล้ว
-#  (HUD, กล่องคำสั่งลูกค้า, คิวลูกค้า, ถ้วย, แผงจับจังหวะตัก, ถาดวัตถุดิบ)
-#  สคริปต์นี้เหลือแค่ตรรกะเกม: คูลดาวน์การตัก, มินิเกมจับจังหวะ (กด SPACE
-#  ให้ตรงโซนสีเขียว), การเสิร์ฟ, รางวัลตามมูลค่ารสชาติ, และจบด่าน
+#  ฉากเล่นเกมหลัก — Good Goods Gelato House
+#  ลำดับการเสิร์ฟ: ลากภาชนะมาวางก่อน (โคน 1 รส / ถ้วยเล็ก 2 รส / ถ้วยใหญ่ 3 รส)
+#  -> ตักเจลาโต้ (จับจังหวะ กด SPACE) -> ใส่ท็อปปิ้งได้ (หลังตักอย่างน้อย 1 ครั้ง)
+#  -> กด SPACE เพื่อเสิร์ฟ
 # ------------------------------------------------------------
 
 enum ScoopState { IDLE, CHALLENGE, COOLDOWN }
 
-const INGREDIENTS := {
-	"vanilla": {"emoji": "🍦", "name": "วานิลลา", "value": 6},
-	"chocolate": {"emoji": "🍫", "name": "ช็อกโกแลต", "value": 8},
-	"strawberry": {"emoji": "🍓", "name": "สตรอเบอร์รี่", "value": 8},
-	"mango": {"emoji": "🥭", "name": "มะม่วง", "value": 10},
-	"orange": {"emoji": "🍊", "name": "ส้ม", "value": 12, "unlock_price": 80},
-	"blueberry": {"emoji": "🫐", "name": "บลูเบอร์รี่", "value": 14, "unlock_price": 110},
-	"cherry": {"emoji": "🍒", "name": "เชอร์รี่", "value": 16, "unlock_price": 140},
-	"mint": {"emoji": "🌿", "name": "มินต์", "value": 18, "unlock_price": 170},
-}
+const MAX_TOPPING_CAPACITY := 1
 const CUSTOMER_TEXTURE_PATHS := [
 	"res://assets/characters/CustomerA.png",
 	"res://assets/characters/CustomerB.png",
@@ -28,6 +19,20 @@ const CUSTOMER_TEXTURE_PATHS := [
 	"res://assets/characters/CustomerF.png",
 ]
 const CHALLENGE_TIME_LIMIT := 3.0
+const CHALLENGE_TRACK_MARGIN := 8.4375
+const CHALLENGE_TRACK_WIDTH := 168.75
+const CHALLENGE_MARKER_HALF_WIDTH := 1.6875
+
+const CONE_BACK := "res://assets/gelato/cone/cone_back.png"
+const CONE_FRONT := "res://assets/gelato/cone/cone_front.png"
+const SMALL_CUP := "res://assets/gelato/small/cup.png"
+const LARGE_CUP := "res://assets/gelato/large/cup.png"
+
+# ตำแหน่ง/ขนาด (offset_left, offset_top, offset_right, offset_bottom) ภายใน BuildStage (410x410)
+const RECT_FULL := Rect2(0, 0, 410, 410)
+const RECT_SMALL_BACK := Rect2(-30, 10, 370, 370)     # ถ้วยเล็ก: รสแรก (ซ้าย/หลัง)
+const RECT_SMALL_FRONT := Rect2(70, 40, 370, 370)     # ถ้วยเล็ก: รสสอง (ขวา/หน้า)
+const RECT_LARGE_THIRD := Rect2(60, -60, 290, 290)    # ถ้วยใหญ่: รสสาม (กลาง/หลัง โผล่ขึ้นมา)
 
 var level: Dictionary
 var level_id: int
@@ -40,16 +45,18 @@ var max_combo := 0
 var total_order_time := 0.0
 var coins_earned := 0
 
-var current_order: Array = []
+var current_order: Dictionary = {}     # {"container": key, "flavors": [...], "toppings": [...]}
 var patience_time := 0.0
 var patience_max := 0.0
-var cup_contents: Array = []
-var max_cup_capacity := 3
+
+var chosen_container: String = ""
+var cup_flavor_contents: Array = []
+var cup_topping_contents: Array = []
 
 var is_running := true
 var _space_was_pressed := false
 
-# --- Scoop cooldown + rhythm challenge state ---
+# --- Scoop cooldown + rhythm challenge state (ใช้เฉพาะตอนตักเจลาโต้) ---
 var scoop_state: int = ScoopState.IDLE
 var scoop_pending_key: String = ""
 var marker_t := 0.0
@@ -63,25 +70,38 @@ var cooldown_time_left := 0.0
 var customer_textures: Array = []
 
 # --- Node references (all real nodes, defined in Game.tscn) ---
+@onready var background_rect: ColorRect = $Background
+@onready var counter_rect: ColorRect = $Counter
 @onready var timer_label: Label = $TimerLabel
 @onready var progress_label: Label = $ProgressLabel
 @onready var combo_label: Label = $ComboLabel
 @onready var message_label: Label = $MessageLabel
 @onready var order_label: Label = $OrderLabel
 @onready var patience_bar: ProgressBar = $PatienceBar
-@onready var cup_label: Label = $CupLabel
-@onready var cup_zone: Panel = $CupZone
 @onready var scoop_status_label: Label = $ScoopStatusLabel
 @onready var clear_button: Button = $ClearButton
 @onready var serve_button: Button = $ServeButton
 @onready var bg_music: AudioStreamPlayer = $BGMusic
 @onready var tray: HBoxContainer = $Tray
+@onready var topping_tray: HBoxContainer = $ToppingTray
+@onready var container_tray: HBoxContainer = $ContainerTray
+
+@onready var build_stage: Control = $BuildStage
+@onready var layer_cup: TextureRect = $BuildStage/LayerCup
+@onready var layer_scoop_back: TextureRect = $BuildStage/LayerScoopBack
+@onready var layer_scoop_mid: TextureRect = $BuildStage/LayerScoopMid
+@onready var layer_scoop_front: TextureRect = $BuildStage/LayerScoopFront
+@onready var layer_container_front: TextureRect = $BuildStage/LayerContainerFront
+@onready var layer_topping: TextureRect = $BuildStage/LayerTopping
+@onready var empty_stage_label: Label = $BuildStage/EmptyStageLabel
+@onready var drop_zone: Panel = $DropZone
 
 @onready var challenge_panel: Panel = $ChallengePanel
-@onready var challenge_pending_label: Label = $ChallengePanel/PendingEmoji
+@onready var challenge_pending_label: Label = $ChallengePanel/PendingLabel
 @onready var challenge_track: ColorRect = $ChallengePanel/ChallengeTrack
 @onready var challenge_zone: ColorRect = $ChallengePanel/ChallengeZone
 @onready var challenge_marker: ColorRect = $ChallengePanel/ChallengeMarker
+@onready var scoop_tool_image: TextureRect = $ChallengePanel/ScoopToolImage
 
 @onready var queue_portraits: Array = [
 	$QueueSlot1/Portrait, $QueueSlot2/Portrait, $QueueSlot3/Portrait,
@@ -92,8 +112,8 @@ func _ready() -> void:
 	level_id = GameState.current_level_id
 	level = GameState.get_level(level_id)
 	level_time_left = level["time_limit"]
-	max_cup_capacity = level["max_order_size"] + 1 + (1 if GameState.upgrade_expand_counter else 0)
 	randomize()
+	_apply_decor_theme()
 
 	for p in CUSTOMER_TEXTURE_PATHS:
 		var tex := load(p)
@@ -102,13 +122,26 @@ func _ready() -> void:
 
 	clear_button.pressed.connect(_on_clear_cup)
 	serve_button.pressed.connect(_serve)
-	cup_zone.ingredient_dropped.connect(_on_ingredient_dropped)
+	drop_zone.ingredient_dropped.connect(_on_ingredient_dropped)
 
 	_setup_audio()
+	_setup_container_tray()
 	_setup_tray()
+	_setup_topping_tray()
 	_spawn_customer()
 	_update_hud()
 	_update_scoop_status_label()
+	_refresh_build_visual()
+
+
+func _apply_decor_theme() -> void:
+	var decor: Dictionary = DecorData.get_theme(GameState.equipped_decor)
+	background_rect.color = decor["background"]
+	counter_rect.color = decor["counter"]
+	timer_label.add_theme_color_override("font_color", decor["text_color"])
+	progress_label.add_theme_color_override("font_color", decor["text_color"])
+	combo_label.add_theme_color_override("font_color", decor["combo_color"])
+	message_label.add_theme_color_override("font_color", decor["message_color"])
 
 
 func _setup_audio() -> void:
@@ -118,21 +151,52 @@ func _setup_audio() -> void:
 		bg_music.play()
 
 
+func _setup_container_tray() -> void:
+	var icons := container_tray.get_children()
+	for i in icons.size():
+		var key: String = GelatoData.CONTAINER_ORDER[i % GelatoData.CONTAINER_ORDER.size()]
+		var info: Dictionary = GelatoData.CONTAINERS[key]
+		icons[i].setup(key, "", "container", info["thumb"])
+
+
 func _setup_tray() -> void:
 	var avail := _available_flavor_keys()
 	var icons := tray.get_children()
 	for i in icons.size():
 		var key: String = avail[i % avail.size()]
-		icons[i].setup(key, INGREDIENTS[key]["emoji"])
+		var info: Dictionary = GelatoData.FLAVORS[key]
+		icons[i].setup(key, "", "flavor", info["thumb"])
+
+
+func _setup_topping_tray() -> void:
+	var keys: Array = GelatoData.TOPPING_ORDER
+	var icons := topping_tray.get_children()
+	for i in icons.size():
+		var key: String = keys[i % keys.size()]
+		var info: Dictionary = GelatoData.TOPPINGS[key]
+		icons[i].setup(key, "", "topping", info["thumb"])
 
 
 func _available_flavor_keys() -> Array:
 	var keys: Array = []
-	for k in INGREDIENTS.keys():
+	for k in GelatoData.FLAVOR_ORDER:
 		if GameState.is_flavor_unlocked(k):
 			keys.append(k)
 	if keys.is_empty():
-		keys.append("vanilla")
+		keys.append("choc_mint")
+	return keys
+
+
+func _available_container_keys() -> Array:
+	var keys: Array = []
+	for k in GelatoData.CONTAINER_ORDER:
+		var cap: int = GelatoData.container_capacity(k)
+		if cap <= int(level["max_order_size"]):
+			keys.append(k)
+		elif k == "large_cup" and GameState.upgrade_expand_counter:
+			keys.append(k)
+	if keys.is_empty():
+		keys.append("cone")
 	return keys
 
 
@@ -144,17 +208,23 @@ func _update_hud() -> void:
 	var minutes := int(level_time_left) / 60
 	var seconds := int(level_time_left) % 60
 	timer_label.text = "⏱ %02d:%02d" % [minutes, seconds]
-	progress_label.text = "🍦 %d/%d" % [customers_served, level["target_customers"]]
+	progress_label.text = "🍨 %d/%d" % [customers_served, level["target_customers"]]
 	combo_label.text = ("🔥 คอมโบ x%d" % combo) if combo > 0 else ""
 
 
 func _update_scoop_status_label() -> void:
-	if scoop_state == ScoopState.IDLE:
-		scoop_status_label.text = "🍦 พร้อมตัก — ลากวัตถุดิบมาวางที่ถ้วย"
+	if scoop_state == ScoopState.COOLDOWN:
+		scoop_status_label.text = "✋ พักมือ... %.1f วิ" % max(cooldown_time_left, 0.0)
 	elif scoop_state == ScoopState.CHALLENGE:
 		scoop_status_label.text = "🎯 กด SPACE ให้ตรงโซนสีเขียว!"
+	elif chosen_container == "":
+		scoop_status_label.text = "🥤 ลากภาชนะมาวางก่อนเลย"
+	elif cup_flavor_contents.is_empty():
+		scoop_status_label.text = "🍨 ตักเจลาโต้ได้เลย"
+	elif cup_flavor_contents.size() < GelatoData.container_capacity(chosen_container):
+		scoop_status_label.text = "🍨 ตักต่อได้อีก หรือใส่ท็อปปิ้งก็ได้"
 	else:
-		scoop_status_label.text = "✋ พักมือ... %.1f วิ" % max(cooldown_time_left, 0.0)
+		scoop_status_label.text = "🍒 ใส่ท็อปปิ้ง หรือเสิร์ฟได้เลย"
 
 
 func _process(delta: float) -> void:
@@ -167,7 +237,7 @@ func _process(delta: float) -> void:
 		_end_level()
 		return
 
-	if current_order.size() > 0:
+	if not current_order.is_empty():
 		patience_time -= delta
 		patience_bar.value = max(patience_time, 0.0)
 		if patience_time <= 0.0:
@@ -199,7 +269,7 @@ func _process_scoop_challenge(delta: float) -> void:
 		marker_t = 0.0
 		marker_dir = 1
 	challenge_timeout -= delta
-	challenge_marker.position.x = 10 + marker_t * 200 - 2
+	challenge_marker.position.x = CHALLENGE_TRACK_MARGIN + marker_t * CHALLENGE_TRACK_WIDTH - CHALLENGE_MARKER_HALF_WIDTH
 	if challenge_timeout <= 0.0:
 		_resolve_scoop_challenge(true)
 
@@ -216,23 +286,43 @@ func _spawn_customer() -> void:
 	scoop_state = ScoopState.IDLE
 	_hide_challenge_ui()
 
+	var avail_containers := _available_container_keys()
+	var order_container: String = avail_containers[randi() % avail_containers.size()]
+	var capacity: int = GelatoData.container_capacity(order_container)
+
 	var avail := _available_flavor_keys()
-	var order_size: int = randi_range(1, min(level["max_order_size"], avail.size()))
 	avail.shuffle()
-	current_order = avail.slice(0, order_size)
+	var flavor_count: int = min(capacity, avail.size())
+	var order_flavors: Array = avail.slice(0, flavor_count)
 
-	var names: Array = []
-	for k in current_order:
-		names.append("%s %s" % [INGREDIENTS[k]["emoji"], INGREDIENTS[k]["name"]])
-	order_label.text = " + ".join(names)
+	var topping_keys: Array = GelatoData.TOPPING_ORDER.duplicate()
+	topping_keys.shuffle()
+	var topping_count: int = randi_range(0, min(MAX_TOPPING_CAPACITY, topping_keys.size()))
+	var order_toppings: Array = topping_keys.slice(0, topping_count)
 
-	patience_max = max(6.0, 12.0 - customers_served * 0.3)
+	current_order = {"container": order_container, "flavors": order_flavors, "toppings": order_toppings}
+
+	var text := "ภาชนะ: %s\n" % GelatoData.container_name(order_container)
+	var flavor_names: Array = []
+	for k in order_flavors:
+		flavor_names.append(GelatoData.flavor_name(k))
+	text += " + ".join(flavor_names)
+	if not order_toppings.is_empty():
+		var topping_names: Array = []
+		for k in order_toppings:
+			topping_names.append(GelatoData.topping_name(k))
+		text += "\nท็อปปิ้ง: " + " + ".join(topping_names)
+	order_label.text = text
+
+	patience_max = max(7.0, 13.0 - customers_served * 0.3)
 	patience_time = patience_max
 	patience_bar.max_value = patience_max
 	patience_bar.value = patience_max
 
-	cup_contents.clear()
-	_update_cup_label()
+	chosen_container = ""
+	cup_flavor_contents.clear()
+	cup_topping_contents.clear()
+	_refresh_build_visual()
 	_update_queue_faces()
 
 
@@ -243,16 +333,46 @@ func _update_queue_faces() -> void:
 		portrait.texture = customer_textures[randi() % customer_textures.size()]
 
 
-func _on_ingredient_dropped(key: String, _emoji: String) -> void:
+func _on_ingredient_dropped(key: String, _emoji: String, kind: String) -> void:
 	if not is_running or current_order.is_empty():
 		return
 	if scoop_state != ScoopState.IDLE:
 		message_label.text = "รอแปปนึง กำลังตักอยู่!"
 		return
-	if cup_contents.size() >= max_cup_capacity:
-		message_label.text = "ถ้วยเต็มแล้ว!"
-		return
-	_start_scoop_challenge(key)
+
+	match kind:
+		"container":
+			if chosen_container != "":
+				message_label.text = "มีภาชนะอยู่แล้วนะ!"
+				return
+			chosen_container = key
+			cup_flavor_contents.clear()
+			cup_topping_contents.clear()
+			_refresh_build_visual()
+			message_label.text = "วาง%sเรียบร้อย ตักเจลาโต้ได้เลย! 🍨" % GelatoData.container_name(key)
+			SFX.play("click")
+		"flavor":
+			if chosen_container == "":
+				message_label.text = "ต้องวางภาชนะก่อนนะ! 🥤"
+				return
+			if cup_flavor_contents.size() >= GelatoData.container_capacity(chosen_container):
+				message_label.text = "เจลาโต้เต็มแล้ว!"
+				return
+			_start_scoop_challenge(key)
+		"topping":
+			if chosen_container == "":
+				message_label.text = "ต้องวางภาชนะก่อนนะ! 🥤"
+				return
+			if cup_flavor_contents.is_empty():
+				message_label.text = "ตักเจลาโต้ก่อนสิ ค่อยใส่ท็อปปิ้งทีหลัง! 🍨"
+				return
+			if cup_topping_contents.size() >= MAX_TOPPING_CAPACITY:
+				message_label.text = "ท็อปปิ้งเต็มแล้ว!"
+				return
+			cup_topping_contents.append(key)
+			_refresh_build_visual()
+			message_label.text = "ใส่ท็อปปิ้ง%sแล้ว" % GelatoData.topping_name(key)
+			SFX.play("click")
 
 
 func _start_scoop_challenge(key: String) -> void:
@@ -263,6 +383,9 @@ func _start_scoop_challenge(key: String) -> void:
 	challenge_timeout = CHALLENGE_TIME_LIMIT
 	marker_speed = 1.1 + level_id * 0.12 + customers_served * 0.02
 	var zone_width: float = clamp(0.32 - level_id * 0.02 - customers_served * 0.005, 0.14, 0.32)
+	if GameState.upgrade_auto_churn:
+		marker_speed *= 0.8
+		zone_width = clamp(zone_width + 0.05, 0.14, 0.37)
 	zone_start = randf() * (1.0 - zone_width)
 	zone_end = zone_start + zone_width
 	_show_challenge_ui()
@@ -270,42 +393,110 @@ func _start_scoop_challenge(key: String) -> void:
 
 func _show_challenge_ui() -> void:
 	challenge_panel.visible = true
-	cup_label.visible = false
-	challenge_pending_label.text = "กำลังตัก %s" % INGREDIENTS[scoop_pending_key]["emoji"]
-	challenge_zone.position.x = 10 + zone_start * 200
-	challenge_zone.size.x = (zone_end - zone_start) * 200
-	challenge_marker.position.x = 10 + marker_t * 200 - 2
+	build_stage.visible = false
+	challenge_pending_label.text = "กำลังตัก%s" % GelatoData.flavor_name(scoop_pending_key)
+	scoop_tool_image.texture = load("res://assets/gelato/scoop_tool/scoop_%s.png" % scoop_pending_key)
+	challenge_zone.position.x = CHALLENGE_TRACK_MARGIN + zone_start * CHALLENGE_TRACK_WIDTH
+	challenge_zone.size.x = (zone_end - zone_start) * CHALLENGE_TRACK_WIDTH
+	challenge_marker.position.x = CHALLENGE_TRACK_MARGIN + marker_t * CHALLENGE_TRACK_WIDTH - CHALLENGE_MARKER_HALF_WIDTH
 
 
 func _hide_challenge_ui() -> void:
 	challenge_panel.visible = false
-	cup_label.visible = true
+	build_stage.visible = true
 
 
 func _resolve_scoop_challenge(forced_miss: bool = false) -> void:
 	var hit: bool = (not forced_miss) and marker_t >= zone_start and marker_t <= zone_end
 	if hit:
-		cup_contents.append(scoop_pending_key)
-		_update_cup_label()
+		cup_flavor_contents.append(scoop_pending_key)
+		_refresh_build_visual()
 		message_label.text = "ตักสวย! 🎯"
+		SFX.play("success")
 	else:
 		message_label.text = "พลาดจังหวะ! ตักไม่ทัน 😵"
+		SFX.play("error")
 	scoop_pending_key = ""
 	scoop_state = ScoopState.COOLDOWN
 	cooldown_time_left = _scoop_cooldown_duration()
 	_hide_challenge_ui()
 
 
-func _update_cup_label() -> void:
-	var emojis: Array = []
-	for k in cup_contents:
-		emojis.append(INGREDIENTS[k]["emoji"])
-	cup_label.text = " ".join(emojis)
+func _reset_scoop_rect(layer: TextureRect) -> void:
+	layer.offset_left = RECT_FULL.position.x
+	layer.offset_top = RECT_FULL.position.y
+	layer.offset_right = RECT_FULL.position.x + RECT_FULL.size.x
+	layer.offset_bottom = RECT_FULL.position.y + RECT_FULL.size.y
+
+
+func _set_scoop_rect(layer: TextureRect, r: Rect2) -> void:
+	layer.offset_left = r.position.x
+	layer.offset_top = r.position.y
+	layer.offset_right = r.position.x + r.size.x
+	layer.offset_bottom = r.position.y + r.size.y
+
+
+func _refresh_build_visual() -> void:
+	_reset_scoop_rect(layer_scoop_mid)
+	_reset_scoop_rect(layer_scoop_front)
+	_reset_scoop_rect(layer_scoop_back)
+
+	if chosen_container == "":
+		layer_cup.texture = null
+		layer_scoop_back.texture = null
+		layer_scoop_mid.texture = null
+		layer_scoop_front.texture = null
+		layer_container_front.texture = null
+		layer_topping.texture = null
+		empty_stage_label.visible = true
+		return
+
+	empty_stage_label.visible = false
+	var n := cup_flavor_contents.size()
+
+	if chosen_container == "cone":
+		layer_cup.texture = load(CONE_BACK)
+		layer_container_front.texture = load(CONE_FRONT)
+		layer_scoop_back.texture = null
+		layer_scoop_front.texture = null
+		layer_scoop_mid.texture = load(GelatoData.FLAVORS[cup_flavor_contents[0]]["cone"]) if n >= 1 else null
+		layer_topping.texture = load(GelatoData.TOPPINGS[cup_topping_contents[0]]["cone"]) if not cup_topping_contents.is_empty() else null
+
+	elif chosen_container == "small_cup":
+		layer_cup.texture = load(SMALL_CUP)
+		layer_container_front.texture = null
+		layer_scoop_back.texture = null
+		if n >= 2:
+			_set_scoop_rect(layer_scoop_mid, RECT_SMALL_BACK)
+			_set_scoop_rect(layer_scoop_front, RECT_SMALL_FRONT)
+			layer_scoop_mid.texture = load(GelatoData.FLAVORS[cup_flavor_contents[0]]["small"])
+			layer_scoop_front.texture = load(GelatoData.FLAVORS[cup_flavor_contents[1]]["small"])
+		elif n == 1:
+			layer_scoop_mid.texture = load(GelatoData.FLAVORS[cup_flavor_contents[0]]["small"])
+			layer_scoop_front.texture = null
+		else:
+			layer_scoop_mid.texture = null
+			layer_scoop_front.texture = null
+		layer_topping.texture = load(GelatoData.TOPPINGS[cup_topping_contents[0]]["small"]) if not cup_topping_contents.is_empty() else null
+
+	elif chosen_container == "large_cup":
+		layer_cup.texture = load(LARGE_CUP)
+		layer_container_front.texture = null
+		layer_scoop_front.texture = load(GelatoData.FLAVORS[cup_flavor_contents[0]]["large1"]) if n >= 1 else null
+		layer_scoop_mid.texture = load(GelatoData.FLAVORS[cup_flavor_contents[1]]["large2"]) if n >= 2 else null
+		if n >= 3:
+			_set_scoop_rect(layer_scoop_back, RECT_LARGE_THIRD)
+			layer_scoop_back.texture = load(GelatoData.FLAVORS[cup_flavor_contents[2]]["large2"])
+		else:
+			layer_scoop_back.texture = null
+		layer_topping.texture = load(GelatoData.TOPPINGS[cup_topping_contents[0]]["large"]) if not cup_topping_contents.is_empty() else null
 
 
 func _on_clear_cup() -> void:
-	cup_contents.clear()
-	_update_cup_label()
+	chosen_container = ""
+	cup_flavor_contents.clear()
+	cup_topping_contents.clear()
+	_refresh_build_visual()
 
 
 func _serve() -> void:
@@ -314,35 +505,69 @@ func _serve() -> void:
 	if scoop_state == ScoopState.CHALLENGE:
 		message_label.text = "ตักให้เสร็จก่อนสิ! กด SPACE ให้ตรงจังหวะ"
 		return
-	var a: Array = current_order.duplicate()
-	var b: Array = cup_contents.duplicate()
+	if chosen_container == "":
+		message_label.text = "ยังไม่ได้วางภาชนะเลยนะ! ลากภาชนะมาวางก่อน 🥤"
+		return
+
+	var order_container: String = current_order["container"]
+	var order_flavors: Array = current_order["flavors"]
+	var order_toppings: Array = current_order["toppings"]
+
+	var container_ok: bool = (chosen_container == order_container)
+
+	var a: Array = order_flavors.duplicate()
+	var b: Array = cup_flavor_contents.duplicate()
 	a.sort()
 	b.sort()
-	if a == b:
+	var flavors_ok: bool = a == b
+
+	var c: Array = order_toppings.duplicate()
+	var d: Array = cup_topping_contents.duplicate()
+	c.sort()
+	d.sort()
+	var toppings_ok: bool = c == d
+
+	if container_ok and flavors_ok and toppings_ok:
 		var order_time := patience_max - patience_time
 		total_order_time += order_time
-		var value_sum := 0
-		for k in current_order:
-			value_sum += int(INGREDIENTS[k]["value"])
+		var value_sum := GelatoData.CONTAINERS[order_container]["value"] as int
+		for k in order_flavors:
+			value_sum += int(GelatoData.FLAVORS[k]["value"])
+		for k in order_toppings:
+			value_sum += int(GelatoData.TOPPINGS[k]["value"])
 		var reward := 5 + value_sum + combo * 3
 		coins_earned += reward
 		combo += 1
 		max_combo = max(max_combo, combo)
 		customers_satisfied += 1
 		message_label.text = "เสิร์ฟถูกใจ! +%d 🪙" % reward
+		SFX.play("coin")
 		_customer_left(true)
+	elif not container_ok:
+		message_label.text = "ลูกค้าอยากได้%sนะ ไม่ใช่%s!" % [GelatoData.container_name(order_container), GelatoData.container_name(chosen_container)]
+		SFX.play("error")
+	elif flavors_ok and not toppings_ok:
+		message_label.text = "รสเจลาโต้ถูกแล้ว! แต่ท็อปปิ้งยังไม่ตรงนะ 🍒"
+		SFX.play("error")
+	elif toppings_ok and not flavors_ok:
+		message_label.text = "ท็อปปิ้งโอเคแล้ว! แต่รสเจลาโต้ยังไม่ตรงนะ 🍨"
+		SFX.play("error")
 	else:
-		message_label.text = "ยังไม่ตรงออเดอร์นะ 😅"
+		message_label.text = "ยังไม่ตรงออเดอร์เลยนะ 😅"
+		SFX.play("error")
 
 
 func _customer_left(satisfied: bool) -> void:
 	if not satisfied:
 		combo = 0
 		message_label.text = "ลูกค้าเดินหนีไปแล้ว 😠"
+		SFX.play("error")
 	customers_served += 1
-	current_order = []
-	cup_contents.clear()
-	_update_cup_label()
+	current_order = {}
+	chosen_container = ""
+	cup_flavor_contents.clear()
+	cup_topping_contents.clear()
+	_refresh_build_visual()
 	scoop_state = ScoopState.IDLE
 	_hide_challenge_ui()
 

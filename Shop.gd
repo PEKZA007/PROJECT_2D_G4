@@ -1,25 +1,19 @@
 extends Node2D
 
-# หน้าร้านค้า: การ์ดอุปกรณ์ 3 ใบ และการ์ดรสชาติ 8 ใบ เป็น instance ที่วางไว้
+# หน้าร้านค้า: การ์ดอุปกรณ์ 3 ใบ และการ์ดรสชาติ 6 ใบ เป็น instance ที่วางไว้
 # ใน Shop.tscn แล้ว (แยกเป็น 3 หน้าแท็บ สลับด้วยการซ่อน/แสดง)
 # สคริปต์นี้แค่เติมข้อมูลและจัดการการซื้อ
 
-const FLAVOR_INFO := {
-	"vanilla": {"emoji": "🍦", "name": "วานิลลา", "value": 6},
-	"chocolate": {"emoji": "🍫", "name": "ช็อกโกแลต", "value": 8},
-	"strawberry": {"emoji": "🍓", "name": "สตรอเบอร์รี่", "value": 8},
-	"mango": {"emoji": "🥭", "name": "มะม่วง", "value": 10},
-	"orange": {"emoji": "🍊", "name": "ส้ม", "value": 12, "unlock_price": 80},
-	"blueberry": {"emoji": "🫐", "name": "บลูเบอร์รี่", "value": 14, "unlock_price": 110},
-	"cherry": {"emoji": "🍒", "name": "เชอร์รี่", "value": 16, "unlock_price": 140},
-	"mint": {"emoji": "🌿", "name": "มินต์", "value": 18, "unlock_price": 170},
-}
-const FLAVOR_ORDER := ["vanilla", "chocolate", "strawberry", "mango", "orange", "blueberry", "cherry", "mint"]
 const EQUIPMENT_INFO := [
-	{"key": "fast_scoop", "title": "ตักไอศกรีมไว", "desc": "ลดเวลาคูลดาวน์การตักไอศกรีมลงประมาณครึ่งหนึ่ง", "price": 120},
-	{"key": "expand_counter", "title": "ขยายตู้", "desc": "ใส่วัตถุดิบในถ้วยได้เพิ่มอีก 1 ชิ้น", "price": 200},
-	{"key": "auto", "title": "ปั่นออโต้", "desc": "เร็วๆ นี้", "price": -1},
+	{"key": "fast_scoop", "icon": "⚡", "title": "ตักเจลาโต้ไว", "desc": "ลดเวลาคูลดาวน์การตักเจลาโต้ลงประมาณครึ่งหนึ่ง", "price": 120},
+	{"key": "expand_counter", "icon": "📦", "title": "ปลดล็อกถ้วยใหญ่ก่อนใคร", "desc": "เจอออเดอร์ถ้วยใหญ่ (3 รส) ได้ ตั้งแต่ด่านต้นๆ", "price": 200},
+	{"key": "auto", "icon": "🌀", "title": "ปั่นออโต้", "desc": "มินิเกมตักเจลาโต้ง่ายขึ้น: ตัวชี้เดินช้าลงและโซนตักกว้างขึ้น", "price": 160},
 ]
+
+const TAB_STYLE_INACTIVE := preload("res://theme/style_tab_button.tres")
+const TAB_STYLE_ACTIVE := preload("res://theme/style_tab_button_active.tres")
+const TAB_COLOR_INACTIVE := Color(0.235294, 0.156863, 0.0784314, 1)
+const TAB_COLOR_ACTIVE := Color(1, 1, 1, 1)
 
 @onready var back_button: Button = $BackButton
 @onready var coin_label: Label = $CoinLabel
@@ -34,12 +28,21 @@ const EQUIPMENT_INFO := [
 	$EquipmentPage/Card1, $EquipmentPage/Card2, $EquipmentPage/Card3,
 ]
 @onready var flavor_cards: Array = [
-	$FlavorsPage/Card1, $FlavorsPage/Card2, $FlavorsPage/Card3, $FlavorsPage/Card4,
-	$FlavorsPage/Card5, $FlavorsPage/Card6, $FlavorsPage/Card7, $FlavorsPage/Card8,
+	$FlavorsPage/Card1, $FlavorsPage/Card2, $FlavorsPage/Card3,
+	$FlavorsPage/Card4, $FlavorsPage/Card5, $FlavorsPage/Card6,
 ]
+@onready var decor_cards: Array = [
+	$DecorPage/Card1, $DecorPage/Card2, $DecorPage/Card3, $DecorPage/Card4,
+]
+@onready var tab_buttons: Dictionary = {
+	"equipment": tab_equipment_button,
+	"flavors": tab_flavors_button,
+	"decor": tab_decor_button,
+}
 
 
 func _ready() -> void:
+	get_tree().paused = false
 	back_button.pressed.connect(func(): get_tree().change_scene_to_file("res://LevelSelect.tscn"))
 	tab_equipment_button.pressed.connect(func(): _switch_tab("equipment"))
 	tab_flavors_button.pressed.connect(func(): _switch_tab("flavors"))
@@ -49,6 +52,9 @@ func _ready() -> void:
 		c.buy_pressed.connect(_on_buy_equipment)
 	for c in flavor_cards:
 		c.unlock_pressed.connect(_on_unlock_flavor)
+	for c in decor_cards:
+		c.buy_pressed.connect(_on_buy_decor)
+		c.equip_pressed.connect(_on_equip_decor)
 
 	_refresh_all()
 	_switch_tab("equipment")
@@ -59,6 +65,18 @@ func _switch_tab(tab: String) -> void:
 	flavors_page.visible = (tab == "flavors")
 	decor_page.visible = (tab == "decor")
 
+	for key in tab_buttons.keys():
+		var btn: Button = tab_buttons[key]
+		var active: bool = (key == tab)
+		var style: StyleBox = TAB_STYLE_ACTIVE if active else TAB_STYLE_INACTIVE
+		var color: Color = TAB_COLOR_ACTIVE if active else TAB_COLOR_INACTIVE
+		btn.add_theme_stylebox_override("normal", style)
+		btn.add_theme_stylebox_override("hover", style)
+		btn.add_theme_stylebox_override("pressed", style)
+		btn.add_theme_color_override("font_color", color)
+		btn.add_theme_color_override("font_hover_color", color)
+		btn.add_theme_color_override("font_pressed_color", color)
+
 
 func _refresh_all() -> void:
 	coin_label.text = "🪙 %d" % GameState.coins
@@ -66,33 +84,51 @@ func _refresh_all() -> void:
 	for i in equipment_cards.size():
 		var info: Dictionary = EQUIPMENT_INFO[i]
 		var state := "buy"
-		if info["key"] == "auto":
-			state = "locked"
-		elif info["key"] == "fast_scoop" and GameState.upgrade_fast_scoop:
+		if info["key"] == "fast_scoop" and GameState.upgrade_fast_scoop:
 			state = "owned"
 		elif info["key"] == "expand_counter" and GameState.upgrade_expand_counter:
 			state = "owned"
-		equipment_cards[i].configure(info["key"], info["title"], info["desc"], info["price"], state)
+		elif info["key"] == "auto" and GameState.upgrade_auto_churn:
+			state = "owned"
+		equipment_cards[i].configure(info["key"], info["title"], info["desc"], info["price"], state, info["icon"])
 
 	for i in flavor_cards.size():
-		var key: String = FLAVOR_ORDER[i]
-		flavor_cards[i].configure(key, FLAVOR_INFO[key], GameState.is_flavor_unlocked(key))
+		var key: String = GelatoData.FLAVOR_ORDER[i]
+		flavor_cards[i].configure(key, GelatoData.FLAVORS[key], GameState.is_flavor_unlocked(key))
+
+	for i in decor_cards.size():
+		var key: String = DecorData.THEME_ORDER[i]
+		var info: Dictionary = DecorData.THEMES[key]
+		var owned: bool = GameState.owned_decor.get(key, false)
+		var equipped: bool = GameState.equipped_decor == key
+		decor_cards[i].configure(key, info, owned, equipped)
 
 
 func _on_buy_equipment(key: String, price: int) -> void:
-	if GameState.coins < price:
+	if not GameState.buy_equipment(key, price):
+		SFX.play("error")
 		return
-	GameState.coins -= price
-	if key == "fast_scoop":
-		GameState.upgrade_fast_scoop = true
-	elif key == "expand_counter":
-		GameState.upgrade_expand_counter = true
+	SFX.play("coin")
 	_refresh_all()
 
 
 func _on_unlock_flavor(key: String, price: int) -> void:
-	if GameState.coins < price:
+	if not GameState.buy_flavor(key, price):
+		SFX.play("error")
 		return
-	GameState.coins -= price
-	GameState.unlock_flavor(key)
+	SFX.play("coin")
+	_refresh_all()
+
+
+func _on_buy_decor(key: String, price: int) -> void:
+	if not GameState.buy_decor(key, price):
+		SFX.play("error")
+		return
+	SFX.play("coin")
+	_refresh_all()
+
+
+func _on_equip_decor(key: String) -> void:
+	GameState.equip_decor(key)
+	SFX.play("click")
 	_refresh_all()

@@ -13,6 +13,7 @@ extends Node2D
 
 
 func _ready() -> void:
+	get_tree().paused = false
 	back_button.pressed.connect(func(): get_tree().change_scene_to_file("res://MainMenu.tscn"))
 	shop_button.pressed.connect(func(): get_tree().change_scene_to_file("res://Shop.tscn"))
 	coin_label.text = "🪙 %d" % GameState.coins
@@ -25,4 +26,9 @@ func _ready() -> void:
 
 func _on_play_level(id: int) -> void:
 	GameState.current_level_id = id
-	get_tree().change_scene_to_file("res://Game.tscn")
+	var chapter: String = StoryData.LEVEL_INTRO_CHAPTERS.get(id, "")
+	if chapter != "" and not GameState.has_seen_chapter(chapter):
+		GameState.start_story(chapter, "res://Game.tscn")
+		get_tree().change_scene_to_file("res://VisualNovel.tscn")
+	else:
+		get_tree().change_scene_to_file("res://Game.tscn")

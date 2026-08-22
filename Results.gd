@@ -11,10 +11,15 @@ extends Node2D
 
 
 func _ready() -> void:
+	get_tree().paused = false
 	replay_button.pressed.connect(_on_replay)
 	home_button.pressed.connect(_on_home)
 	next_button.pressed.connect(_on_next)
 	_populate()
+	if int(GameState.last_run["stars"]) > 0:
+		SFX.play("success")
+	else:
+		SFX.play("error")
 
 
 func _populate() -> void:
@@ -31,7 +36,15 @@ func _populate() -> void:
 
 	var next_id: int = int(run["level_id"]) + 1
 	var has_next: bool = next_id < GameState.levels.size() and GameState.levels[next_id]["unlocked"]
-	next_button.disabled = not has_next
+	var is_last_level: bool = next_id >= GameState.levels.size()
+	var show_ending: bool = is_last_level and int(run["stars"]) > 0 and not GameState.has_seen_chapter("ending")
+
+	if show_ending:
+		next_button.text = "ดูตอนจบเรื่อง 🎬"
+		next_button.disabled = false
+	else:
+		next_button.text = "ด่านถัดไป"
+		next_button.disabled = not has_next
 
 
 func _on_replay() -> void:
@@ -44,5 +57,13 @@ func _on_home() -> void:
 
 
 func _on_next() -> void:
-	GameState.current_level_id = GameState.last_run["level_id"] + 1
-	get_tree().change_scene_to_file("res://Game.tscn")
+	var run: Dictionary = GameState.last_run
+	var next_id: int = int(run["level_id"]) + 1
+	var is_last_level: bool = next_id >= GameState.levels.size()
+
+	if is_last_level and int(run["stars"]) > 0 and not GameState.has_seen_chapter("ending"):
+		GameState.start_story("ending", "res://MainMenu.tscn")
+		get_tree().change_scene_to_file("res://VisualNovel.tscn")
+	else:
+		GameState.current_level_id = next_id
+		get_tree().change_scene_to_file("res://Game.tscn")

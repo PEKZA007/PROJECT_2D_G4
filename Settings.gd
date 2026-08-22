@@ -11,6 +11,7 @@ extends Node2D
 
 
 func _ready() -> void:
+	get_tree().paused = false
 	back_button.pressed.connect(func(): get_tree().change_scene_to_file("res://MainMenu.tscn"))
 	save_button.pressed.connect(_on_save)
 

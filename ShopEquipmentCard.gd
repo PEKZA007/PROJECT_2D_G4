@@ -9,6 +9,7 @@ const OWNED_STYLE := preload("res://theme/style_owned_button.tres")
 const LOCKED_STYLE := preload("res://theme/style_locked_button.tres")
 const BUY_STYLE := preload("res://theme/style_dark_button.tres")
 
+@onready var icon_label: Label = $IconLabel
 @onready var name_label: Label = $NameLabel
 @onready var desc_label: Label = $DescLabel
 @onready var action_button: Button = $ActionButton
@@ -21,9 +22,10 @@ func _ready() -> void:
 	action_button.pressed.connect(func(): buy_pressed.emit(item_key, item_price))
 
 
-func configure(key: String, title_text: String, desc: String, price: int, state: String) -> void:
+func configure(key: String, title_text: String, desc: String, price: int, state: String, icon: String = "⭐") -> void:
 	item_key = key
 	item_price = price
+	icon_label.text = icon
 	name_label.text = title_text
 	desc_label.text = desc
 

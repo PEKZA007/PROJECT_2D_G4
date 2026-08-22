@@ -5,161 +5,186 @@
 [ext_resource type="StyleBoxFlat" path="res://theme/style_tab_button.tres" id="3"]
 [ext_resource type="PackedScene" path="res://ShopEquipmentCard.tscn" id="5"]
 [ext_resource type="PackedScene" path="res://ShopFlavorCard.tscn" id="6"]
+[ext_resource type="StyleBoxFlat" path="res://theme/style_tab_button_active.tres" id="7"]
+[ext_resource type="PackedScene" path="res://DecorCard.tscn" id="8"]
 
 [node name="Shop" type="Node2D"]
 script = ExtResource("1")
 
 [node name="Background" type="ColorRect" parent="."]
-offset_right = 960.0
-offset_bottom = 640.0
-color = Color(0.980392, 0.980392, 0.960784, 1)
+offset_left = 0.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(1, 0.945098, 0.8, 1)
 
 [node name="BackButton" type="Button" parent="."]
-offset_left = 20.0
-offset_top = 20.0
-offset_right = 70.0
-offset_bottom = 70.0
+offset_left = 183.75
+offset_top = 33.75
+offset_right = 268.125
+offset_bottom = 118.125
 theme_override_styles/normal = ExtResource("2")
 theme_override_styles/hover = ExtResource("2")
 theme_override_styles/pressed = ExtResource("2")
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 40
+theme_override_colors/font_color = Color(0.235294, 0.156863, 0.0784314, 1)
+theme_override_colors/font_hover_color = Color(0.235294, 0.156863, 0.0784314, 1)
+theme_override_colors/font_pressed_color = Color(0.235294, 0.156863, 0.0784314, 1)
+theme_override_colors/font_focus_color = Color(0.235294, 0.156863, 0.0784314, 1)
 text = "←"
 
 [node name="Title" type="Label" parent="."]
-offset_top = 25.0
-offset_right = 960.0
-offset_bottom = 75.0
-theme_override_font_sizes/font_size = 34
+offset_left = 0.0
+offset_top = 42.188
+offset_right = 1920.0
+offset_bottom = 126.562
+theme_override_font_sizes/font_size = 58
 theme_override_colors/font_color = Color(0.235294, 0.156863, 0.0784314, 1)
 horizontal_alignment = 1
 text = "ร้านค้า"
 
 [node name="CoinLabel" type="Label" parent="."]
-offset_left = 780.0
-offset_top = 30.0
-offset_right = 940.0
-offset_bottom = 54.0
-theme_override_font_sizes/font_size = 22
+offset_left = 1466.25
+offset_top = 50.625
+offset_right = 1736.25
+offset_bottom = 91.125
+theme_override_font_sizes/font_size = 38
 theme_override_colors/font_color = Color(0.705882, 0.470588, 0, 1)
 horizontal_alignment = 2
 text = "🪙 0"
 
 [node name="Tabs" type="HBoxContainer" parent="."]
-offset_left = 30.0
-offset_top = 90.0
-offset_right = 430.0
-offset_bottom = 126.0
-theme_override_constants/separation = 10
+offset_left = 200.625
+offset_top = 151.875
+offset_right = 875.625
+offset_bottom = 212.625
+theme_override_constants/separation = 17
 
 [node name="EquipmentTabButton" type="Button" parent="Tabs"]
-custom_minimum_size = Vector2(130, 36)
+custom_minimum_size = Vector2(219.375, 60.75)
 theme_override_styles/normal = ExtResource("3")
 theme_override_styles/hover = ExtResource("3")
 theme_override_styles/pressed = ExtResource("3")
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 27
+theme_override_colors/font_color = Color(0.235294, 0.156863, 0.0784314, 1)
+theme_override_colors/font_hover_color = Color(0.235294, 0.156863, 0.0784314, 1)
+theme_override_colors/font_pressed_color = Color(0.235294, 0.156863, 0.0784314, 1)
+theme_override_colors/font_focus_color = Color(0.235294, 0.156863, 0.0784314, 1)
 text = "อุปกรณ์"
 
 [node name="FlavorsTabButton" type="Button" parent="Tabs"]
-custom_minimum_size = Vector2(130, 36)
+custom_minimum_size = Vector2(219.375, 60.75)
 theme_override_styles/normal = ExtResource("3")
 theme_override_styles/hover = ExtResource("3")
 theme_override_styles/pressed = ExtResource("3")
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 27
+theme_override_colors/font_color = Color(0.235294, 0.156863, 0.0784314, 1)
+theme_override_colors/font_hover_color = Color(0.235294, 0.156863, 0.0784314, 1)
+theme_override_colors/font_pressed_color = Color(0.235294, 0.156863, 0.0784314, 1)
+theme_override_colors/font_focus_color = Color(0.235294, 0.156863, 0.0784314, 1)
 text = "รสชาติ"
 
 [node name="DecorTabButton" type="Button" parent="Tabs"]
-custom_minimum_size = Vector2(130, 36)
+custom_minimum_size = Vector2(219.375, 60.75)
 theme_override_styles/normal = ExtResource("3")
 theme_override_styles/hover = ExtResource("3")
 theme_override_styles/pressed = ExtResource("3")
-theme_override_font_sizes/font_size = 16
+theme_override_font_sizes/font_size = 27
+theme_override_colors/font_color = Color(0.235294, 0.156863, 0.0784314, 1)
+theme_override_colors/font_hover_color = Color(0.235294, 0.156863, 0.0784314, 1)
+theme_override_colors/font_pressed_color = Color(0.235294, 0.156863, 0.0784314, 1)
+theme_override_colors/font_focus_color = Color(0.235294, 0.156863, 0.0784314, 1)
 text = "ตกแต่งร้าน"
 
 [node name="EquipmentPage" type="Control" parent="."]
-offset_right = 960.0
-offset_bottom = 640.0
+offset_left = 0.0
+offset_right = 1920.0
+offset_bottom = 1080.0
 
 [node name="Card1" parent="EquipmentPage" instance=ExtResource("5")]
-offset_left = 40.0
-offset_top = 160.0
-offset_right = 270.0
-offset_bottom = 500.0
+offset_left = 217.5
+offset_top = 270.0
+offset_right = 605.625
+offset_bottom = 843.75
 
 [node name="Card2" parent="EquipmentPage" instance=ExtResource("5")]
-offset_left = 370.0
-offset_top = 160.0
-offset_right = 600.0
-offset_bottom = 500.0
+offset_left = 774.375
+offset_top = 270.0
+offset_right = 1162.5
+offset_bottom = 843.75
 
 [node name="Card3" parent="EquipmentPage" instance=ExtResource("5")]
-offset_left = 700.0
-offset_top = 160.0
-offset_right = 930.0
-offset_bottom = 500.0
+offset_left = 1331.25
+offset_top = 270.0
+offset_right = 1719.375
+offset_bottom = 843.75
 
 [node name="FlavorsPage" type="Control" parent="."]
-offset_right = 960.0
-offset_bottom = 640.0
-visible = false
+offset_left = 0.0
+offset_right = 1920.0
+offset_bottom = 1080.0
 
 [node name="Card1" parent="FlavorsPage" instance=ExtResource("6")]
-offset_left = 35.0
-offset_top = 160.0
-offset_right = 245.0
-offset_bottom = 355.0
+offset_left = 403.125
+offset_top = 270.0
+offset_right = 757.5
+offset_bottom = 599.062
 
 [node name="Card2" parent="FlavorsPage" instance=ExtResource("6")]
-offset_left = 260.0
-offset_top = 160.0
-offset_right = 470.0
-offset_bottom = 355.0
+offset_left = 782.812
+offset_top = 270.0
+offset_right = 1137.188
+offset_bottom = 599.062
 
 [node name="Card3" parent="FlavorsPage" instance=ExtResource("6")]
-offset_left = 485.0
-offset_top = 160.0
-offset_right = 695.0
-offset_bottom = 355.0
+offset_left = 1162.5
+offset_top = 270.0
+offset_right = 1516.875
+offset_bottom = 599.062
 
 [node name="Card4" parent="FlavorsPage" instance=ExtResource("6")]
-offset_left = 710.0
-offset_top = 160.0
-offset_right = 920.0
-offset_bottom = 355.0
+offset_left = 403.125
+offset_top = 641.25
+offset_right = 757.5
+offset_bottom = 970.312
 
 [node name="Card5" parent="FlavorsPage" instance=ExtResource("6")]
-offset_left = 35.0
-offset_top = 380.0
-offset_right = 245.0
-offset_bottom = 575.0
+offset_left = 782.812
+offset_top = 641.25
+offset_right = 1137.188
+offset_bottom = 970.312
 
 [node name="Card6" parent="FlavorsPage" instance=ExtResource("6")]
-offset_left = 260.0
-offset_top = 380.0
-offset_right = 470.0
-offset_bottom = 575.0
-
-[node name="Card7" parent="FlavorsPage" instance=ExtResource("6")]
-offset_left = 485.0
-offset_top = 380.0
-offset_right = 695.0
-offset_bottom = 575.0
-
-[node name="Card8" parent="FlavorsPage" instance=ExtResource("6")]
-offset_left = 710.0
-offset_top = 380.0
-offset_right = 920.0
-offset_bottom = 575.0
+offset_left = 1162.5
+offset_top = 641.25
+offset_right = 1516.875
+offset_bottom = 970.312
 
 [node name="DecorPage" type="Control" parent="."]
-offset_right = 960.0
-offset_bottom = 640.0
+offset_left = 0.0
+offset_right = 1920.0
+offset_bottom = 1080.0
 visible = false
 
-[node name="ComingSoonLabel" type="Label" parent="DecorPage"]
-offset_top = 260.0
-offset_right = 960.0
-offset_bottom = 300.0
-theme_override_font_sizes/font_size = 24
-theme_override_colors/font_color = Color(0.588235, 0.588235, 0.588235, 1)
-horizontal_alignment = 1
-text = "เร็วๆ นี้"
+[node name="Card1" parent="DecorPage" instance=ExtResource("8")]
+offset_left = 209.062
+offset_top = 460.0
+offset_right = 563.438
+offset_bottom = 789.062
+
+[node name="Card2" parent="DecorPage" instance=ExtResource("8")]
+offset_left = 588.75
+offset_top = 460.0
+offset_right = 943.125
+offset_bottom = 789.062
+
+[node name="Card3" parent="DecorPage" instance=ExtResource("8")]
+offset_left = 968.438
+offset_top = 460.0
+offset_right = 1322.812
+offset_bottom = 789.062
+
+[node name="Card4" parent="DecorPage" instance=ExtResource("8")]
+offset_left = 1348.125
+offset_top = 460.0
+offset_right = 1702.5
+offset_bottom = 789.062
