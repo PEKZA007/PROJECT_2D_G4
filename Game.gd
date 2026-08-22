@@ -101,7 +101,6 @@ var customer_textures: Array = []
 @onready var challenge_track: ColorRect = $ChallengePanel/ChallengeTrack
 @onready var challenge_zone: ColorRect = $ChallengePanel/ChallengeZone
 @onready var challenge_marker: ColorRect = $ChallengePanel/ChallengeMarker
-@onready var scoop_tool_image: TextureRect = $ChallengePanel/ScoopToolImage
 
 @onready var queue_portraits: Array = [
 	$QueueSlot1/Portrait, $QueueSlot2/Portrait, $QueueSlot3/Portrait,
@@ -128,10 +127,31 @@ func _ready() -> void:
 	_setup_container_tray()
 	_setup_tray()
 	_setup_topping_tray()
+	_setup_counter_hotspots()
 	_spawn_customer()
 	_update_hud()
 	_update_scoop_status_label()
 	_refresh_build_visual()
+
+
+func _setup_counter_hotspots() -> void:
+	# ทำให้ภาพเคาน์เตอร์ (ถังเจลาโต้ / ท็อปปิ้ง / โคน-ถ้วย) กดเลือกได้โดยตรง
+	# นี่คือช่องทางหลักในการเล่นเกม — ถาดไอคอนด้านล่างถูกซ่อนไว้เป็นสำรองเท่านั้น
+	var unlocked_flavors: Array = _available_flavor_keys()
+	for child in get_children():
+		if child is Button and child.name.begins_with("Hotspot"):
+			var key: String = child.get_meta("ingredient_key", "")
+			var kind: String = child.get_meta("kind", "")
+			if kind == "flavor" and not unlocked_flavors.has(key):
+				child.disabled = true
+				if child.has_node("LockOverlay"):
+					child.get_node("LockOverlay").visible = true
+			else:
+				child.pressed.connect(_on_hotspot_pressed.bind(key, kind))
+
+
+func _on_hotspot_pressed(key: String, kind: String) -> void:
+	_on_ingredient_dropped(key, "", kind)
 
 
 func _apply_decor_theme() -> void:
@@ -395,7 +415,6 @@ func _show_challenge_ui() -> void:
 	challenge_panel.visible = true
 	build_stage.visible = false
 	challenge_pending_label.text = "กำลังตัก%s" % GelatoData.flavor_name(scoop_pending_key)
-	scoop_tool_image.texture = load("res://assets/gelato/scoop_tool/scoop_%s.png" % scoop_pending_key)
 	challenge_zone.position.x = CHALLENGE_TRACK_MARGIN + zone_start * CHALLENGE_TRACK_WIDTH
 	challenge_zone.size.x = (zone_end - zone_start) * CHALLENGE_TRACK_WIDTH
 	challenge_marker.position.x = CHALLENGE_TRACK_MARGIN + marker_t * CHALLENGE_TRACK_WIDTH - CHALLENGE_MARKER_HALF_WIDTH
