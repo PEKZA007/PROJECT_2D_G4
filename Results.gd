@@ -30,7 +30,7 @@ func _populate() -> void:
 		stars_text += "★" if i < int(run["stars"]) else "☆"
 	stars_label.text = stars_text
 
-	stats_label.text = "ลูกค้าที่พอใจ: %d/%d\nเหรียญที่ได้รับ: +%d 🪙\nเวลาเฉลี่ยต่อออเดอร์: %.1f วิ\nคอมโบสูงสุด: x%d" % [
+	stats_label.text = "ลูกค้าที่พอใจ: %d/%d\nเหรียญที่ได้รับ: +%d\nเวลาเฉลี่ยต่อออเดอร์: %.1f วิ\nคอมโบสูงสุด: x%d" % [
 		run["satisfied"], run["target"], run["coins_earned"], run["avg_order_time"], run["max_combo"]
 	]
 
@@ -40,7 +40,7 @@ func _populate() -> void:
 	var show_ending: bool = is_last_level and int(run["stars"]) > 0 and not GameState.has_seen_chapter("ending")
 
 	if show_ending:
-		next_button.text = "ดูตอนจบเรื่อง 🎬"
+		next_button.text = "ดูตอนจบเรื่อง"
 		next_button.disabled = false
 	else:
 		next_button.text = "ด่านถัดไป"

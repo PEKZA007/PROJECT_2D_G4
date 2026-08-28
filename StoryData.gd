@@ -14,7 +14,7 @@ const CHAPTERS := {
 		{"speaker": "เรา", "portrait": "Player.png", "text": "ลุงคะ หนูจะดูแลร้านให้เต็มที่เลยค่ะ!"},
 		{"speaker": "ลุงวาชิ", "portrait": "ShopOwner.png", "text": "เจลาโต้ที่ดีไม่ใช่แค่หวานเย็น... ต้องตักให้ถูกจังหวะ เสิร์ฟให้ตรงใจลูกค้าด้วยนะ"},
 		{"speaker": "ลุงวาชิ", "portrait": "ShopOwner.png", "text": "เอาล่ะ ลองดูฝีมือหน่อยสิ พร้อมรึยัง?"},
-		{"speaker": "เรา", "portrait": "Player.png", "text": "พร้อมค่ะ! ไปลุยกันเลย 🍨"},
+		{"speaker": "เรา", "portrait": "Player.png", "text": "พร้อมค่ะ! ไปลุยกันเลย"},
 	],
 	"employee": [
 		{"speaker": "เอิร์ธ", "portrait": "Employee.png", "text": "สวัสดีครับ ผมชื่อเอิร์ธ ลุงวาชิฝากมาช่วยที่ร้านครับ"},
@@ -23,7 +23,7 @@ const CHAPTERS := {
 		{"speaker": "เอิร์ธ", "portrait": "Employee.png", "text": "ลองรสชาติใหม่ๆ ดูสิครับ ลูกค้าจะได้ประทับใจมากขึ้น"},
 	],
 	"university": [
-		{"speaker": "นิสิตสาว", "portrait": "UniversityStudent.png", "text": "พี่คะ ขอเจลาโต้แก้ง่วงหน่อยได้ไหมคะ ใกล้สอบแล้ว 😭"},
+		{"speaker": "นิสิตสาว", "portrait": "UniversityStudent.png", "text": "พี่คะ ขอเจลาโต้แก้ง่วงหน่อยได้ไหมคะ ใกล้สอบแล้ว"},
 		{"speaker": "เรา", "portrait": "Player.png", "text": "ได้เลยค่ะ! เดี๋ยวจัดรสเข้มๆ ให้ชื่นใจ"},
 		{"speaker": "นิสิตสาว", "portrait": "UniversityStudent.png", "text": "ขอบคุณค่ะ ร้านนี้ช่วยชีวิตนักศึกษาจริงๆ"},
 		{"speaker": "เรา", "portrait": "Player.png", "text": "ยินดีเสมอค่ะ ลูกค้าประจำแบบนี้แหละที่ทำให้ร้านเราอบอุ่น"},
@@ -32,13 +32,13 @@ const CHAPTERS := {
 		{"speaker": "อินฟลูฯสาว", "portrait": "Influencer.png", "text": "โอ้โห ร้านนี้น่ารักมาก ขอถ่ายรูปลงรีวิวหน่อยได้ไหมคะ"},
 		{"speaker": "เรา", "portrait": "Player.png", "text": "ได้เลยค่ะ ขอบคุณที่แวะมานะคะ"},
 		{"speaker": "อินฟลูฯสาว", "portrait": "Influencer.png", "text": "เดี๋ยวลงรีวิวให้เลย ร้านนี้ต้องดังแน่ๆ!"},
-		{"speaker": "เรา", "portrait": "Player.png", "text": "หวังว่าทุกคนจะชอบรสชาติที่เราตั้งใจทำนะคะ 🍨"},
+		{"speaker": "เรา", "portrait": "Player.png", "text": "หวังว่าทุกคนจะชอบรสชาติที่เราตั้งใจทำนะคะ"},
 	],
 	"ending": [
 		{"speaker": "ลุงวาชิ", "portrait": "ShopOwner.png", "text": "เธอทำได้ดีมากเลยนะ ร้านนี้อยู่ในมือเธอแล้วล่ะ"},
 		{"speaker": "เรา", "portrait": "Player.png", "text": "ขอบคุณที่ไว้ใจหนูนะคะลุง หนูจะดูแลร้านนี้ต่อไปให้ดีที่สุด"},
 		{"speaker": "ลุงวาชิ", "portrait": "ShopOwner.png", "text": "งั้นลุงขอไปพักผ่อนบ้างล่ะ... ฝากร้านด้วยนะ"},
-		{"speaker": "เรา", "portrait": "Player.png", "text": "ฝากไว้เลยค่ะ Good Goods Gelato House จะดังไปทั่วโลกแน่นอน! 🍨"},
+		{"speaker": "เรา", "portrait": "Player.png", "text": "ฝากไว้เลยค่ะ Good Goods Gelato House จะดังไปทั่วโลกแน่นอน!"},
 	],
 }
 

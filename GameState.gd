@@ -26,16 +26,6 @@ var owned_decor := {
 }
 var equipped_decor := "classic"
 
-# --- Flavors: รสชาติพื้นฐาน 4 อย่างปลดล็อกให้ตั้งแต่แรก ที่เหลือซื้อในร้านค้า ---
-var unlocked_flavors := {
-	"choc_mint": true,
-	"cookies_cream": true,
-	"dark_chocolate": true,
-	"lemon": false,
-	"pistachio": false,
-	"strawberry_cheesecake": false,
-}
-
 # --- Levels ---
 # stars: 0-3, unlocked: bool, max_order_size: จำนวนวัตถุดิบสูงสุดต่อออเดอร์
 var levels := [
@@ -96,12 +86,9 @@ func start_story(chapter_id: String, next_scene: String) -> void:
 	pending_story_next_scene = next_scene
 
 
-func is_flavor_unlocked(key: String) -> bool:
-	return unlocked_flavors.get(key, false)
-
-
-func unlock_flavor(key: String) -> void:
-	unlocked_flavors[key] = true
+# รสชาติทั้งหมดเปิดให้เล่นได้ตั้งแต่แรก ไม่มีระบบซื้อ/ปลดล็อกอีกต่อไป
+func is_flavor_unlocked(_key: String) -> bool:
+	return true
 
 
 func buy_equipment(key: String, price: int) -> bool:
@@ -114,15 +101,6 @@ func buy_equipment(key: String, price: int) -> bool:
 		upgrade_expand_counter = true
 	elif key == "auto":
 		upgrade_auto_churn = true
-	save_game()
-	return true
-
-
-func buy_flavor(key: String, price: int) -> bool:
-	if coins < price:
-		return false
-	coins -= price
-	unlock_flavor(key)
 	save_game()
 	return true
 
@@ -154,9 +132,6 @@ func has_progress() -> bool:
 	for k in owned_decor.keys():
 		if k != "classic" and owned_decor[k]:
 			return true
-	for k in unlocked_flavors.keys():
-		if not (k in ["choc_mint", "cookies_cream", "dark_chocolate"]) and unlocked_flavors[k]:
-			return true
 	if levels[0]["stars"] > 0:
 		return true
 	for i in range(1, levels.size()):
@@ -176,11 +151,6 @@ func start_new_game() -> void:
 		owned_decor[k] = (k == "classic")
 	equipped_decor = "classic"
 	seen_chapters.clear()
-	for k in unlocked_flavors.keys():
-		unlocked_flavors[k] = false
-	unlocked_flavors["choc_mint"] = true
-	unlocked_flavors["cookies_cream"] = true
-	unlocked_flavors["dark_chocolate"] = true
 	for i in levels.size():
 		levels[i]["stars"] = 0
 		levels[i]["unlocked"] = (i == 0)
@@ -224,7 +194,6 @@ func save_game() -> void:
 		"upgrade_auto_churn": upgrade_auto_churn,
 		"owned_decor": owned_decor,
 		"equipped_decor": equipped_decor,
-		"unlocked_flavors": unlocked_flavors,
 		"levels": levels,
 		"seen_chapters": seen_chapters,
 		"sfx_enabled": sfx_enabled,
@@ -264,12 +233,6 @@ func load_game() -> bool:
 	equipped_decor = str(parsed.get("equipped_decor", equipped_decor))
 	if not owned_decor.get(equipped_decor, false):
 		equipped_decor = "classic"
-
-	var loaded_flavors = parsed.get("unlocked_flavors", null)
-	if typeof(loaded_flavors) == TYPE_DICTIONARY:
-		for k in loaded_flavors.keys():
-			if unlocked_flavors.has(k):
-				unlocked_flavors[k] = bool(loaded_flavors[k])
 
 	# เก็บเฉพาะ "stars" กับ "unlocked" ของแต่ละด่าน ไม่แตะพารามิเตอร์ออกแบบด่าน
 	# (target_customers/time_limit/max_order_size) เผื่ออนาคตปรับสมดุลด่านใหม่

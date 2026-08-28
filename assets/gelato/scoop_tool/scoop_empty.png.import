@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://br148clhxbsks"
-path="res://.godot/imported/scoop_empty.png-6f24b195cad4e2e45974138cb4324817.ctex"
+uid="uid://c8ehr5mdd2y3d"
+path="res://.godot/imported/scoop_Empty.png-e610f1a37f76c121e4c62ef3794690c2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/gelato/scoop_tool/scoop_empty.png"
-dest_files=["res://.godot/imported/scoop_empty.png-6f24b195cad4e2e45974138cb4324817.ctex"]
+source_file="res://assets/gelato/scoop_tool/scoop_Empty.png"
+dest_files=["res://.godot/imported/scoop_Empty.png-e610f1a37f76c121e4c62ef3794690c2.ctex"]
 
 [params]
 

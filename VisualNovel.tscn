@@ -103,7 +103,7 @@ offset_bottom = 216.0
 theme_override_font_sizes/font_size = 22
 theme_override_colors/font_color = Color(0.784314, 0.784314, 0.823529, 1)
 horizontal_alignment = 2
-text = "คลิก หรือกด Space เพื่อไปต่อ ▶"
+text = "คลิก หรือกด Space เพื่อไปต่อ"
 
 [node name="SkipButton" type="Button" parent="."]
 offset_left = 1601.25
@@ -115,7 +115,7 @@ theme_override_styles/hover = ExtResource("6")
 theme_override_styles/pressed = ExtResource("6")
 theme_override_font_sizes/font_size = 22
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-text = "ข้าม ⏭"
+text = "ข้าม"
 
 [node name="BGMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("7")
@@ -123,4 +123,4 @@ volume_db = -14.0
 
 [node name="PausePanel" parent="." instance=ExtResource("8")]
 quit_scene_path = "res://MainMenu.tscn"
-quit_button_text = "🏠 กลับเมนูหลัก"
+quit_button_text = "กลับเมนูหลัก"

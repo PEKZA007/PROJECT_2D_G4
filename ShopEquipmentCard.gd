@@ -22,7 +22,7 @@ func _ready() -> void:
 	action_button.pressed.connect(func(): buy_pressed.emit(item_key, item_price))
 
 
-func configure(key: String, title_text: String, desc: String, price: int, state: String, icon: String = "⭐") -> void:
+func configure(key: String, title_text: String, desc: String, price: int, state: String, icon: String = "") -> void:
 	item_key = key
 	item_price = price
 	icon_label.text = icon
@@ -30,17 +30,17 @@ func configure(key: String, title_text: String, desc: String, price: int, state:
 	desc_label.text = desc
 
 	if state == "locked":
-		action_button.text = "ล็อก 🔒"
+		action_button.text = "ล็อก"
 		action_button.disabled = true
 		_set_button_style(LOCKED_STYLE)
 		action_button.add_theme_color_override("font_disabled_color", Color8(150, 150, 150))
 	elif state == "owned":
-		action_button.text = "ซื้อแล้ว ✔️"
+		action_button.text = "ซื้อแล้ว"
 		action_button.disabled = true
 		_set_button_style(OWNED_STYLE)
 		action_button.add_theme_color_override("font_disabled_color", Color8(40, 90, 40))
 	else:
-		action_button.text = "🪙 %d" % price
+		action_button.text = "%d เหรียญ" % price
 		action_button.disabled = false
 		_set_button_style(BUY_STYLE)
 		action_button.add_theme_color_override("font_color", Color.WHITE)

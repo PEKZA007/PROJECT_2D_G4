@@ -39,7 +39,7 @@ func configure(key: String, info: Dictionary, owned: bool, equipped: bool) -> vo
 	desc_label.text = info["desc"]
 
 	if equipped:
-		action_button.text = "ใช้งานอยู่ ✔️"
+		action_button.text = "ใช้งานอยู่"
 		action_button.disabled = true
 		_set_button_style(OWNED_STYLE)
 		action_button.add_theme_color_override("font_disabled_color", Color8(40, 90, 40))
@@ -51,7 +51,7 @@ func configure(key: String, info: Dictionary, owned: bool, equipped: bool) -> vo
 		action_button.add_theme_color_override("font_hover_color", Color(0.235294, 0.156863, 0.0784314, 1))
 		action_button.add_theme_color_override("font_pressed_color", Color(0.235294, 0.156863, 0.0784314, 1))
 	else:
-		action_button.text = "🪙 %d" % decor_price
+		action_button.text = "%d เหรียญ" % decor_price
 		action_button.disabled = false
 		_set_button_style(BUY_STYLE)
 		action_button.add_theme_color_override("font_color", Color.WHITE)

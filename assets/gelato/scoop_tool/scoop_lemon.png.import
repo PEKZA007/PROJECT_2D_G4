@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://0f21kh0bh3rs"
-path="res://.godot/imported/scoop_lemon.png-6272c5a4488ad474711b709b21b0ce8a.ctex"
+uid="uid://kif4nfqng8q2"
+path="res://.godot/imported/scoop_Lemon.png-2750f083070c5ac353413dafbcf5f905.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/gelato/scoop_tool/scoop_lemon.png"
-dest_files=["res://.godot/imported/scoop_lemon.png-6272c5a4488ad474711b709b21b0ce8a.ctex"]
+source_file="res://assets/gelato/scoop_tool/scoop_Lemon.png"
+dest_files=["res://.godot/imported/scoop_Lemon.png-2750f083070c5ac353413dafbcf5f905.ctex"]
 
 [params]
 

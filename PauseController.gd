@@ -5,7 +5,7 @@ extends Control
 # เพราะ node นี้ตั้ง process_mode เป็น ALWAYS ไว้ใน .tscn
 
 @export var quit_scene_path: String = "res://LevelSelect.tscn"
-@export var quit_button_text: String = "🏠 กลับหน้าเลือกด่าน"
+@export var quit_button_text: String = "กลับหน้าเลือกด่าน"
 
 @onready var resume_button: Button = $Card/ResumeButton
 @onready var quit_button: Button = $Card/QuitButton

@@ -34,7 +34,7 @@ const FLAVORS := {
 		"thumb": "res://assets/gelato/thumbs/flavor_DarkChocolate.png",
 	},
 	"lemon": {
-		"name": "เลมอน", "value": 8, "unlock_price": 70,
+		"name": "เลมอน", "value": 8,
 		"cone": "res://assets/gelato/cone/scoop_Lemon.png",
 		"small": "res://assets/gelato/small/scoop_Lemon.png",
 		"large1": "res://assets/gelato/large/scoop1_Lemon.png",
@@ -42,7 +42,7 @@ const FLAVORS := {
 		"thumb": "res://assets/gelato/thumbs/flavor_Lemon.png",
 	},
 	"pistachio": {
-		"name": "พิสตาชิโอ", "value": 14, "unlock_price": 120,
+		"name": "พิสตาชิโอ", "value": 14,
 		"cone": "res://assets/gelato/cone/scoop_Pistachio.png",
 		"small": "res://assets/gelato/small/scoop_Pistachio.png",
 		"large1": "res://assets/gelato/large/scoop1_Pistachio.png",
@@ -50,7 +50,7 @@ const FLAVORS := {
 		"thumb": "res://assets/gelato/thumbs/flavor_Pistachio.png",
 	},
 	"strawberry_cheesecake": {
-		"name": "สตรอเบอร์รี่ชีสเค้ก", "value": 16, "unlock_price": 160,
+		"name": "สตรอเบอร์รี่ชีสเค้ก", "value": 16,
 		"cone": "res://assets/gelato/cone/scoop_StrawberryCheesePie.png",
 		"small": "res://assets/gelato/small/scoop_StrawberryCheesePie.png",
 		"large1": "res://assets/gelato/large/scoop1_Strawberrycheesepie.png",

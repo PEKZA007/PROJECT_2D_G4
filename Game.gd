@@ -227,24 +227,24 @@ func _scoop_cooldown_duration() -> float:
 func _update_hud() -> void:
 	var minutes := int(level_time_left) / 60
 	var seconds := int(level_time_left) % 60
-	timer_label.text = "⏱ %02d:%02d" % [minutes, seconds]
-	progress_label.text = "🍨 %d/%d" % [customers_served, level["target_customers"]]
-	combo_label.text = ("🔥 คอมโบ x%d" % combo) if combo > 0 else ""
+	timer_label.text = "%02d:%02d" % [minutes, seconds]
+	progress_label.text = "ออเดอร์ %d/%d" % [customers_served, level["target_customers"]]
+	combo_label.text = ("คอมโบ x%d" % combo) if combo > 0 else ""
 
 
 func _update_scoop_status_label() -> void:
 	if scoop_state == ScoopState.COOLDOWN:
-		scoop_status_label.text = "✋ พักมือ... %.1f วิ" % max(cooldown_time_left, 0.0)
+		scoop_status_label.text = "พักมือ... %.1f วิ" % max(cooldown_time_left, 0.0)
 	elif scoop_state == ScoopState.CHALLENGE:
-		scoop_status_label.text = "🎯 กด SPACE ให้ตรงโซนสีเขียว!"
+		scoop_status_label.text = "กด SPACE ให้ตรงโซนสีเขียว!"
 	elif chosen_container == "":
-		scoop_status_label.text = "🥤 ลากภาชนะมาวางก่อนเลย"
+		scoop_status_label.text = "ลากภาชนะมาวางก่อนเลย"
 	elif cup_flavor_contents.is_empty():
-		scoop_status_label.text = "🍨 ตักเจลาโต้ได้เลย"
+		scoop_status_label.text = "ตักเจลาโต้ได้เลย"
 	elif cup_flavor_contents.size() < GelatoData.container_capacity(chosen_container):
-		scoop_status_label.text = "🍨 ตักต่อได้อีก หรือใส่ท็อปปิ้งก็ได้"
+		scoop_status_label.text = "ตักต่อได้อีก หรือใส่ท็อปปิ้งก็ได้"
 	else:
-		scoop_status_label.text = "🍒 ใส่ท็อปปิ้ง หรือเสิร์ฟได้เลย"
+		scoop_status_label.text = "ใส่ท็อปปิ้ง หรือเสิร์ฟได้เลย"
 
 
 func _process(delta: float) -> void:
@@ -369,11 +369,11 @@ func _on_ingredient_dropped(key: String, _emoji: String, kind: String) -> void:
 			cup_flavor_contents.clear()
 			cup_topping_contents.clear()
 			_refresh_build_visual()
-			message_label.text = "วาง%sเรียบร้อย ตักเจลาโต้ได้เลย! 🍨" % GelatoData.container_name(key)
+			message_label.text = "วาง%sเรียบร้อย ตักเจลาโต้ได้เลย!" % GelatoData.container_name(key)
 			SFX.play("click")
 		"flavor":
 			if chosen_container == "":
-				message_label.text = "ต้องวางภาชนะก่อนนะ! 🥤"
+				message_label.text = "ต้องวางภาชนะก่อนนะ!"
 				return
 			if cup_flavor_contents.size() >= GelatoData.container_capacity(chosen_container):
 				message_label.text = "เจลาโต้เต็มแล้ว!"
@@ -381,10 +381,10 @@ func _on_ingredient_dropped(key: String, _emoji: String, kind: String) -> void:
 			_start_scoop_challenge(key)
 		"topping":
 			if chosen_container == "":
-				message_label.text = "ต้องวางภาชนะก่อนนะ! 🥤"
+				message_label.text = "ต้องวางภาชนะก่อนนะ!"
 				return
 			if cup_flavor_contents.is_empty():
-				message_label.text = "ตักเจลาโต้ก่อนสิ ค่อยใส่ท็อปปิ้งทีหลัง! 🍨"
+				message_label.text = "ตักเจลาโต้ก่อนสิ ค่อยใส่ท็อปปิ้งทีหลัง!"
 				return
 			if cup_topping_contents.size() >= MAX_TOPPING_CAPACITY:
 				message_label.text = "ท็อปปิ้งเต็มแล้ว!"
@@ -430,10 +430,10 @@ func _resolve_scoop_challenge(forced_miss: bool = false) -> void:
 	if hit:
 		cup_flavor_contents.append(scoop_pending_key)
 		_refresh_build_visual()
-		message_label.text = "ตักสวย! 🎯"
+		message_label.text = "ตักสวย!"
 		SFX.play("success")
 	else:
-		message_label.text = "พลาดจังหวะ! ตักไม่ทัน 😵"
+		message_label.text = "พลาดจังหวะ! ตักไม่ทัน"
 		SFX.play("error")
 	scoop_pending_key = ""
 	scoop_state = ScoopState.COOLDOWN
@@ -525,7 +525,7 @@ func _serve() -> void:
 		message_label.text = "ตักให้เสร็จก่อนสิ! กด SPACE ให้ตรงจังหวะ"
 		return
 	if chosen_container == "":
-		message_label.text = "ยังไม่ได้วางภาชนะเลยนะ! ลากภาชนะมาวางก่อน 🥤"
+		message_label.text = "ยังไม่ได้วางภาชนะเลยนะ! ลากภาชนะมาวางก่อน"
 		return
 
 	var order_container: String = current_order["container"]
@@ -559,27 +559,27 @@ func _serve() -> void:
 		combo += 1
 		max_combo = max(max_combo, combo)
 		customers_satisfied += 1
-		message_label.text = "เสิร์ฟถูกใจ! +%d 🪙" % reward
+		message_label.text = "เสิร์ฟถูกใจ! +%d เหรียญ" % reward
 		SFX.play("coin")
 		_customer_left(true)
 	elif not container_ok:
 		message_label.text = "ลูกค้าอยากได้%sนะ ไม่ใช่%s!" % [GelatoData.container_name(order_container), GelatoData.container_name(chosen_container)]
 		SFX.play("error")
 	elif flavors_ok and not toppings_ok:
-		message_label.text = "รสเจลาโต้ถูกแล้ว! แต่ท็อปปิ้งยังไม่ตรงนะ 🍒"
+		message_label.text = "รสเจลาโต้ถูกแล้ว! แต่ท็อปปิ้งยังไม่ตรงนะ"
 		SFX.play("error")
 	elif toppings_ok and not flavors_ok:
-		message_label.text = "ท็อปปิ้งโอเคแล้ว! แต่รสเจลาโต้ยังไม่ตรงนะ 🍨"
+		message_label.text = "ท็อปปิ้งโอเคแล้ว! แต่รสเจลาโต้ยังไม่ตรงนะ"
 		SFX.play("error")
 	else:
-		message_label.text = "ยังไม่ตรงออเดอร์เลยนะ 😅"
+		message_label.text = "ยังไม่ตรงออเดอร์เลยนะ"
 		SFX.play("error")
 
 
 func _customer_left(satisfied: bool) -> void:
 	if not satisfied:
 		combo = 0
-		message_label.text = "ลูกค้าเดินหนีไปแล้ว 😠"
+		message_label.text = "ลูกค้าเดินหนีไปแล้ว"
 		SFX.play("error")
 	customers_served += 1
 	current_order = {}

@@ -35,5 +35,5 @@ func configure(id: int, level: Dictionary) -> void:
 		action_button.text = "เล่น"
 		action_button.disabled = false
 	else:
-		action_button.text = "ล็อก 🔒"
+		action_button.text = "ล็อก"
 		action_button.disabled = true

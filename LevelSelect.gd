@@ -16,7 +16,7 @@ func _ready() -> void:
 	get_tree().paused = false
 	back_button.pressed.connect(func(): get_tree().change_scene_to_file("res://MainMenu.tscn"))
 	shop_button.pressed.connect(func(): get_tree().change_scene_to_file("res://Shop.tscn"))
-	coin_label.text = "🪙 %d" % GameState.coins
+	coin_label.text = "%d เหรียญ" % GameState.coins
 
 	for i in cards.size():
 		if i < GameState.levels.size():
