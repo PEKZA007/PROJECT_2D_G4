@@ -5,7 +5,6 @@ extends Node2D
 
 @onready var new_game_button: Button = $NewGameButton
 @onready var continue_button: Button = $ContinueButton
-@onready var story_button: Button = $StoryButton
 @onready var settings_button: Button = $SettingsButton
 @onready var quit_button: Button = $QuitButton
 @onready var how_to_play_button: Button = $HowToPlayButton
@@ -18,7 +17,6 @@ func _ready() -> void:
 	get_tree().paused = false
 	new_game_button.pressed.connect(_on_new_game)
 	continue_button.pressed.connect(_on_continue)
-	story_button.pressed.connect(_on_story)
 	settings_button.pressed.connect(_on_settings)
 	quit_button.pressed.connect(_on_quit)
 	how_to_play_button.pressed.connect(_on_how_to_play)
@@ -48,11 +46,6 @@ func _start_new_game() -> void:
 
 func _on_continue() -> void:
 	get_tree().change_scene_to_file("res://LevelSelect.tscn")
-
-
-func _on_story() -> void:
-	GameState.start_story("intro", "res://MainMenu.tscn")
-	get_tree().change_scene_to_file("res://VisualNovel.tscn")
 
 
 func _on_settings() -> void:

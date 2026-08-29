@@ -90,6 +90,7 @@ text = "ตกแต่งร้าน"
 offset_left = 0.0
 offset_right = 1920.0
 offset_bottom = 1080.0
+mouse_filter = 2
 
 [node name="Card1" parent="EquipmentPage" instance=ExtResource("5")]
 offset_left = 217.5
@@ -114,6 +115,7 @@ offset_left = 0.0
 offset_right = 1920.0
 offset_bottom = 1080.0
 visible = false
+mouse_filter = 2
 
 [node name="Card1" parent="DecorPage" instance=ExtResource("8")]
 offset_left = 209.062

@@ -68,7 +68,7 @@ var customer_textures: Array = []
 # --- Node references (all real nodes, defined in Game.tscn) ---
 @onready var background_rect: ColorRect = $Background
 @onready var counter_rect: ColorRect = $Counter
-@onready var run_coins_label: Label = $TimerLabel
+@onready var run_coins_label: Label = $CoinsLabel
 @onready var progress_label: Label = $ProgressLabel
 @onready var combo_label: Label = $ComboLabel
 @onready var message_label: Label = $MessageLabel
