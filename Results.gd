@@ -3,7 +3,10 @@ extends Node2D
 # หน้าจบวัน: โครงสร้างหน้าจอทั้งหมดอยู่ใน Results.tscn แล้ว
 # สคริปต์นี้แค่เติมผลลัพธ์ของรอบล่าสุดจาก GameState.last_run
 
-@onready var stars_label: Label = $StarsLabel
+const STAR_FILLED := preload("res://assets/icons/star_filled.svg")
+const STAR_OUTLINE := preload("res://assets/icons/star_outline.svg")
+
+@onready var star_icons: Array = [$StarsRow/Star1, $StarsRow/Star2, $StarsRow/Star3]
 @onready var stats_label: Label = $StatsPanel/StatsLabel
 @onready var replay_button: Button = $ReplayButton
 @onready var home_button: Button = $HomeButton
@@ -25,10 +28,8 @@ func _ready() -> void:
 func _populate() -> void:
 	var run: Dictionary = GameState.last_run
 
-	var stars_text := ""
 	for i in range(3):
-		stars_text += "★" if i < int(run["stars"]) else "☆"
-	stars_label.text = stars_text
+		star_icons[i].texture = STAR_FILLED if i < int(run["stars"]) else STAR_OUTLINE
 
 	stats_label.text = "ลูกค้าที่พอใจ: %d/%d\nเหรียญที่ได้รับ: +%d\nเวลาเฉลี่ยต่อออเดอร์: %.1f วิ\nคอมโบสูงสุด: x%d" % [
 		run["satisfied"], run["target"], run["coins_earned"], run["avg_order_time"], run["max_combo"]

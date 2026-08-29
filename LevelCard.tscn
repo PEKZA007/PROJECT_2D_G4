@@ -4,6 +4,8 @@
 [ext_resource type="StyleBoxFlat" path="res://theme/style_card_panel.tres" id="2"]
 [ext_resource type="StyleBoxFlat" path="res://theme/style_light_button.tres" id="3"]
 [ext_resource type="StyleBoxFlat" path="res://theme/style_locked_button.tres" id="4"]
+[ext_resource type="Texture2D" path="res://assets/icons/star_filled.svg" id="5"]
+[ext_resource type="Texture2D" path="res://assets/icons/star_outline.svg" id="6"]
 
 [node name="LevelCard" type="Control"]
 offset_right = 345.938
@@ -24,14 +26,30 @@ theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
 horizontal_alignment = 1
 text = "ด่าน"
 
-[node name="StarsLabel" type="Label" parent="."]
+[node name="StarsRow" type="HBoxContainer" parent="."]
 offset_top = 60.75
 offset_right = 345.938
 offset_bottom = 108.0
-theme_override_font_sizes/font_size = 38
-theme_override_colors/font_color = Color(0.901961, 0.705882, 0.078431, 1)
-horizontal_alignment = 1
-text = "☆☆☆"
+alignment = 1
+theme_override_constants/separation = 4
+
+[node name="Star1" type="TextureRect" parent="StarsRow"]
+custom_minimum_size = Vector2(40, 40)
+texture = ExtResource("6")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star2" type="TextureRect" parent="StarsRow"]
+custom_minimum_size = Vector2(40, 40)
+texture = ExtResource("6")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star3" type="TextureRect" parent="StarsRow"]
+custom_minimum_size = Vector2(40, 40)
+texture = ExtResource("6")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="InfoLabel" type="Label" parent="."]
 offset_top = 114.75

@@ -6,8 +6,11 @@ class_name LevelCard
 
 signal play_pressed(level_id: int)
 
+const STAR_FILLED := preload("res://assets/icons/star_filled.svg")
+const STAR_OUTLINE := preload("res://assets/icons/star_outline.svg")
+
 @onready var name_label: Label = $NameLabel
-@onready var stars_label: Label = $StarsLabel
+@onready var star_icons: Array = [$StarsRow/Star1, $StarsRow/Star2, $StarsRow/Star3]
 @onready var info_label: Label = $InfoLabel
 @onready var action_button: Button = $ActionButton
 
@@ -22,13 +25,11 @@ func configure(id: int, level: Dictionary) -> void:
 	level_id = id
 	name_label.text = level["name"]
 
-	var stars_text := ""
 	for s in range(3):
-		stars_text += "★" if s < level["stars"] else "☆"
-	stars_label.text = stars_text
+		star_icons[s].texture = STAR_FILLED if s < level["stars"] else STAR_OUTLINE
 
-	info_label.text = "ลูกค้า %d คน\nเวลา %d วิ • วัตถุดิบสูงสุด %d" % [
-		level["target_customers"], int(level["time_limit"]), level["max_order_size"]
+	info_label.text = "ลูกค้า %d คน\nวัตถุดิบสูงสุด %d" % [
+		level["target_customers"], level["max_order_size"]
 	]
 
 	if level["unlocked"]:

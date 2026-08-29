@@ -2,7 +2,7 @@ extends Node2D
 
 # ------------------------------------------------------------
 #  ฉากเล่นเกมหลัก — Good Goods Gelato House
-#  ลำดับการเสิร์ฟ: ลากภาชนะมาวางก่อน (โคน 1 รส / ถ้วยเล็ก 2 รส / ถ้วยใหญ่ 3 รส)
+#  ลำดับการเสิร์ฟ: ลากภาชนะมาวางก่อน (โคน 1 รส / ถ้วยเล็ก 1 รส / ถ้วยใหญ่ 2 รส)
 #  -> ตักเจลาโต้ (จับจังหวะ กด SPACE) -> ใส่ท็อปปิ้งได้ (หลังตักอย่างน้อย 1 ครั้ง)
 #  -> กด SPACE เพื่อเสิร์ฟ
 # ------------------------------------------------------------
@@ -30,14 +30,10 @@ const LARGE_CUP := "res://assets/gelato/large/cup.png"
 
 # ตำแหน่ง/ขนาด (offset_left, offset_top, offset_right, offset_bottom) ภายใน BuildStage (410x410)
 const RECT_FULL := Rect2(0, 0, 410, 410)
-const RECT_SMALL_BACK := Rect2(-30, 10, 370, 370)     # ถ้วยเล็ก: รสแรก (ซ้าย/หลัง)
-const RECT_SMALL_FRONT := Rect2(70, 40, 370, 370)     # ถ้วยเล็ก: รสสอง (ขวา/หน้า)
-const RECT_LARGE_THIRD := Rect2(60, -60, 290, 290)    # ถ้วยใหญ่: รสสาม (กลาง/หลัง โผล่ขึ้นมา)
 
 var level: Dictionary
 var level_id: int
 
-var level_time_left: float
 var customers_served := 0
 var customers_satisfied := 0
 var combo := 0
@@ -72,7 +68,7 @@ var customer_textures: Array = []
 # --- Node references (all real nodes, defined in Game.tscn) ---
 @onready var background_rect: ColorRect = $Background
 @onready var counter_rect: ColorRect = $Counter
-@onready var timer_label: Label = $TimerLabel
+@onready var run_coins_label: Label = $TimerLabel
 @onready var progress_label: Label = $ProgressLabel
 @onready var combo_label: Label = $ComboLabel
 @onready var message_label: Label = $MessageLabel
@@ -110,7 +106,6 @@ var customer_textures: Array = []
 func _ready() -> void:
 	level_id = GameState.current_level_id
 	level = GameState.get_level(level_id)
-	level_time_left = level["time_limit"]
 	randomize()
 	_apply_decor_theme()
 
@@ -158,7 +153,7 @@ func _apply_decor_theme() -> void:
 	var decor: Dictionary = DecorData.get_theme(GameState.equipped_decor)
 	background_rect.color = decor["background"]
 	counter_rect.color = decor["counter"]
-	timer_label.add_theme_color_override("font_color", decor["text_color"])
+	run_coins_label.add_theme_color_override("font_color", decor["text_color"])
 	progress_label.add_theme_color_override("font_color", decor["text_color"])
 	combo_label.add_theme_color_override("font_color", decor["combo_color"])
 	message_label.add_theme_color_override("font_color", decor["message_color"])
@@ -225,9 +220,7 @@ func _scoop_cooldown_duration() -> float:
 
 
 func _update_hud() -> void:
-	var minutes := int(level_time_left) / 60
-	var seconds := int(level_time_left) % 60
-	timer_label.text = "%02d:%02d" % [minutes, seconds]
+	run_coins_label.text = "%d เหรียญ" % coins_earned
 	progress_label.text = "ออเดอร์ %d/%d" % [customers_served, level["target_customers"]]
 	combo_label.text = ("คอมโบ x%d" % combo) if combo > 0 else ""
 
@@ -249,12 +242,6 @@ func _update_scoop_status_label() -> void:
 
 func _process(delta: float) -> void:
 	if not is_running:
-		return
-
-	level_time_left -= delta
-	if level_time_left <= 0:
-		level_time_left = 0
-		_end_level()
 		return
 
 	if not current_order.is_empty():
@@ -334,7 +321,7 @@ func _spawn_customer() -> void:
 		text += "\nท็อปปิ้ง: " + " + ".join(topping_names)
 	order_label.text = text
 
-	patience_max = max(7.0, 13.0 - customers_served * 0.3)
+	patience_max = max(12.0, 20.0 - customers_served * 0.3)
 	patience_time = patience_max
 	patience_bar.max_value = patience_max
 	patience_bar.value = patience_max
@@ -448,13 +435,6 @@ func _reset_scoop_rect(layer: TextureRect) -> void:
 	layer.offset_bottom = RECT_FULL.position.y + RECT_FULL.size.y
 
 
-func _set_scoop_rect(layer: TextureRect, r: Rect2) -> void:
-	layer.offset_left = r.position.x
-	layer.offset_top = r.position.y
-	layer.offset_right = r.position.x + r.size.x
-	layer.offset_bottom = r.position.y + r.size.y
-
-
 func _refresh_build_visual() -> void:
 	_reset_scoop_rect(layer_scoop_mid)
 	_reset_scoop_rect(layer_scoop_front)
@@ -485,29 +465,16 @@ func _refresh_build_visual() -> void:
 		layer_cup.texture = load(SMALL_CUP)
 		layer_container_front.texture = null
 		layer_scoop_back.texture = null
-		if n >= 2:
-			_set_scoop_rect(layer_scoop_mid, RECT_SMALL_BACK)
-			_set_scoop_rect(layer_scoop_front, RECT_SMALL_FRONT)
-			layer_scoop_mid.texture = load(GelatoData.FLAVORS[cup_flavor_contents[0]]["small"])
-			layer_scoop_front.texture = load(GelatoData.FLAVORS[cup_flavor_contents[1]]["small"])
-		elif n == 1:
-			layer_scoop_mid.texture = load(GelatoData.FLAVORS[cup_flavor_contents[0]]["small"])
-			layer_scoop_front.texture = null
-		else:
-			layer_scoop_mid.texture = null
-			layer_scoop_front.texture = null
+		layer_scoop_front.texture = null
+		layer_scoop_mid.texture = load(GelatoData.FLAVORS[cup_flavor_contents[0]]["small"]) if n >= 1 else null
 		layer_topping.texture = load(GelatoData.TOPPINGS[cup_topping_contents[0]]["small"]) if not cup_topping_contents.is_empty() else null
 
 	elif chosen_container == "large_cup":
 		layer_cup.texture = load(LARGE_CUP)
 		layer_container_front.texture = null
+		layer_scoop_back.texture = null
 		layer_scoop_front.texture = load(GelatoData.FLAVORS[cup_flavor_contents[0]]["large1"]) if n >= 1 else null
 		layer_scoop_mid.texture = load(GelatoData.FLAVORS[cup_flavor_contents[1]]["large2"]) if n >= 2 else null
-		if n >= 3:
-			_set_scoop_rect(layer_scoop_back, RECT_LARGE_THIRD)
-			layer_scoop_back.texture = load(GelatoData.FLAVORS[cup_flavor_contents[2]]["large2"])
-		else:
-			layer_scoop_back.texture = null
 		layer_topping.texture = load(GelatoData.TOPPINGS[cup_topping_contents[0]]["large"]) if not cup_topping_contents.is_empty() else null
 
 

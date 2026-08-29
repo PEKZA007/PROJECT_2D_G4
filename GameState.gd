@@ -27,16 +27,17 @@ var owned_decor := {
 var equipped_decor := "classic"
 
 # --- Levels ---
-# stars: 0-3, unlocked: bool, max_order_size: จำนวนวัตถุดิบสูงสุดต่อออเดอร์
+# stars: 0-3, unlocked: bool, max_order_size: จำนวนรสเจลาโต้สูงสุดต่อออเดอร์
+# (ไม่มีระบบจำกัดเวลาต่อด่านแล้ว — เล่นจนกว่าจะเสิร์ฟครบ target_customers)
 var levels := [
-	{"name": "ด่าน 1", "target_customers": 6, "time_limit": 45.0, "max_order_size": 2, "stars": 0, "unlocked": true},
-	{"name": "ด่าน 2", "target_customers": 8, "time_limit": 50.0, "max_order_size": 2, "stars": 0, "unlocked": false},
-	{"name": "ด่าน 3", "target_customers": 10, "time_limit": 55.0, "max_order_size": 3, "stars": 0, "unlocked": false},
-	{"name": "ด่าน 4", "target_customers": 12, "time_limit": 60.0, "max_order_size": 3, "stars": 0, "unlocked": false},
-	{"name": "ด่าน 5", "target_customers": 14, "time_limit": 65.0, "max_order_size": 3, "stars": 0, "unlocked": false},
-	{"name": "ด่าน 6", "target_customers": 16, "time_limit": 70.0, "max_order_size": 4, "stars": 0, "unlocked": false},
-	{"name": "ด่าน 7", "target_customers": 18, "time_limit": 75.0, "max_order_size": 4, "stars": 0, "unlocked": false},
-	{"name": "ด่าน 8", "target_customers": 20, "time_limit": 80.0, "max_order_size": 4, "stars": 0, "unlocked": false},
+	{"name": "ด่าน 1", "target_customers": 6, "max_order_size": 1, "stars": 0, "unlocked": true},
+	{"name": "ด่าน 2", "target_customers": 8, "max_order_size": 1, "stars": 0, "unlocked": false},
+	{"name": "ด่าน 3", "target_customers": 10, "max_order_size": 2, "stars": 0, "unlocked": false},
+	{"name": "ด่าน 4", "target_customers": 12, "max_order_size": 2, "stars": 0, "unlocked": false},
+	{"name": "ด่าน 5", "target_customers": 14, "max_order_size": 2, "stars": 0, "unlocked": false},
+	{"name": "ด่าน 6", "target_customers": 16, "max_order_size": 2, "stars": 0, "unlocked": false},
+	{"name": "ด่าน 7", "target_customers": 18, "max_order_size": 2, "stars": 0, "unlocked": false},
+	{"name": "ด่าน 8", "target_customers": 20, "max_order_size": 2, "stars": 0, "unlocked": false},
 ]
 
 var current_level_id := 0
@@ -235,7 +236,7 @@ func load_game() -> bool:
 		equipped_decor = "classic"
 
 	# เก็บเฉพาะ "stars" กับ "unlocked" ของแต่ละด่าน ไม่แตะพารามิเตอร์ออกแบบด่าน
-	# (target_customers/time_limit/max_order_size) เผื่ออนาคตปรับสมดุลด่านใหม่
+	# (target_customers/max_order_size) เผื่ออนาคตปรับสมดุลด่านใหม่
 	var loaded_levels = parsed.get("levels", null)
 	if typeof(loaded_levels) == TYPE_ARRAY:
 		for i in min(loaded_levels.size(), levels.size()):

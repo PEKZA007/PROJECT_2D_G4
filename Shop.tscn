@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://ShopEquipmentCard.tscn" id="5"]
 [ext_resource type="StyleBoxFlat" path="res://theme/style_tab_button_active.tres" id="7"]
 [ext_resource type="PackedScene" path="res://DecorCard.tscn" id="8"]
+[ext_resource type="Texture2D" path="res://assets/icons/arrow_back.svg" id="9"]
 
 [node name="Shop" type="Node2D"]
 script = ExtResource("1")
@@ -29,7 +30,10 @@ theme_override_colors/font_color = Color(0.235294, 0.156863, 0.0784314, 1)
 theme_override_colors/font_hover_color = Color(0.235294, 0.156863, 0.0784314, 1)
 theme_override_colors/font_pressed_color = Color(0.235294, 0.156863, 0.0784314, 1)
 theme_override_colors/font_focus_color = Color(0.235294, 0.156863, 0.0784314, 1)
-text = "←"
+icon = ExtResource("9")
+expand_icon = true
+icon_alignment = 1
+vertical_icon_alignment = 1
 
 [node name="Title" type="Label" parent="."]
 offset_left = 0.0

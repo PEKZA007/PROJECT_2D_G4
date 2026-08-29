@@ -4,6 +4,7 @@
 [ext_resource type="StyleBoxFlat" path="res://theme/style_dark_button.tres" id="2"]
 [ext_resource type="StyleBoxFlat" path="res://theme/style_locked_button.tres" id="3"]
 [ext_resource type="StyleBoxFlat" path="res://theme/style_key_tag.tres" id="4"]
+[ext_resource type="Texture2D" path="res://assets/icons/arrow_back.svg" id="5"]
 
 [node name="Settings" type="Node2D"]
 script = ExtResource("1")
@@ -27,7 +28,10 @@ theme_override_colors/font_color = Color(0.235294, 0.156863, 0.0784314, 1)
 theme_override_colors/font_hover_color = Color(0.235294, 0.156863, 0.0784314, 1)
 theme_override_colors/font_pressed_color = Color(0.235294, 0.156863, 0.0784314, 1)
 theme_override_colors/font_focus_color = Color(0.235294, 0.156863, 0.0784314, 1)
-text = "←"
+icon = ExtResource("5")
+expand_icon = true
+icon_alignment = 1
+vertical_icon_alignment = 1
 
 [node name="Title" type="Label" parent="."]
 offset_left = 0.0

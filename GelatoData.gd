@@ -93,11 +93,11 @@ const CONTAINERS := {
 		"thumb": "res://assets/gelato/thumbs/container_cone.png",
 	},
 	"small_cup": {
-		"name": "ถ้วยเล็ก", "capacity": 2, "value": 4,
+		"name": "ถ้วยเล็ก", "capacity": 1, "value": 4,
 		"thumb": "res://assets/gelato/thumbs/container_small.png",
 	},
 	"large_cup": {
-		"name": "ถ้วยใหญ่", "capacity": 3, "value": 10,
+		"name": "ถ้วยใหญ่", "capacity": 2, "value": 10,
 		"thumb": "res://assets/gelato/thumbs/container_large.png",
 	},
 }
