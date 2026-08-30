@@ -48,9 +48,29 @@ const THEMES := {
 		"combo_color": Color(0.972549, 0.564706, 0.243137, 1),
 		"message_color": Color(0.964706, 0.505882, 0.505882, 1),
 	},
+	"mint_choc": {
+		"name": "มินต์ช็อกโกแลตสดชื่น",
+		"desc": "เขียวมินต์สดชื่นตัดกับน้ำตาลช็อกโกแลตเข้ม",
+		"price": 150,
+		"background": Color(0.760784, 0.929412, 0.878431, 1),
+		"counter": Color(0.301961, 0.196078, 0.156863, 1),
+		"text_color": Color(0.117647, 0.219608, 0.180392, 1),
+		"combo_color": Color(0.0784314, 0.517647, 0.4, 1),
+		"message_color": Color(0.376471, 0.243137, 0.164706, 1),
+	},
+	"sunset_citrus": {
+		"name": "ซันเซ็ตส้มสดใส",
+		"desc": "ส้ม-ชมพูอบอุ่นแบบพระอาทิตย์ตกดิน สดใสมีชีวิตชีวา",
+		"price": 220,
+		"background": Color(0.996078, 0.807843, 0.560784, 1),
+		"counter": Color(0.72549, 0.290196, 0.243137, 1),
+		"text_color": Color(0.294118, 0.121569, 0.0941176, 1),
+		"combo_color": Color(0.827451, 0.184314, 0.243137, 1),
+		"message_color": Color(0.560784, 0.164706, 0.286275, 1),
+	},
 }
 
-const THEME_ORDER := ["classic", "pastel", "tropical", "midnight"]
+const THEME_ORDER := ["classic", "pastel", "tropical", "midnight", "mint_choc", "sunset_citrus"]
 
 
 static func get_theme(key: String) -> Dictionary:

@@ -23,8 +23,14 @@ const BY_FLAVOR := {
 }
 
 
+# ตอน "ว่าง" (ไม่ได้ลากรสอะไรอยู่) ใช้ภาพที่ตักตามสกินที่ผู้เล่นสวมใส่อยู่
+# (ระหว่างลากรสชาติ ยังคงใช้สีตามรสจาก BY_FLAVOR เหมือนเดิม ไม่เกี่ยวกับสกิน)
 static func set_empty() -> void:
-	Input.set_custom_mouse_cursor(EMPTY, Input.CURSOR_ARROW, HOTSPOT)
+	var skin: Dictionary = SkinData.get_skin(GameState.equipped_skin)
+	var tex: Texture2D = load(skin.get("cursor_texture", "")) as Texture2D
+	if tex == null:
+		tex = EMPTY
+	Input.set_custom_mouse_cursor(tex, Input.CURSOR_ARROW, HOTSPOT)
 
 
 static func set_flavor(key: String) -> void:

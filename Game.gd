@@ -48,6 +48,7 @@ var cup_topping_contents: Array = []
 
 var is_running := true
 var _space_was_pressed := false
+var _combo_saver_used := false   # ใช้สิทธิ์ "ตาข่ายกันคอมโบหลุด" ไปแล้วในด่านนี้หรือยัง
 
 # --- Scoop cooldown + rhythm challenge state (ใช้เฉพาะตอนตักเจลาโต้) ---
 var scoop_state: int = ScoopState.IDLE
@@ -65,6 +66,7 @@ var customer_textures: Array = []
 # --- Node references (all real nodes, defined in Game.tscn) ---
 @onready var background_rect: ColorRect = $Background
 @onready var counter_rect: ColorRect = $Counter
+@onready var counter_art: TextureRect = $CounterArt
 @onready var run_coins_label: Label = $CoinsLabel
 @onready var progress_label: Label = $ProgressLabel
 @onready var combo_label: Label = $ComboLabel
@@ -103,6 +105,7 @@ func _ready() -> void:
 	level = GameState.get_level(level_id)
 	randomize()
 	_apply_decor_theme()
+	_apply_skin()
 
 	for p in CUSTOMER_TEXTURE_PATHS:
 		var tex := load(p)
@@ -152,6 +155,13 @@ func _apply_decor_theme() -> void:
 	progress_label.add_theme_color_override("font_color", decor["text_color"])
 	combo_label.add_theme_color_override("font_color", decor["combo_color"])
 	message_label.add_theme_color_override("font_color", decor["message_color"])
+
+
+func _apply_skin() -> void:
+	var skin: Dictionary = SkinData.get_skin(GameState.equipped_skin)
+	var tex: Texture2D = load(skin.get("counter_texture", "")) as Texture2D
+	if tex:
+		counter_art.texture = tex
 
 
 func _setup_audio() -> void:
@@ -317,6 +327,8 @@ func _spawn_customer() -> void:
 	order_label.text = text
 
 	patience_max = max(12.0, 20.0 - customers_served * 0.3)
+	if GameState.upgrade_patience_boost:
+		patience_max *= 1.2
 	patience_time = patience_max
 	patience_bar.max_value = patience_max
 	patience_bar.value = patience_max
@@ -516,6 +528,8 @@ func _serve() -> void:
 		for k in order_toppings:
 			value_sum += int(GelatoData.TOPPINGS[k]["value"])
 		var reward := 5 + value_sum + combo * 3
+		if GameState.upgrade_coin_boost:
+			reward = int(round(reward * 1.1))
 		coins_earned += reward
 		combo += 1
 		max_combo = max(max_combo, combo)
@@ -539,8 +553,12 @@ func _serve() -> void:
 
 func _customer_left(satisfied: bool) -> void:
 	if not satisfied:
-		combo = 0
-		message_label.text = "ลูกค้าเดินหนีไปแล้ว"
+		if GameState.upgrade_combo_saver and not _combo_saver_used and combo > 0:
+			_combo_saver_used = true
+			message_label.text = "ลูกค้าเดินหนีไปแล้ว! (ตาข่ายกันคอมโบช่วยไว้)"
+		else:
+			combo = 0
+			message_label.text = "ลูกค้าเดินหนีไปแล้ว"
 		SFX.play("error")
 	customers_served += 1
 	current_order = {}
