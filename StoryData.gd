@@ -80,13 +80,13 @@ const CHAPTERS := {
 
 	# --- Day 5: นักศึกษาผู้รอดจากข้อสอบมาด้วยเจลาโต้ ---
 	"day5": [
-		{"speaker": "นักศึกษา", "portrait": "UniversityStudent.png", "text": "ไม่ไหวแล้ว ไม่ไหวแล้ว อาจารย์(static,linear)ออกข้อสอบอะไรไม่รู้ ยากมากเลย"},
-		{"speaker": "นักศึกษา", "portrait": "UniversityStudent.png", "text": "ฮือ ฮือ หมดแรงแล้ว ร่างกายฉันต้องการน้ำตาล ชีวิตนี้ช่างโหดร้าย"},
+		{"speaker": "???", "portrait": "UniversityStudent.png", "text": "ไม่ไหวแล้ว ไม่ไหวแล้ว อาจารย์(static,linear)ออกข้อสอบอะไรไม่รู้ ยากมากเลย"},
+		{"speaker": "???", "portrait": "UniversityStudent.png", "text": "ฮือ ฮือ หมดแรงแล้ว ร่างกายฉันต้องการน้ำตาล ชีวิตนี้ช่างโหดร้าย"},
 		{"speaker": "แพรวา", "portrait": "Player.png", "text": "สวัสดีค่ะคุณลูกค้า!?"},
 		{"speaker": "แพรวา", "portrait": "Player.png", "text": "เอ่อ คุณลูกค้าโอเคมั้ยคะ?"},
-		{"speaker": "นักศึกษา", "portrait": "UniversityStudent.png", "text": "ร่างกายต้องการน้ำตาลด่วนเลยค่ะ จะไม่ไหวแล้ว... ขอสั่งเจลาโต้ค่ะ"},
+		{"speaker": "อุ้ม", "portrait": "UniversityStudent.png", "text": "ฉันชื่ออุ้มค่ะ ร่างกายต้องการน้ำตาลด่วนเลยค่ะ จะไม่ไหวแล้ว... ขอสั่งเจลาโต้ค่ะ"},
 		{"speaker": "แพรวา", "portrait": "Player.png", "text": "ได้แล้วค่ะ"},
-		{"speaker": "นักศึกษา", "portrait": "UniversityStudent.png", "text": "อ้า นี่สินะของหวานหลังจากเจอนรกอันโหดร้าย"},
+		{"speaker": "อุ้ม", "portrait": "UniversityStudent.png", "text": "อ้า นี่สินะของหวานหลังจากเจอนรกอันโหดร้าย"},
 		{"speaker": "แพรวา", "portrait": "Player.png", "text": "(คิดในใจ) เหมือนเห็นตัวเองตอนสมัยยังเรียนไม่จบเลย พี่เข้าใจน้องเลยนะ ต่อให้ต้องกลับไปเรียนอีกก็ไม่ยากอะไรแล้ว"},
 	],
 
