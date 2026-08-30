@@ -42,3 +42,4 @@ res://theme/style_tab_button.tres
 res://theme/style_tab_button_active.tres
 res://theme/style_translucent_panel.tres
 res://VisualNovel.tscn
+res://ChallengeArc.gd
