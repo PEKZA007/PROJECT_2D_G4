@@ -49,6 +49,8 @@ var cup_topping_contents: Array = []
 var is_running := true
 var _space_was_pressed := false
 var _combo_saver_used := false   # ใช้สิทธิ์ "ตาข่ายกันคอมโบหลุด" ไปแล้วในด่านนี้หรือยัง
+var _last_serve_msec := 0
+const SERVE_DEBOUNCE_MSEC := 150 # กันกดเสิร์ฟรัว ๆ (ปุ่ม+SPACE ยิงซ้อนกันจนถ้วยหาย)
 
 # --- Scoop cooldown + rhythm challenge state (ใช้เฉพาะตอนตักเจลาโต้) ---
 var scoop_state: int = ScoopState.IDLE
@@ -115,6 +117,13 @@ func _ready() -> void:
 	clear_button.pressed.connect(_on_clear_cup)
 	serve_button.pressed.connect(_serve)
 	drop_zone.ingredient_dropped.connect(_on_ingredient_dropped)
+
+	# ปุ่ม Serve/Clear ไม่ควรรับโฟกัสคีย์บอร์ด เพราะ Godot จะยิงสัญญาณ "pressed"
+	# ซ้ำอัตโนมัติเวลากด SPACE/Enter ตอนปุ่มมีโฟกัส ซึ่งจะไปชนกับการเช็ค SPACE
+	# แบบ manual ใน _process() ทำให้ _serve() ถูกเรียกซ้อนกันสองครั้งในเฟรมเดียว
+	# (ถ้วยที่เพิ่งวางไว้เลยดูเหมือน "หาย" เพราะออเดอร์ถัดไปมาแทนที่ทันที)
+	serve_button.focus_mode = Control.FOCUS_NONE
+	clear_button.focus_mode = Control.FOCUS_NONE
 
 	CursorFX.set_empty()
 
@@ -492,6 +501,11 @@ func _on_clear_cup() -> void:
 
 
 func _serve() -> void:
+	var now_msec := Time.get_ticks_msec()
+	if now_msec - _last_serve_msec < SERVE_DEBOUNCE_MSEC:
+		return
+	_last_serve_msec = now_msec
+
 	if not is_running or current_order.is_empty():
 		return
 	if scoop_state == ScoopState.CHALLENGE:

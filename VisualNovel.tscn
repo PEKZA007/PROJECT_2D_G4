@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://p8mcn6q2xng4" path="res://VisualNovel.gd" id="1"]
 [ext_resource type="StyleBox" uid="uid://bxcvt0a7vmov8" path="res://theme/style_empty.tres" id="2"]
-[ext_resource type="StyleBox" path="res://theme/style_floor_band.tres" id="3"]
-[ext_resource type="StyleBox" path="res://theme/style_name_tag.tres" id="4"]
-[ext_resource type="StyleBox" path="res://theme/style_dialogue_box.tres" id="5"]
+[ext_resource type="StyleBox" uid="uid://bj38l8b6o5nc7" path="res://theme/style_floor_band.tres" id="3"]
+[ext_resource type="StyleBox" uid="uid://c53shtv216ael" path="res://theme/style_name_tag.tres" id="4"]
+[ext_resource type="StyleBox" uid="uid://cga32c45fh22g" path="res://theme/style_dialogue_box.tres" id="5"]
 [ext_resource type="StyleBox" uid="uid://dr5q1jg3tkhyn" path="res://theme/style_dark_button.tres" id="6"]
 [ext_resource type="AudioStream" uid="uid://b7bd75yfegsoc" path="res://assets/audio/menu_theme.mp3" id="7"]
 [ext_resource type="PackedScene" path="res://PausePanel.tscn" id="8"]

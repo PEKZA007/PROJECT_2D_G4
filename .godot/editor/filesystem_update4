@@ -38,3 +38,6 @@ res://theme/style_owned_button.tres
 res://theme/style_tab_button.tres
 res://theme/style_tab_button_active.tres
 res://theme/style_translucent_panel.tres
+res://Results.gd
+res://VisualNovel.tscn
+res://LevelSelect.tscn
