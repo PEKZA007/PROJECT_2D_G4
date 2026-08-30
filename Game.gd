@@ -118,6 +118,8 @@ func _ready() -> void:
 	serve_button.pressed.connect(_serve)
 	drop_zone.ingredient_dropped.connect(_on_ingredient_dropped)
 
+	CursorFX.set_empty()
+
 	_setup_audio()
 	_setup_container_tray()
 	_setup_tray()
@@ -129,9 +131,13 @@ func _ready() -> void:
 	_refresh_build_visual()
 
 
+func _exit_tree() -> void:
+	CursorFX.clear()
+
+
 func _setup_counter_hotspots() -> void:
-	# ทำให้ภาพเคาน์เตอร์ (ถังเจลาโต้ / ท็อปปิ้ง / โคน-ถ้วย) กดเลือกได้โดยตรง
-	# นี่คือช่องทางหลักในการเล่นเกม — ถาดไอคอนด้านล่างถูกซ่อนไว้เป็นสำรองเท่านั้น
+	# ล็อกปุ่มเคาน์เตอร์รสที่ยังไม่ปลดล็อก (ตอนนี้ปลดทุกรสตั้งแต่แรกแล้ว แต่เผื่ออนาคต)
+	# การเลือกวัตถุดิบทำผ่านการ "ลาก" จากจุดนี้ไปวางที่ถ้วย/โคนแทนการกด (ดู CounterHotspot.gd)
 	var unlocked_flavors: Array = _available_flavor_keys()
 	for child in get_children():
 		if child is Button and child.name.begins_with("Hotspot"):
@@ -141,12 +147,6 @@ func _setup_counter_hotspots() -> void:
 				child.disabled = true
 				if child.has_node("LockOverlay"):
 					child.get_node("LockOverlay").visible = true
-			else:
-				child.pressed.connect(_on_hotspot_pressed.bind(key, kind))
-
-
-func _on_hotspot_pressed(key: String, kind: String) -> void:
-	_on_ingredient_dropped(key, "", kind)
 
 
 func _apply_decor_theme() -> void:

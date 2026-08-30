@@ -32,7 +32,7 @@ offset_top = 155.25
 offset_right = 354.375
 offset_bottom = 190.125
 theme_override_font_sizes/font_size = 27
-theme_override_colors/font_color = Color(0.196078, 0.196078, 0.196078, 1)
+theme_override_colors/font_color = Color(0.105882, 0.294118, 0.615686, 1)
 horizontal_alignment = 1
 text = "ธีม"
 

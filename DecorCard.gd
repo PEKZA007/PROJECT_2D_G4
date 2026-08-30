@@ -47,9 +47,9 @@ func configure(key: String, info: Dictionary, owned: bool, equipped: bool) -> vo
 		action_button.text = "ใช้ธีมนี้"
 		action_button.disabled = false
 		_set_button_style(LOCKED_STYLE)
-		action_button.add_theme_color_override("font_color", Color(0.235294, 0.156863, 0.0784314, 1))
-		action_button.add_theme_color_override("font_hover_color", Color(0.235294, 0.156863, 0.0784314, 1))
-		action_button.add_theme_color_override("font_pressed_color", Color(0.235294, 0.156863, 0.0784314, 1))
+		action_button.add_theme_color_override("font_color", Color(0.105882, 0.294118, 0.615686, 1))
+		action_button.add_theme_color_override("font_hover_color", Color(0.105882, 0.294118, 0.615686, 1))
+		action_button.add_theme_color_override("font_pressed_color", Color(0.105882, 0.294118, 0.615686, 1))
 	else:
 		action_button.text = "%d เหรียญ" % decor_price
 		action_button.disabled = false

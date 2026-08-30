@@ -13,7 +13,7 @@ const EQUIPMENT_INFO := [
 
 const TAB_STYLE_INACTIVE := preload("res://theme/style_tab_button.tres")
 const TAB_STYLE_ACTIVE := preload("res://theme/style_tab_button_active.tres")
-const TAB_COLOR_INACTIVE := Color(0.235294, 0.156863, 0.0784314, 1)
+const TAB_COLOR_INACTIVE := Color(0.105882, 0.294118, 0.615686, 1)
 const TAB_COLOR_ACTIVE := Color(1, 1, 1, 1)
 
 @onready var back_button: Button = $BackButton

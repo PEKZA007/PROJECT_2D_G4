@@ -1,5 +1,8 @@
+res://MainMenu.tscn
+res://CounterHotspot.gd
 res://Credits.gd
 res://CupDropZone.gd
+res://CursorFX.gd
 res://DecorCard.gd
 res://DecorData.gd
 res://Game.gd
@@ -24,11 +27,16 @@ res://theme/style_card_panel.tres
 res://theme/style_customer_backdrop.tres
 res://theme/style_dark_button.tres
 res://theme/style_dashed_challenge_panel.tres
+res://theme/style_dialogue_box.tres
+res://theme/style_empty.tres
+res://theme/style_floor_band.tres
 res://theme/style_hud_pill.tres
 res://theme/style_ingredient_icon.tres
 res://theme/style_light_button.tres
 res://theme/style_locked_button.tres
 res://theme/style_lock_overlay.tres
+res://theme/style_menu_action_button.tres
+res://theme/style_name_tag.tres
 res://theme/style_owned_button.tres
 res://theme/style_tab_button.tres
 res://theme/style_tab_button_active.tres

@@ -45,4 +45,11 @@ func _get_drag_data(_at_position: Vector2):
 		preview_label.add_theme_font_size_override("font_size", 38)
 		preview_control = preview_label
 	set_drag_preview(preview_control)
+	if kind == "flavor":
+		CursorFX.set_flavor(ingredient_key)
 	return {"ingredient": ingredient_key, "emoji": emoji, "kind": kind}
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_DRAG_END:
+		CursorFX.set_empty()
