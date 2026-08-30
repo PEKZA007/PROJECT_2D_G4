@@ -1,126 +1,122 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene format=3 uid="uid://dr5k2meqem7py"]
 
-[ext_resource type="Script" path="res://VisualNovel.gd" id="1"]
-[ext_resource type="StyleBoxEmpty" path="res://theme/style_empty.tres" id="2"]
-[ext_resource type="StyleBoxFlat" path="res://theme/style_floor_band.tres" id="3"]
-[ext_resource type="StyleBoxFlat" path="res://theme/style_name_tag.tres" id="4"]
-[ext_resource type="StyleBoxFlat" path="res://theme/style_dialogue_box.tres" id="5"]
-[ext_resource type="StyleBoxFlat" path="res://theme/style_dark_button.tres" id="6"]
-[ext_resource type="AudioStream" path="res://assets/audio/menu_theme.mp3" id="7"]
+[ext_resource type="Script" uid="uid://p8mcn6q2xng4" path="res://VisualNovel.gd" id="1"]
+[ext_resource type="StyleBox" uid="uid://bxcvt0a7vmov8" path="res://theme/style_empty.tres" id="2"]
+[ext_resource type="StyleBox" path="res://theme/style_floor_band.tres" id="3"]
+[ext_resource type="StyleBox" path="res://theme/style_name_tag.tres" id="4"]
+[ext_resource type="StyleBox" path="res://theme/style_dialogue_box.tres" id="5"]
+[ext_resource type="StyleBox" uid="uid://dr5q1jg3tkhyn" path="res://theme/style_dark_button.tres" id="6"]
+[ext_resource type="AudioStream" uid="uid://b7bd75yfegsoc" path="res://assets/audio/menu_theme.mp3" id="7"]
 [ext_resource type="PackedScene" path="res://PausePanel.tscn" id="8"]
 
-[node name="VisualNovel" type="Node2D"]
+[node name="VisualNovel" type="Node2D" unique_id=1458965993]
 script = ExtResource("1")
 
-[node name="AdvanceButton" type="Button" parent="."]
-offset_left = 0.0
+[node name="AdvanceButton" type="Button" parent="." unique_id=654682246]
 offset_right = 1920.0
 offset_bottom = 1080.0
 focus_mode = 0
 theme_override_styles/normal = ExtResource("2")
-theme_override_styles/hover = ExtResource("2")
 theme_override_styles/pressed = ExtResource("2")
+theme_override_styles/hover = ExtResource("2")
 theme_override_styles/focus = ExtResource("2")
-text = ""
 
-[node name="Background" type="ColorRect" parent="."]
-offset_left = 0.0
-mouse_filter = 2
+[node name="Background" type="ColorRect" parent="." unique_id=1877253361]
 offset_right = 1920.0
 offset_bottom = 1080.0
+mouse_filter = 2
 color = Color(1, 0.878431, 0.792157, 1)
 
-[node name="FloorBand" type="Panel" parent="."]
-offset_left = 0.0
-mouse_filter = 2
+[node name="FloorBand" type="Panel" parent="." unique_id=1535531353]
 offset_top = 708.75
 offset_right = 1920.0
 offset_bottom = 1080.0
+mouse_filter = 2
 theme_override_styles/panel = ExtResource("3")
 
-[node name="LeftPortrait" type="TextureRect" parent="."]
-mouse_filter = 2
+[node name="LeftPortrait" type="TextureRect" parent="." unique_id=11097957]
 offset_left = 251.25
 offset_top = 185.625
 offset_right = 791.25
 offset_bottom = 894.375
+mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="RightPortrait" type="TextureRect" parent="."]
-mouse_filter = 2
+[node name="RightPortrait" type="TextureRect" parent="." unique_id=1433935277]
 offset_left = 1128.75
 offset_top = 185.625
 offset_right = 1668.75
 offset_bottom = 894.375
-flip_h = true
+mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
+flip_h = true
 
-[node name="NameBox" type="Panel" parent="."]
-mouse_filter = 2
+[node name="NameBox" type="Panel" parent="." unique_id=655947305]
 offset_left = 242.812
 offset_top = 756.0
 offset_right = 580.312
 offset_bottom = 815.062
+mouse_filter = 2
 theme_override_styles/panel = ExtResource("4")
 
-[node name="NameLabel" type="Label" parent="NameBox"]
-mouse_filter = 2
+[node name="NameLabel" type="Label" parent="NameBox" unique_id=1393354259]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-theme_override_font_sizes/font_size = 30
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 30
 horizontal_alignment = 1
 vertical_alignment = 1
-text = ""
 
-[node name="DialogueBox" type="Panel" parent="."]
-mouse_filter = 2
+[node name="DialogueBox" type="Panel" parent="." unique_id=1393280020]
 offset_left = 217.5
 offset_top = 810.0
 offset_right = 1702.5
 offset_bottom = 1037.812
+mouse_filter = 2
 theme_override_styles/panel = ExtResource("5")
 
-[node name="DialogueLabel" type="Label" parent="DialogueBox"]
-mouse_filter = 2
+[node name="DialogueLabel" type="Label" parent="DialogueBox" unique_id=397354669]
+layout_mode = 0
 offset_left = 42.188
 offset_top = 30.375
 offset_right = 1442.812
 offset_bottom = 185.625
-theme_override_font_sizes/font_size = 34
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 34
 autowrap_mode = 2
-text = ""
 
-[node name="HintLabel" type="Label" parent="DialogueBox"]
-mouse_filter = 2
+[node name="HintLabel" type="Label" parent="DialogueBox" unique_id=1837852502]
+layout_mode = 0
 offset_left = 1012.5
 offset_top = 182.25
 offset_right = 1451.25
 offset_bottom = 216.0
-theme_override_font_sizes/font_size = 22
 theme_override_colors/font_color = Color(0.784314, 0.784314, 0.823529, 1)
-horizontal_alignment = 2
+theme_override_font_sizes/font_size = 22
 text = "คลิก หรือกด Space เพื่อไปต่อ"
+horizontal_alignment = 2
 
-[node name="SkipButton" type="Button" parent="."]
+[node name="SkipButton" type="Button" parent="." unique_id=235299858]
 offset_left = 1601.25
 offset_top = 33.75
 offset_right = 1736.25
 offset_bottom = 91.125
-theme_override_styles/normal = ExtResource("6")
-theme_override_styles/hover = ExtResource("6")
-theme_override_styles/pressed = ExtResource("6")
-theme_override_font_sizes/font_size = 22
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 22
+theme_override_styles/normal = ExtResource("6")
+theme_override_styles/pressed = ExtResource("6")
+theme_override_styles/hover = ExtResource("6")
 text = "ข้าม"
 
-[node name="BGMusic" type="AudioStreamPlayer" parent="."]
+[node name="BGMusic" type="AudioStreamPlayer" parent="." unique_id=89685393]
 stream = ExtResource("7")
 volume_db = -14.0
 
-[node name="PausePanel" parent="." instance=ExtResource("8")]
+[node name="PausePanel" parent="." unique_id=459335666 instance=ExtResource("8")]
+layout_mode = 3
+anchors_preset = 0
 quit_scene_path = "res://MainMenu.tscn"
 quit_button_text = "กลับเมนูหลัก"

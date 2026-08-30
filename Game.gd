@@ -19,9 +19,6 @@ const CUSTOMER_TEXTURE_PATHS := [
 	"res://assets/characters/CustomerF.png",
 ]
 const CHALLENGE_TIME_LIMIT := 3.0
-const CHALLENGE_TRACK_MARGIN := 8.4375
-const CHALLENGE_TRACK_WIDTH := 168.75
-const CHALLENGE_MARKER_HALF_WIDTH := 1.6875
 
 const CONE_BACK := "res://assets/gelato/cone/cone_back.png"
 const CONE_FRONT := "res://assets/gelato/cone/cone_front.png"
@@ -94,9 +91,7 @@ var customer_textures: Array = []
 
 @onready var challenge_panel: Panel = $ChallengePanel
 @onready var challenge_pending_label: Label = $ChallengePanel/PendingLabel
-@onready var challenge_track: ColorRect = $ChallengePanel/ChallengeTrack
-@onready var challenge_zone: ColorRect = $ChallengePanel/ChallengeZone
-@onready var challenge_marker: ColorRect = $ChallengePanel/ChallengeMarker
+@onready var challenge_arc: Control = $ChallengePanel/ChallengeArc
 
 @onready var queue_portraits: Array = [
 	$QueueSlot1/Portrait, $QueueSlot2/Portrait, $QueueSlot3/Portrait,
@@ -276,7 +271,7 @@ func _process_scoop_challenge(delta: float) -> void:
 		marker_t = 0.0
 		marker_dir = 1
 	challenge_timeout -= delta
-	challenge_marker.position.x = CHALLENGE_TRACK_MARGIN + marker_t * CHALLENGE_TRACK_WIDTH - CHALLENGE_MARKER_HALF_WIDTH
+	challenge_arc.set_marker(marker_t)
 	if challenge_timeout <= 0.0:
 		_resolve_scoop_challenge(true)
 
@@ -402,9 +397,8 @@ func _show_challenge_ui() -> void:
 	challenge_panel.visible = true
 	build_stage.visible = false
 	challenge_pending_label.text = "กำลังตัก%s" % GelatoData.flavor_name(scoop_pending_key)
-	challenge_zone.position.x = CHALLENGE_TRACK_MARGIN + zone_start * CHALLENGE_TRACK_WIDTH
-	challenge_zone.size.x = (zone_end - zone_start) * CHALLENGE_TRACK_WIDTH
-	challenge_marker.position.x = CHALLENGE_TRACK_MARGIN + marker_t * CHALLENGE_TRACK_WIDTH - CHALLENGE_MARKER_HALF_WIDTH
+	challenge_arc.set_zone(zone_start, zone_end)
+	challenge_arc.set_marker(marker_t)
 
 
 func _hide_challenge_ui() -> void:

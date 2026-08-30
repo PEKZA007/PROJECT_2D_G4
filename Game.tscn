@@ -16,6 +16,7 @@
 [ext_resource type="StyleBox" path="res://theme/style_lock_overlay.tres" id="15"]
 [ext_resource type="StyleBox" path="res://theme/style_hud_pill.tres" id="16"]
 [ext_resource type="Script" path="res://CounterHotspot.gd" id="17"]
+[ext_resource type="Script" path="res://ChallengeArc.gd" id="18"]
 
 [node name="Game" type="Node2D" unique_id=42553445]
 script = ExtResource("1")
@@ -623,29 +624,14 @@ offset_bottom = 91.125
 theme_override_font_sizes/font_size = 26
 horizontal_alignment = 1
 
-[node name="ChallengeTrack" type="ColorRect" parent="ChallengePanel" unique_id=242578069]
+[node name="ChallengeArc" type="Control" parent="ChallengePanel" unique_id=242578069]
 layout_mode = 0
 offset_left = 16.875
-offset_top = 104.625
+offset_top = 95.0
 offset_right = 354.375
-offset_bottom = 135.0
-color = Color(0.882353, 0.882353, 0.882353, 1)
-
-[node name="ChallengeZone" type="ColorRect" parent="ChallengePanel" unique_id=1891110628]
-layout_mode = 0
-offset_left = 16.875
-offset_top = 104.625
-offset_right = 84.375
-offset_bottom = 135.0
-color = Color(0.470588, 0.862745, 0.54902, 1)
-
-[node name="ChallengeMarker" type="ColorRect" parent="ChallengePanel" unique_id=2027597796]
-layout_mode = 0
-offset_left = 13.5
-offset_top = 97.875
-offset_right = 20.25
-offset_bottom = 141.75
-color = Color(0.156863, 0.156863, 0.156863, 1)
+offset_bottom = 178.0
+mouse_filter = 2
+script = ExtResource("18")
 
 [node name="ClearButton" type="Button" parent="." unique_id=1921247105]
 offset_left = 590.0
