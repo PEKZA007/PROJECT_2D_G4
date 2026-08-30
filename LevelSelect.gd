@@ -27,7 +27,8 @@ func _ready() -> void:
 func _on_play_level(id: int) -> void:
 	GameState.current_level_id = id
 	var chapter: String = StoryData.LEVEL_INTRO_CHAPTERS.get(id, "")
-	if chapter != "" and not GameState.has_seen_chapter(chapter):
+	if chapter != "":
+		# เล่นเนื้อเรื่องซ้ำได้ทุกครั้งที่เข้าด่าน ไม่ใช่แค่ครั้งแรก
 		GameState.start_story(chapter, "res://Game.tscn")
 		get_tree().change_scene_to_file("res://VisualNovel.tscn")
 	else:

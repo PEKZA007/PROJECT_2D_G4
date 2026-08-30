@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://Shop.gd" id="1"]
 [ext_resource type="StyleBoxFlat" path="res://theme/style_locked_button.tres" id="2"]

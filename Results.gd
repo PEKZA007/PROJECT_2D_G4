@@ -38,7 +38,8 @@ func _populate() -> void:
 	var next_id: int = int(run["level_id"]) + 1
 	var has_next: bool = next_id < GameState.levels.size() and GameState.levels[next_id]["unlocked"]
 	var is_last_level: bool = next_id >= GameState.levels.size()
-	var show_ending: bool = is_last_level and int(run["stars"]) > 0 and not GameState.has_seen_chapter("ending")
+	# เล่นตอนจบซ้ำได้ทุกครั้งที่ผ่านด่านสุดท้าย ไม่ใช่แค่ครั้งแรก
+	var show_ending: bool = is_last_level and int(run["stars"]) > 0
 
 	if show_ending:
 		next_button.text = "ดูตอนจบเรื่อง"
@@ -62,7 +63,7 @@ func _on_next() -> void:
 	var next_id: int = int(run["level_id"]) + 1
 	var is_last_level: bool = next_id >= GameState.levels.size()
 
-	if is_last_level and int(run["stars"]) > 0 and not GameState.has_seen_chapter("ending"):
+	if is_last_level and int(run["stars"]) > 0:
 		GameState.start_story("ending", "res://MainMenu.tscn")
 		get_tree().change_scene_to_file("res://VisualNovel.tscn")
 	else:

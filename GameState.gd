@@ -105,7 +105,20 @@ func is_flavor_unlocked(_key: String) -> bool:
 	return true
 
 
+func is_equipment_owned(key: String) -> bool:
+	match key:
+		"fast_scoop": return upgrade_fast_scoop
+		"expand_counter": return upgrade_expand_counter
+		"auto": return upgrade_auto_churn
+		"patience_boost": return upgrade_patience_boost
+		"combo_saver": return upgrade_combo_saver
+		"coin_boost": return upgrade_coin_boost
+		_: return false
+
+
 func buy_equipment(key: String, price: int) -> bool:
+	if is_equipment_owned(key):
+		return false
 	if coins < price:
 		return false
 	coins -= price

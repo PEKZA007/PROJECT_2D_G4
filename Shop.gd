@@ -96,6 +96,12 @@ func _refresh_all() -> void:
 			state = "owned"
 		elif info["key"] == "auto" and GameState.upgrade_auto_churn:
 			state = "owned"
+		elif info["key"] == "patience_boost" and GameState.upgrade_patience_boost:
+			state = "owned"
+		elif info["key"] == "combo_saver" and GameState.upgrade_combo_saver:
+			state = "owned"
+		elif info["key"] == "coin_boost" and GameState.upgrade_coin_boost:
+			state = "owned"
 		equipment_cards[i].configure(info["key"], info["title"], info["desc"], info["price"], state, info["icon"])
 
 	for i in decor_cards.size():
