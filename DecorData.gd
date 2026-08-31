@@ -17,6 +17,7 @@ const THEMES := {
 		"text_color": Color(0.156863, 0.156863, 0.156863, 1),
 		"combo_color": Color(0.784314, 0.313726, 0.0784314, 1),
 		"message_color": Color(0.588235, 0.156863, 0.156863, 1),
+		"preview": "res://assets/backgrounds/decor_previews/preview_classic.png",
 	},
 	"pastel": {
 		"name": "พาสเทลหวานฟรุ้งฟริ้ง",
@@ -27,6 +28,7 @@ const THEMES := {
 		"text_color": Color(0.211765, 0.156863, 0.196078, 1),
 		"combo_color": Color(0.807843, 0.278431, 0.505882, 1),
 		"message_color": Color(0.596078, 0.219608, 0.376471, 1),
+		"preview": "res://assets/backgrounds/decor_previews/preview_pastel.png",
 	},
 	"tropical": {
 		"name": "ชายหาดร้อนแรง",
@@ -37,6 +39,7 @@ const THEMES := {
 		"text_color": Color(0.109804, 0.211765, 0.196078, 1),
 		"combo_color": Color(0.85098, 0.4, 0.109804, 1),
 		"message_color": Color(0.564706, 0.180392, 0.152941, 1),
+		"preview": "res://assets/backgrounds/decor_previews/preview_tropical.png",
 	},
 	"midnight": {
 		"name": "ราตรีนีออน",
@@ -47,6 +50,7 @@ const THEMES := {
 		"text_color": Color(0.917647, 0.905882, 0.968627, 1),
 		"combo_color": Color(0.972549, 0.564706, 0.243137, 1),
 		"message_color": Color(0.964706, 0.505882, 0.505882, 1),
+		"preview": "res://assets/backgrounds/decor_previews/preview_midnight.png",
 	},
 	"mint_choc": {
 		"name": "มินต์ช็อกโกแลตสดชื่น",
@@ -57,6 +61,7 @@ const THEMES := {
 		"text_color": Color(0.117647, 0.219608, 0.180392, 1),
 		"combo_color": Color(0.0784314, 0.517647, 0.4, 1),
 		"message_color": Color(0.376471, 0.243137, 0.164706, 1),
+		"preview": "res://assets/backgrounds/decor_previews/preview_mint_choc.png",
 	},
 	"sunset_citrus": {
 		"name": "ซันเซ็ตส้มสดใส",
@@ -67,8 +72,11 @@ const THEMES := {
 		"text_color": Color(0.294118, 0.121569, 0.0941176, 1),
 		"combo_color": Color(0.827451, 0.184314, 0.243137, 1),
 		"message_color": Color(0.560784, 0.164706, 0.286275, 1),
+		"preview": "res://assets/backgrounds/decor_previews/preview_sunset_citrus.png",
 	},
 }
+
+const COUNTER_STRIP_PREVIEW := "res://assets/backgrounds/decor_previews/counter_strip.png"
 
 const THEME_ORDER := ["classic", "pastel", "tropical", "midnight", "mint_choc", "sunset_citrus"]
 

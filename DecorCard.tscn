@@ -13,19 +13,23 @@ offset_right = 354.375
 offset_bottom = 329.062
 theme_override_styles/panel = ExtResource("2")
 
-[node name="SwatchBg" type="ColorRect" parent="."]
+[node name="SwatchBg" type="TextureRect" parent="."]
+clip_contents = true
 offset_left = 25.312
 offset_top = 20.25
 offset_right = 329.062
 offset_bottom = 118.125
-color = Color(0.701961, 0.898039, 0.988235, 1)
+expand_mode = 1
+stretch_mode = 6
 
-[node name="SwatchCounter" type="ColorRect" parent="."]
+[node name="SwatchCounter" type="TextureRect" parent="."]
+clip_contents = true
 offset_left = 25.312
 offset_top = 118.125
 offset_right = 329.062
 offset_bottom = 143.438
-color = Color(0.552941, 0.333333, 0.141176, 1)
+expand_mode = 1
+stretch_mode = 6
 
 [node name="NameLabel" type="Label" parent="."]
 offset_top = 155.25

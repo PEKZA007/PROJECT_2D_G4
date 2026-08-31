@@ -46,6 +46,11 @@ var chosen_container: String = ""
 var cup_flavor_contents: Array = []
 var cup_topping_contents: Array = []
 
+const CAT_BONUS_COOLDOWN := 12.0
+const CAT_BONUS_MIN := 3
+const CAT_BONUS_MAX := 8
+var cat_bonus_cooldown_left := 0.0
+
 var is_running := true
 var _space_was_pressed := false
 var _combo_saver_used := false   # ใช้สิทธิ์ "ตาข่ายกันคอมโบหลุด" ไปแล้วในด่านนี้หรือยัง
@@ -67,6 +72,7 @@ var customer_textures: Array = []
 
 # --- Node references (all real nodes, defined in Game.tscn) ---
 @onready var background_rect: ColorRect = $Background
+@onready var scene_backdrop: TextureRect = $RoomBackdrop
 @onready var counter_rect: ColorRect = $Counter
 @onready var counter_art: TextureRect = $CounterArt
 @onready var run_coins_label: Label = $CoinsLabel
@@ -92,13 +98,15 @@ var customer_textures: Array = []
 @onready var layer_topping: TextureRect = $BuildStage/LayerTopping
 @onready var empty_stage_label: Label = $BuildStage/EmptyStageLabel
 @onready var drop_zone: Panel = $DropZone
+@onready var cat_bonus_button: Button = $CatBonusButton
+@onready var trash_bin_zone: Panel = $TrashBinZone
 
 @onready var challenge_panel: Panel = $ChallengePanel
 @onready var challenge_pending_label: Label = $ChallengePanel/PendingLabel
 @onready var challenge_arc: Control = $ChallengePanel/ChallengeArc
 
 @onready var queue_portraits: Array = [
-	$QueueSlot1/Portrait, $QueueSlot2/Portrait, $QueueSlot3/Portrait,
+	$QueueSlot1/Portrait,
 ]
 
 
@@ -117,6 +125,8 @@ func _ready() -> void:
 	clear_button.pressed.connect(_on_clear_cup)
 	serve_button.pressed.connect(_serve)
 	drop_zone.ingredient_dropped.connect(_on_ingredient_dropped)
+	cat_bonus_button.pressed.connect(_on_cat_bonus_pressed)
+	trash_bin_zone.ingredient_dropped.connect(_on_trash_ingredient_dropped)
 
 	# ปุ่ม Serve/Clear ไม่ควรรับโฟกัสคีย์บอร์ด เพราะ Godot จะยิงสัญญาณ "pressed"
 	# ซ้ำอัตโนมัติเวลากด SPACE/Enter ตอนปุ่มมีโฟกัส ซึ่งจะไปชนกับการเช็ค SPACE
@@ -159,6 +169,7 @@ func _setup_counter_hotspots() -> void:
 func _apply_decor_theme() -> void:
 	var decor: Dictionary = DecorData.get_theme(GameState.equipped_decor)
 	background_rect.color = decor["background"]
+	scene_backdrop.modulate = (decor["background"] as Color).lerp(Color.WHITE, 0.6)
 	counter_rect.color = decor["counter"]
 	run_coins_label.add_theme_color_override("font_color", decor["text_color"])
 	progress_label.add_theme_color_override("font_color", decor["text_color"])
@@ -269,6 +280,12 @@ func _process(delta: float) -> void:
 	elif scoop_state == ScoopState.COOLDOWN:
 		_process_cooldown(delta)
 
+	if cat_bonus_cooldown_left > 0.0:
+		cat_bonus_cooldown_left -= delta
+		if cat_bonus_cooldown_left <= 0.0:
+			cat_bonus_cooldown_left = 0.0
+			cat_bonus_button.modulate = Color(1, 1, 1, 1)
+
 	var space_now := Input.is_physical_key_pressed(KEY_SPACE)
 	if space_now and not _space_was_pressed:
 		if scoop_state == ScoopState.CHALLENGE:
@@ -354,6 +371,27 @@ func _update_queue_faces() -> void:
 		return
 	for portrait in queue_portraits:
 		portrait.texture = customer_textures[randi() % customer_textures.size()]
+
+
+func _on_cat_bonus_pressed() -> void:
+	if cat_bonus_cooldown_left > 0.0:
+		message_label.text = "แมวขอพักก่อนนะ เดี๋ยวลูบใหม่ได้"
+		return
+	var bonus: int = randi_range(CAT_BONUS_MIN, CAT_BONUS_MAX)
+	coins_earned += bonus
+	cat_bonus_cooldown_left = CAT_BONUS_COOLDOWN
+	cat_bonus_button.modulate = Color(1, 1, 1, 0.55)
+	message_label.text = "ลูบแมวแล้ว เหมียว~ +%d เหรียญ" % bonus
+	SFX.play("coin")
+	_update_hud()
+
+
+func _on_trash_ingredient_dropped(_key: String, _emoji: String, _kind: String) -> void:
+	# ลากวัตถุดิบ/ช้อนตักมาทิ้งที่ถังขยะ = ล้างช้อน ยกเลิกสิ่งที่กำลังจะตัก/หยิบอยู่
+	# ไม่มีผลกับเจลาโต้ที่ตักลงถ้วยไปแล้ว แค่ยกเลิกของที่กำลังลากอยู่ในมือ
+	CursorFX.set_empty()
+	message_label.text = "ล้างช้อนตักแล้ว สะอาดพร้อมตักใหม่!"
+	SFX.play("click")
 
 
 func _on_ingredient_dropped(key: String, _emoji: String, kind: String) -> void:
@@ -494,6 +532,14 @@ func _refresh_build_visual() -> void:
 
 
 func _on_clear_cup() -> void:
+	# ถ้ามีมินิเกมตัก (CHALLENGE) หรือกำลังพักมือ (COOLDOWN) ค้างอยู่ ต้องยกเลิกให้หมดก่อน
+	# ไม่งั้นพอมินิเกมค้างนั้นมาผลลัพธ์ทีหลัง (ตักติด) มันจะ append รสเก่าใส่ถ้วยใหม่ที่เพิ่งวาง
+	# ทำให้ถ้วยที่เพิ่งวาง (ยังไม่ได้ตักเองเลย) ดูเหมือน "เต็ม" ขึ้นมาเฉย ๆ
+	if scoop_state != ScoopState.IDLE:
+		scoop_state = ScoopState.IDLE
+		scoop_pending_key = ""
+		cooldown_time_left = 0.0
+		_hide_challenge_ui()
 	chosen_container = ""
 	cup_flavor_contents.clear()
 	cup_topping_contents.clear()

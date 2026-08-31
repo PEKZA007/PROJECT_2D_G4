@@ -11,8 +11,8 @@ const OWNED_STYLE := preload("res://theme/style_owned_button.tres")
 const LOCKED_STYLE := preload("res://theme/style_locked_button.tres")
 const BUY_STYLE := preload("res://theme/style_dark_button.tres")
 
-@onready var swatch_bg: ColorRect = $SwatchBg
-@onready var swatch_counter: ColorRect = $SwatchCounter
+@onready var swatch_bg: TextureRect = $SwatchBg
+@onready var swatch_counter: TextureRect = $SwatchCounter
 @onready var name_label: Label = $NameLabel
 @onready var desc_label: Label = $DescLabel
 @onready var action_button: Button = $ActionButton
@@ -33,8 +33,8 @@ func configure(key: String, info: Dictionary, owned: bool, equipped: bool) -> vo
 	_owned = owned
 	_equipped = equipped
 
-	swatch_bg.color = info["background"]
-	swatch_counter.color = info["counter"]
+	swatch_bg.texture = load(info["preview"])
+	swatch_counter.texture = load(DecorData.COUNTER_STRIP_PREVIEW)
 	name_label.text = info["name"]
 	desc_label.text = info["desc"]
 
