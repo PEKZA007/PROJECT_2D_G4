@@ -153,17 +153,26 @@ func _exit_tree() -> void:
 
 
 func _setup_counter_hotspots() -> void:
-	# ล็อกปุ่มเคาน์เตอร์รสที่ยังไม่ปลดล็อก (ตอนนี้ปลดทุกรสตั้งแต่แรกแล้ว แต่เผื่ออนาคต)
-	# การเลือกวัตถุดิบทำผ่านการ "ลาก" จากจุดนี้ไปวางที่ถ้วย/โคนแทนการกด (ดู CounterHotspot.gd)
+	# ล็อกวัตถุดิบบนเคาน์เตอร์ให้ตรงกับกติกาของวันปัจจุบัน
+	# สำคัญ: อย่าล็อกเฉพาะรส เพราะผู้เล่นสามารถลากภาชนะใหญ่/ท็อปปิ้งจาก hotspot ได้เช่นกัน
 	var unlocked_flavors: Array = _available_flavor_keys()
+	var available_containers: Array = _available_container_keys()
+	var toppings_unlocked := GameState.are_toppings_unlocked()
+
 	for child in get_children():
 		if child is Button and child.name.begins_with("Hotspot"):
-			var key: String = child.get_meta("ingredient_key", "")
-			var kind: String = child.get_meta("kind", "")
-			if kind == "flavor" and not unlocked_flavors.has(key):
-				child.disabled = true
-				if child.has_node("LockOverlay"):
-					child.get_node("LockOverlay").visible = true
+			var key: String = str(child.get_meta("ingredient_key", ""))
+			var kind: String = str(child.get_meta("kind", ""))
+			var allowed := true
+			match kind:
+				"flavor": allowed = unlocked_flavors.has(key)
+				"container": allowed = available_containers.has(key)
+				"topping": allowed = toppings_unlocked and GelatoData.TOPPINGS.has(key)
+				_: allowed = false
+
+			child.disabled = not allowed
+			if child.has_node("LockOverlay"):
+				child.get_node("LockOverlay").visible = not allowed
 
 
 func _apply_decor_theme() -> void:
@@ -192,29 +201,41 @@ func _setup_audio() -> void:
 
 
 func _setup_container_tray() -> void:
+	var available := _available_container_keys()
 	var icons := container_tray.get_children()
 	for i in icons.size():
-		var key: String = GelatoData.CONTAINER_ORDER[i % GelatoData.CONTAINER_ORDER.size()]
-		var info: Dictionary = GelatoData.CONTAINERS[key]
-		icons[i].setup(key, "", "container", info["thumb"])
+		var icon = icons[i]
+		icon.visible = i < available.size()
+		if i < available.size():
+			var key: String = available[i]
+			var info: Dictionary = GelatoData.CONTAINERS[key]
+			icon.setup(key, "", "container", info["thumb"])
 
 
 func _setup_tray() -> void:
-	var avail := _available_flavor_keys()
+	var available := _available_flavor_keys()
 	var icons := tray.get_children()
 	for i in icons.size():
-		var key: String = avail[i % avail.size()]
-		var info: Dictionary = GelatoData.FLAVORS[key]
-		icons[i].setup(key, "", "flavor", info["thumb"])
+		var icon = icons[i]
+		icon.visible = i < available.size()
+		if i < available.size():
+			var key: String = available[i]
+			var info: Dictionary = GelatoData.FLAVORS[key]
+			icon.setup(key, "", "flavor", info["thumb"])
 
 
 func _setup_topping_tray() -> void:
-	var keys: Array = GelatoData.TOPPING_ORDER
+	var unlocked := GameState.are_toppings_unlocked()
+	topping_tray.visible = unlocked
+	var keys: Array = GelatoData.TOPPING_ORDER if unlocked else []
 	var icons := topping_tray.get_children()
 	for i in icons.size():
-		var key: String = keys[i % keys.size()]
-		var info: Dictionary = GelatoData.TOPPINGS[key]
-		icons[i].setup(key, "", "topping", info["thumb"])
+		var icon = icons[i]
+		icon.visible = i < keys.size()
+		if i < keys.size():
+			var key: String = keys[i]
+			var info: Dictionary = GelatoData.TOPPINGS[key]
+			icon.setup(key, "", "topping", info["thumb"])
 
 
 func _available_flavor_keys() -> Array:
@@ -321,6 +342,14 @@ func _process_cooldown(delta: float) -> void:
 func _spawn_customer() -> void:
 	if not is_running:
 		return
+
+	# ลูกค้าที่มีเนื้อเรื่องสามารถสุ่มเข้ามาระหว่างเล่นในวันที่กำหนด
+	var story_chapter: String = str(StoryData.RANDOM_CUSTOMER_STORIES.get(level_id, ""))
+	if story_chapter != "" and not GameState.has_seen_chapter(story_chapter) and randf() < 0.18:
+		GameState.start_story(story_chapter, "res://Game.tscn")
+		get_tree().change_scene_to_file("res://VisualNovel.tscn")
+		return
+
 	scoop_state = ScoopState.IDLE
 	_hide_challenge_ui()
 
@@ -403,6 +432,9 @@ func _on_ingredient_dropped(key: String, _emoji: String, kind: String) -> void:
 
 	match kind:
 		"container":
+			if not _available_container_keys().has(key):
+				message_label.text = "ภาชนะนี้ยังไม่ปลดล็อกในวันนี้นะ!"
+				return
 			if chosen_container != "":
 				message_label.text = "มีภาชนะอยู่แล้วนะ!"
 				return
@@ -413,6 +445,9 @@ func _on_ingredient_dropped(key: String, _emoji: String, kind: String) -> void:
 			message_label.text = "วาง%sเรียบร้อย ตักเจลาโต้ได้เลย!" % GelatoData.container_name(key)
 			SFX.play("click")
 		"flavor":
+			if not _available_flavor_keys().has(key):
+				message_label.text = "รสนี้ยังไม่ปลดล็อกในวันนี้นะ!"
+				return
 			if chosen_container == "":
 				message_label.text = "ต้องวางภาชนะก่อนนะ!"
 				return
@@ -421,6 +456,9 @@ func _on_ingredient_dropped(key: String, _emoji: String, kind: String) -> void:
 				return
 			_start_scoop_challenge(key)
 		"topping":
+			if not GameState.are_toppings_unlocked() or not GelatoData.TOPPINGS.has(key):
+				message_label.text = "ท็อปปิ้งจะปลดล็อกตั้งแต่ Day 1 นะ!"
+				return
 			if chosen_container == "":
 				message_label.text = "ต้องวางภาชนะก่อนนะ!"
 				return
@@ -622,6 +660,7 @@ func _customer_left(satisfied: bool) -> void:
 		SFX.play("error")
 	customers_served += 1
 	current_order = {}
+	scoop_pending_key = ""
 	chosen_container = ""
 	cup_flavor_contents.clear()
 	cup_topping_contents.clear()

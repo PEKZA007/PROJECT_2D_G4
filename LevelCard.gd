@@ -28,9 +28,14 @@ func configure(id: int, level: Dictionary) -> void:
 	for s in range(3):
 		star_icons[s].texture = STAR_FILLED if s < level["stars"] else STAR_OUTLINE
 
-	info_label.text = "ลูกค้า %d คน\nวัตถุดิบสูงสุด %d" % [
-		level["target_customers"], level["max_order_size"]
-	]
+	var unlock_text := "3 รส" if id < 2 else "เจลาโต้ครบทุกรส"
+	if id == 0:
+		unlock_text += "\nยังไม่ปลดล็อกท็อปปิ้ง"
+	elif id == 1:
+		unlock_text += "\nปลดล็อกท็อปปิ้ง"
+	else:
+		unlock_text += "\nท็อปปิ้งพร้อมใช้"
+	info_label.text = "ลูกค้า %d คน\n%s" % [level["target_customers"], unlock_text]
 
 	if level["unlocked"]:
 		action_button.text = "เล่น"

@@ -45,7 +45,7 @@ func _populate() -> void:
 		next_button.text = "ดูตอนจบเรื่อง"
 		next_button.disabled = false
 	else:
-		next_button.text = "ด่านถัดไป"
+		next_button.text = "วันถัดไป"
 		next_button.disabled = not has_next
 
 

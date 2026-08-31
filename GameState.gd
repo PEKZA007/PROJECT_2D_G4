@@ -13,6 +13,7 @@ const SAVE_PATH := "user://savegame.json"
 
 # --- Currency & upgrades (ของจริงที่มีผลต่อเกมเพลย์ ดูใน Game.gd) ---
 var coins := 0
+var player_name := "แพรวา"
 var upgrade_fast_scoop := false      # "ตักเจลาโต้ไว" -> ลดเวลาคูลดาวน์การตัก
 var upgrade_expand_counter := false  # "ขยายตู้" -> ถ้วยใส่วัตถุดิบได้เพิ่ม 1 ชิ้น
 var upgrade_auto_churn := false      # "ปั่นออโต้" -> มินิเกมตักเจลาโต้ง่ายขึ้น
@@ -43,14 +44,14 @@ var equipped_skin := "classic"
 # stars: 0-3, unlocked: bool, max_order_size: จำนวนรสเจลาโต้สูงสุดต่อออเดอร์
 # (ไม่มีระบบจำกัดเวลาต่อด่านแล้ว — เล่นจนกว่าจะเสิร์ฟครบ target_customers)
 var levels := [
-	{"name": "ด่าน 1", "target_customers": 6, "max_order_size": 1, "stars": 0, "unlocked": true},
-	{"name": "ด่าน 2", "target_customers": 8, "max_order_size": 1, "stars": 0, "unlocked": false},
-	{"name": "ด่าน 3", "target_customers": 10, "max_order_size": 2, "stars": 0, "unlocked": false},
-	{"name": "ด่าน 4", "target_customers": 12, "max_order_size": 2, "stars": 0, "unlocked": false},
-	{"name": "ด่าน 5", "target_customers": 14, "max_order_size": 2, "stars": 0, "unlocked": false},
-	{"name": "ด่าน 6", "target_customers": 16, "max_order_size": 2, "stars": 0, "unlocked": false},
-	{"name": "ด่าน 7", "target_customers": 18, "max_order_size": 2, "stars": 0, "unlocked": false},
-	{"name": "ด่าน 8", "target_customers": 20, "max_order_size": 2, "stars": 0, "unlocked": false},
+	{"name": "Day 0", "target_customers": 6, "max_order_size": 1, "stars": 0, "unlocked": true},
+	{"name": "Day 1", "target_customers": 8, "max_order_size": 1, "stars": 0, "unlocked": false},
+	{"name": "Day 2", "target_customers": 10, "max_order_size": 2, "stars": 0, "unlocked": false},
+	{"name": "Day 3", "target_customers": 12, "max_order_size": 2, "stars": 0, "unlocked": false},
+	{"name": "Day 4", "target_customers": 14, "max_order_size": 2, "stars": 0, "unlocked": false},
+	{"name": "Day 5", "target_customers": 16, "max_order_size": 2, "stars": 0, "unlocked": false},
+	{"name": "Day 6", "target_customers": 18, "max_order_size": 2, "stars": 0, "unlocked": false},
+	{"name": "Day 7", "target_customers": 20, "max_order_size": 2, "stars": 0, "unlocked": false},
 ]
 
 var current_level_id := 0
@@ -100,9 +101,15 @@ func start_story(chapter_id: String, next_scene: String) -> void:
 	pending_story_next_scene = next_scene
 
 
-# รสชาติทั้งหมดเปิดให้เล่นได้ตั้งแต่แรก ไม่มีระบบซื้อ/ปลดล็อกอีกต่อไป
-func is_flavor_unlocked(_key: String) -> bool:
-	return true
+# Day 0-1 มี 3 รสแรก และ Day 2 เป็นต้นไปปลดล็อกเจลาโต้ทุกรส
+func is_flavor_unlocked(key: String) -> bool:
+	var index := GelatoData.FLAVOR_ORDER.find(key)
+	if index < 0:
+		return false
+	return index < 3 if current_level_id < 2 else true
+
+func are_toppings_unlocked() -> bool:
+	return current_level_id >= 1
 
 
 func is_equipment_owned(key: String) -> bool:
@@ -202,6 +209,7 @@ func has_progress() -> bool:
 
 func start_new_game() -> void:
 	coins = 0
+	player_name = "แพรวา"
 	upgrade_fast_scoop = false
 	upgrade_expand_counter = false
 	upgrade_auto_churn = false
@@ -253,6 +261,7 @@ func has_save() -> bool:
 func save_game() -> void:
 	var data := {
 		"coins": coins,
+		"player_name": player_name,
 		"upgrade_fast_scoop": upgrade_fast_scoop,
 		"upgrade_expand_counter": upgrade_expand_counter,
 		"upgrade_auto_churn": upgrade_auto_churn,
@@ -289,6 +298,8 @@ func load_game() -> bool:
 		return false
 
 	coins = int(parsed.get("coins", coins))
+	player_name = str(parsed.get("player_name", player_name)).strip_edges()
+	if player_name.is_empty(): player_name = "แพรวา"
 	upgrade_fast_scoop = bool(parsed.get("upgrade_fast_scoop", upgrade_fast_scoop))
 	upgrade_expand_counter = bool(parsed.get("upgrade_expand_counter", upgrade_expand_counter))
 	upgrade_auto_churn = bool(parsed.get("upgrade_auto_churn", upgrade_auto_churn))

@@ -11,6 +11,8 @@ extends Node2D
 @onready var credits_button: Button = $CreditsButton
 @onready var new_game_confirm_dialog: ConfirmationDialog = $NewGameConfirmDialog
 @onready var bg_music: AudioStreamPlayer = $BGMusic
+@onready var name_dialog: AcceptDialog = $PlayerNameDialog
+@onready var name_edit: LineEdit = $PlayerNameDialog/NameEdit
 
 
 func _ready() -> void:
@@ -22,9 +24,11 @@ func _ready() -> void:
 	how_to_play_button.pressed.connect(_on_how_to_play)
 	credits_button.pressed.connect(_on_credits)
 
-	new_game_confirm_dialog.confirmed.connect(_start_new_game)
+	new_game_confirm_dialog.confirmed.connect(_ask_player_name)
 	new_game_confirm_dialog.get_label().add_theme_font_size_override("font_size", 24)
 	new_game_confirm_dialog.get_cancel_button().text = "ยกเลิก"
+	name_dialog.confirmed.connect(_start_new_game_with_name)
+	name_edit.text = GameState.player_name
 
 	if bg_music.stream and bg_music.stream is AudioStreamMP3:
 		bg_music.stream.loop = true
@@ -36,11 +40,22 @@ func _on_new_game() -> void:
 	if GameState.has_progress():
 		new_game_confirm_dialog.popup_centered()
 	else:
-		_start_new_game()
+		_ask_player_name()
 
 
-func _start_new_game() -> void:
+func _ask_player_name() -> void:
+	name_edit.text = GameState.player_name
+	name_dialog.popup_centered()
+	name_edit.grab_focus()
+
+
+func _start_new_game_with_name() -> void:
+	var entered := name_edit.text.strip_edges()
+	if entered.is_empty():
+		entered = "แพรวา"
 	GameState.start_new_game()
+	GameState.player_name = entered
+	GameState.save_game()
 	get_tree().change_scene_to_file("res://LevelSelect.tscn")
 
 

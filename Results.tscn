@@ -111,4 +111,4 @@ theme_override_styles/disabled = ExtResource("5")
 theme_override_font_sizes/font_size = 30
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_disabled_color = Color(0.6, 0.6, 0.6, 1)
-text = "ด่านถัดไป"
+text = "วันถัดไป"
