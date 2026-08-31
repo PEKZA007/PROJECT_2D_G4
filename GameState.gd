@@ -63,6 +63,7 @@ var fullscreen := true
 
 # --- Story (Visual Novel) ---
 var seen_chapters := {}
+var seen_tutorial_days := {}
 var pending_story_chapter: String = ""
 var pending_story_next_scene: String = "res://LevelSelect.tscn"
 
@@ -99,6 +100,15 @@ func mark_story_seen(id: String) -> void:
 func start_story(chapter_id: String, next_scene: String) -> void:
 	pending_story_chapter = chapter_id
 	pending_story_next_scene = next_scene
+
+
+func has_seen_tutorial(day_id: int) -> bool:
+	return seen_tutorial_days.get(str(day_id), false)
+
+
+func mark_tutorial_seen(day_id: int) -> void:
+	seen_tutorial_days[str(day_id)] = true
+	save_game()
 
 
 # Day 0-1 มี 3 รสแรก และ Day 2 เป็นต้นไปปลดล็อกเจลาโต้ทุกรส
@@ -223,6 +233,7 @@ func start_new_game() -> void:
 		owned_skins[k] = (k == "classic")
 	equipped_skin = "classic"
 	seen_chapters.clear()
+	seen_tutorial_days.clear()
 	for i in levels.size():
 		levels[i]["stars"] = 0
 		levels[i]["unlocked"] = (i == 0)
@@ -274,6 +285,7 @@ func save_game() -> void:
 		"equipped_skin": equipped_skin,
 		"levels": levels,
 		"seen_chapters": seen_chapters,
+		"seen_tutorial_days": seen_tutorial_days,
 		"sfx_enabled": sfx_enabled,
 		"music_enabled": music_enabled,
 		"fullscreen": fullscreen,
@@ -339,6 +351,10 @@ func load_game() -> bool:
 	var loaded_chapters = parsed.get("seen_chapters", null)
 	if typeof(loaded_chapters) == TYPE_DICTIONARY:
 		seen_chapters = loaded_chapters
+
+	var loaded_tutorial_days = parsed.get("seen_tutorial_days", null)
+	if typeof(loaded_tutorial_days) == TYPE_DICTIONARY:
+		seen_tutorial_days = loaded_tutorial_days
 
 	sfx_enabled = bool(parsed.get("sfx_enabled", sfx_enabled))
 	music_enabled = bool(parsed.get("music_enabled", music_enabled))

@@ -68,4 +68,13 @@ func _on_next() -> void:
 		get_tree().change_scene_to_file("res://VisualNovel.tscn")
 	else:
 		GameState.current_level_id = next_id
-		get_tree().change_scene_to_file("res://Game.tscn")
+
+		# เมื่อกด "วันถัดไป" จากหน้าสรุป ให้เล่นเนื้อเรื่องเปิดด่าน
+		# ของวันถัดไปก่อนเข้าเกม เช่น Day 0 -> day1 -> Day 1 -> day2
+		# เพื่อไม่ให้ข้าม Visual Novel ไปเข้า Game.tscn โดยตรง
+		var chapter: String = StoryData.LEVEL_INTRO_CHAPTERS.get(next_id, "")
+		if chapter != "":
+			GameState.start_story(chapter, "res://Game.tscn")
+			get_tree().change_scene_to_file("res://VisualNovel.tscn")
+		else:
+			get_tree().change_scene_to_file("res://Game.tscn")

@@ -70,6 +70,16 @@ var cooldown_time_left := 0.0
 
 var customer_textures: Array = []
 
+# --- ระบบสอนเล่นแบบทีละขั้น ---
+var tutorial_active := false
+var tutorial_step := 0
+var tutorial_overlay: ColorRect
+var tutorial_panel: Panel
+var tutorial_title: Label
+var tutorial_body: Label
+var tutorial_progress: Label
+var tutorial_button: Button
+
 # --- Node references (all real nodes, defined in Game.tscn) ---
 @onready var background_rect: ColorRect = $Background
 @onready var scene_backdrop: TextureRect = $RoomBackdrop
@@ -144,6 +154,9 @@ func _ready() -> void:
 	_setup_counter_hotspots()
 	_spawn_customer()
 	_update_hud()
+	_update_scoop_status_label()
+	_refresh_build_visual()
+	call_deferred("_show_tutorial_if_needed")
 	_update_scoop_status_label()
 	_refresh_build_visual()
 
@@ -286,6 +299,204 @@ func _update_scoop_status_label() -> void:
 		scoop_status_label.text = "ใส่ท็อปปิ้ง หรือเสิร์ฟได้เลย"
 
 
+
+
+func _show_tutorial_if_needed() -> void:
+	if level_id < 0 or level_id > 2:
+		return
+	if GameState.has_seen_tutorial(level_id):
+		return
+
+	_open_tutorial()
+
+
+# เปิดระบบสอนเล่นอีกครั้งจากปุ่มในเกม/เมนูหยุดเกม
+# ใช้ได้เฉพาะ Day 0-2 ซึ่งเป็นช่วงที่มี Tutorial ประจำวัน
+func open_tutorial() -> void:
+	if level_id < 0 or level_id > 2:
+		return
+	_open_tutorial()
+
+
+func _open_tutorial() -> void:
+	if tutorial_active:
+		return
+
+	tutorial_active = true
+	is_running = false
+	tutorial_step = 0
+	_create_tutorial_ui()
+	_update_tutorial_ui()
+
+
+func _create_tutorial_ui() -> void:
+	if tutorial_overlay and is_instance_valid(tutorial_overlay):
+		return
+
+	tutorial_overlay = ColorRect.new()
+	tutorial_overlay.name = "TutorialOverlay"
+	tutorial_overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	tutorial_overlay.color = Color(0.02, 0.04, 0.07, 0.72)
+	tutorial_overlay.mouse_filter = Control.MOUSE_FILTER_STOP
+	add_child(tutorial_overlay)
+
+	tutorial_panel = Panel.new()
+	tutorial_panel.name = "TutorialPanel"
+	tutorial_panel.position = Vector2(545, 210)
+	tutorial_panel.size = Vector2(830, 590)
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.98, 0.98, 0.96, 1.0)
+	style.corner_radius_top_left = 28
+	style.corner_radius_top_right = 28
+	style.corner_radius_bottom_left = 28
+	style.corner_radius_bottom_right = 28
+	style.border_width_left = 3
+	style.border_width_top = 3
+	style.border_width_right = 3
+	style.border_width_bottom = 3
+	style.border_color = Color(0.18, 0.55, 0.52, 1.0)
+	tutorial_panel.add_theme_stylebox_override("panel", style)
+	tutorial_overlay.add_child(tutorial_panel)
+
+	tutorial_title = Label.new()
+	tutorial_title.position = Vector2(42, 35)
+	tutorial_title.size = Vector2(746, 70)
+	tutorial_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	tutorial_title.add_theme_font_size_override("font_size", 36)
+	tutorial_title.add_theme_color_override("font_color", Color(0.10, 0.28, 0.32, 1))
+	tutorial_panel.add_child(tutorial_title)
+
+	tutorial_body = Label.new()
+	tutorial_body.position = Vector2(70, 125)
+	tutorial_body.size = Vector2(690, 320)
+	tutorial_body.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	tutorial_body.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+	tutorial_body.vertical_alignment = VERTICAL_ALIGNMENT_TOP
+	tutorial_body.add_theme_font_size_override("font_size", 25)
+	tutorial_body.add_theme_color_override("font_color", Color(0.15, 0.17, 0.18, 1))
+	tutorial_panel.add_child(tutorial_body)
+
+	tutorial_progress = Label.new()
+	tutorial_progress.position = Vector2(70, 455)
+	tutorial_progress.size = Vector2(690, 35)
+	tutorial_progress.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	tutorial_progress.add_theme_font_size_override("font_size", 19)
+	tutorial_progress.add_theme_color_override("font_color", Color(0.38, 0.42, 0.43, 1))
+	tutorial_panel.add_child(tutorial_progress)
+
+	tutorial_button = Button.new()
+	tutorial_button.position = Vector2(255, 505)
+	tutorial_button.size = Vector2(320, 58)
+	tutorial_button.add_theme_font_size_override("font_size", 24)
+	tutorial_button.focus_mode = Control.FOCUS_NONE
+	tutorial_button.pressed.connect(_on_tutorial_button_pressed)
+	tutorial_panel.add_child(tutorial_button)
+
+
+func _tutorial_pages() -> Array:
+	match level_id:
+		0:
+			return [
+				["🎓 สอนเล่น: Day 0", "วันนี้เริ่มจากพื้นฐานก่อน
+
+1. ลากภาชนะมาวางตรงพื้นที่ทำเจลาโต้
+2. ดูออเดอร์ แล้วลากรสที่ลูกค้าสั่ง
+3. ตอนตัก ให้กด SPACE ให้ตรงจังหวะ
+4. เมื่อทำครบแล้ว กด “เสิร์ฟ” หรือ SPACE"],
+				["🔒 ของที่ใช้ได้วันนี้", "Day 0 มีเจลาโต้แค่ 3 รสแรกเท่านั้น
+
+🍨 ลูกค้าจะสั่งเฉพาะรสที่ปลดล็อกแล้ว
+🚫 วันนี้ยังไม่มีท็อปปิ้ง
+
+ทำตามออเดอร์ที่เห็นได้เลย ไม่ต้องเดาของที่ล็อกไว้"],
+				["✨ พร้อมเปิดร้าน!", "จำง่าย ๆ: ภาชนะ → ตักรส → กด SPACE ตามจังหวะ → เสิร์ฟ
+
+พรุ่งนี้จะปลดล็อกท็อปปิ้งเพิ่ม!
+
+กด “เริ่มเล่น” แล้วลองทำออเดอร์แรกได้เลย"]
+			]
+		1:
+			return [
+				["🎓 สอนเล่น: Day 1", "วันนี้รูปแบบการเล่นเหมือนเดิม แต่มีของใหม่เพิ่มเข้ามา
+
+1. อ่านออเดอร์
+2. ทำเจลาโต้ตามรสที่ลูกค้าต้องการ
+3. ถ้ามีท็อปปิ้ง ให้ลากท็อปปิ้งใส่
+4. แล้วกดเสิร์ฟ"],
+				["🍓 ปลดล็อกท็อปปิ้ง!", "ตั้งแต่ Day 1 เป็นต้นไป ลูกค้าสามารถสั่งท็อปปิ้งได้
+
+🍨 เจลาโต้ยังมีแค่ 3 รสแรก
+🍓 ท็อปปิ้งจะปรากฏในออเดอร์เมื่อถูกสุ่ม
+
+ลูกค้าจะไม่สั่งรสเจลาโต้ที่ยังล็อกอยู่"],
+				["✨ พร้อมเสิร์ฟ!", "ถ้าออเดอร์เขียนว่า “ท็อปปิ้ง” ให้ใส่ท็อปปิ้งก่อนเสิร์ฟ
+
+ถ้าไม่มีท็อปปิ้ง ก็เสิร์ฟได้เลยหลังทำรสครบ
+
+กด “เริ่มเล่น” เพื่อเปิดร้าน Day 1"]
+			]
+		2:
+			return [
+				["🎓 สอนเล่น: Day 2", "วันนี้ร้านมีเจลาโต้ครบทุก 6 รสแล้ว!
+
+ขั้นตอนยังเหมือนเดิม:
+1. อ่านออเดอร์
+2. เลือกภาชนะ
+3. ตักรสตามออเดอร์
+4. ใส่ท็อปปิ้งถ้ามี
+5. เสิร์ฟ"],
+				["🍨 ปลดล็อกเจลาโต้ครบทุก 6 รส!", "ตั้งแต่ Day 2 เป็นต้นไป รสเจลาโต้ทั้ง 6 รสเปิดให้ใช้งาน
+
+ลูกค้าจึงสามารถสั่งรสใหม่ได้ทั้งหมด
+
+🔓 ลูกค้าจะสุ่มออเดอร์จากของที่ปลดล็อกแล้วเท่านั้น"],
+				["✨ เริ่มขายแบบเต็มร้าน!", "ตอนนี้จำกติกาการปลดล็อกได้แล้ว:
+
+Day 0 → 3 รส / ไม่มีท็อปปิ้ง
+Day 1 → 3 รส / มีท็อปปิ้ง
+Day 2+ → 6 รส / มีท็อปปิ้ง
+
+กด “เริ่มเล่น” แล้วลุยเลย!"]
+			]
+		_:
+			return []
+
+
+func _update_tutorial_ui() -> void:
+	var pages := _tutorial_pages()
+	if pages.is_empty() or tutorial_step >= pages.size():
+		_finish_tutorial()
+		return
+
+	tutorial_title.text = pages[tutorial_step][0]
+	tutorial_body.text = pages[tutorial_step][1]
+	tutorial_progress.text = "ขั้นตอน %d / %d" % [tutorial_step + 1, pages.size()]
+	tutorial_button.text = "เริ่มเล่น" if tutorial_step == pages.size() - 1 else "ถัดไป  →"
+
+
+func _on_tutorial_button_pressed() -> void:
+	tutorial_step += 1
+	_update_tutorial_ui()
+
+
+func _finish_tutorial() -> void:
+	if not tutorial_active:
+		return
+	tutorial_active = false
+	is_running = true
+	if tutorial_overlay and is_instance_valid(tutorial_overlay):
+		tutorial_overlay.queue_free()
+	tutorial_overlay = null
+	tutorial_panel = null
+	tutorial_title = null
+	tutorial_body = null
+	tutorial_progress = null
+	tutorial_button = null
+	GameState.mark_tutorial_seen(level_id)
+	_update_hud()
+	_update_scoop_status_label()
+
+
 func _process(delta: float) -> void:
 	if not is_running:
 		return
@@ -362,10 +573,17 @@ func _spawn_customer() -> void:
 	var flavor_count: int = min(capacity, avail.size())
 	var order_flavors: Array = avail.slice(0, flavor_count)
 
-	var topping_keys: Array = GelatoData.TOPPING_ORDER.duplicate()
-	topping_keys.shuffle()
-	var topping_count: int = randi_range(0, min(MAX_TOPPING_CAPACITY, topping_keys.size()))
-	var order_toppings: Array = topping_keys.slice(0, topping_count)
+	# ท็อปปิ้งจะเริ่มสั่งได้ตั้งแต่ Day 1 เท่านั้น
+	# Day 0 ต้องไม่มีท็อปปิ้งในออเดอร์โดยเด็ดขาด
+	var order_toppings: Array = []
+	if GameState.are_toppings_unlocked():
+		var topping_keys: Array = []
+		for topping_key in GelatoData.TOPPING_ORDER:
+			if GelatoData.TOPPINGS.has(topping_key):
+				topping_keys.append(topping_key)
+		topping_keys.shuffle()
+		var topping_count: int = randi_range(0, min(MAX_TOPPING_CAPACITY, topping_keys.size()))
+		order_toppings = topping_keys.slice(0, topping_count)
 
 	current_order = {"container": order_container, "flavors": order_flavors, "toppings": order_toppings}
 
