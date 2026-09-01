@@ -25,6 +25,12 @@ const CONE_FRONT := "res://assets/gelato/cone/cone_front.png"
 const SMALL_CUP := "res://assets/gelato/small/cup.png"
 const LARGE_CUP := "res://assets/gelato/large/cup.png"
 
+# ภาพเคาน์เตอร์ตามระดับการปลดล็อกของวันนั้น ๆ ใช้แทนกล่องดำ "ล็อก" แบบเดิม
+# stage 0: รส 3 ชนิด ยังไม่มีท็อปปิ้ง | stage 1: รส 3 ชนิด + ท็อปปิ้ง | stage 2: รสครบ + ท็อปปิ้ง
+const COUNTER_STAGE_0 := "res://assets/gelato/cabinet/counter_stage0_day0.png"
+const COUNTER_STAGE_1 := "res://assets/gelato/cabinet/counter_stage1_day1.png"
+const COUNTER_STAGE_2 := "res://assets/gelato/cabinet/counter_stage2_allunlocked.png"
+
 # ตำแหน่ง/ขนาด (offset_left, offset_top, offset_right, offset_bottom) ภายใน BuildStage (410x410)
 const RECT_FULL := Rect2(0, 0, 410, 410)
 
@@ -37,6 +43,10 @@ var combo := 0
 var max_combo := 0
 var total_order_time := 0.0
 var coins_earned := 0
+var is_special_customer := false
+var special_customer_chapter := ""
+var special_customer_reward_multiplier := 1.0
+var special_customer_portrait := ""
 
 var current_order: Dictionary = {}     # {"container": key, "flavors": [...], "toppings": [...]}
 var patience_time := 0.0
@@ -152,6 +162,10 @@ func _ready() -> void:
 	_setup_tray()
 	_setup_topping_tray()
 	_setup_counter_hotspots()
+	# ถ้าเข้าด่านใหม่/เล่นด่านเดิมใหม่ ให้มีโอกาสสุ่มลูกค้าพิเศษอีกครั้ง
+	# แต่ถ้าเพิ่งกลับจาก Visual Novel จะมี pending_special_customer อยู่ จึงห้าม reset
+	if GameState.pending_special_customer.is_empty():
+		GameState.special_customer_triggered_this_level = false
 	_spawn_customer()
 	_update_hud()
 	_update_scoop_status_label()
@@ -165,9 +179,21 @@ func _exit_tree() -> void:
 	CursorFX.clear()
 
 
+func _update_counter_art() -> void:
+	# ใช้ภาพเคาน์เตอร์ที่ตรงกับความคืบหน้าของวันนั้น ๆ แทนการทับด้วยกล่องดำ "ล็อก"
+	# ภาพแต่ละสเตจวาดรสและท็อปปิ้งที่ยังไม่ปลดล็อกเป็นถาดว่างอยู่แล้ว
+	if not GameState.are_toppings_unlocked():
+		counter_art.texture = load(COUNTER_STAGE_0)
+	elif _available_flavor_keys().size() < GelatoData.FLAVOR_ORDER.size():
+		counter_art.texture = load(COUNTER_STAGE_1)
+	else:
+		counter_art.texture = load(COUNTER_STAGE_2)
+
+
 func _setup_counter_hotspots() -> void:
 	# ล็อกวัตถุดิบบนเคาน์เตอร์ให้ตรงกับกติกาของวันปัจจุบัน
 	# สำคัญ: อย่าล็อกเฉพาะรส เพราะผู้เล่นสามารถลากภาชนะใหญ่/ท็อปปิ้งจาก hotspot ได้เช่นกัน
+	_update_counter_art()
 	var unlocked_flavors: Array = _available_flavor_keys()
 	var available_containers: Array = _available_container_keys()
 	var toppings_unlocked := GameState.are_toppings_unlocked()
@@ -401,8 +427,9 @@ func _tutorial_pages() -> Array:
 
 1. ลากภาชนะมาวางตรงพื้นที่ทำเจลาโต้
 2. ดูออเดอร์ แล้วลากรสที่ลูกค้าสั่ง
-3. ตอนตัก ให้กด SPACE ให้ตรงจังหวะ
-4. เมื่อทำครบแล้ว กด “เสิร์ฟ” หรือ SPACE"],
+3. บางวันอาจมี “ลูกค้าพิเศษ” สุ่มเข้ามา — จะตัดเข้าเนื้อเรื่องก่อนสั่ง
+4. ตอนตัก ให้กด SPACE ให้ตรงจังหวะ
+5. เมื่อทำครบแล้ว กด “เสิร์ฟ” หรือ SPACE"],
 				["[*] ของที่ใช้ได้วันนี้", "Day 0 มีเจลาโต้แค่ 3 รสแรกเท่านั้น
 
 - ลูกค้าจะสั่งเฉพาะรสที่ปลดล็อกแล้ว
@@ -427,6 +454,7 @@ func _tutorial_pages() -> Array:
 
 - เจลาโต้ยังมีแค่ 3 รสแรก
 - ท็อปปิ้งจะปรากฏในออเดอร์เมื่อถูกสุ่ม
+- ลูกค้าพิเศษจะมีเนื้อเรื่องและออเดอร์เฉพาะตัว
 
 ลูกค้าจะไม่สั่งรสเจลาโต้ที่ยังล็อกอยู่"],
 				["[*] พร้อมเสิร์ฟ!", "ถ้าออเดอร์เขียนว่า “ท็อปปิ้ง” ให้ใส่ท็อปปิ้งก่อนเสิร์ฟ
@@ -554,40 +582,71 @@ func _spawn_customer() -> void:
 	if not is_running:
 		return
 
-	# ลูกค้าที่มีเนื้อเรื่องสามารถสุ่มเข้ามาระหว่างเล่นในวันที่กำหนด
-	var story_chapter: String = str(StoryData.RANDOM_CUSTOMER_STORIES.get(level_id, ""))
-	if story_chapter != "" and not GameState.has_seen_chapter(story_chapter) and randf() < 0.18:
-		GameState.start_story(story_chapter, "res://Game.tscn")
-		get_tree().change_scene_to_file("res://VisualNovel.tscn")
-		return
+	# ------------------------------------------------------------
+	# ลูกค้าพิเศษ
+	# 1) สุ่มเจอได้สูงสุด 1 คนต่อการเล่นด่าน
+	# 2) เมื่อเจอจะตัดเข้า Visual Novel
+	# 3) หลังจบบท จะกลับมาพร้อมออเดอร์ที่กำหนดไว้ใน StoryData
+	# ------------------------------------------------------------
+	var pending_special := GameState.take_pending_special_customer()
+	var special_data: Dictionary = {}
+	if not pending_special.is_empty():
+		var chapter := str(pending_special.get("chapter", ""))
+		special_data = StoryData.SPECIAL_CUSTOMERS.get(chapter, {}).duplicate(true)
+		if not special_data.is_empty():
+			is_special_customer = true
+			special_customer_chapter = chapter
+			special_customer_reward_multiplier = float(special_data.get("reward_multiplier", 2.5))
+			special_customer_portrait = str(special_data.get("portrait", ""))
+		current_order = special_data.get("order", {}).duplicate(true)
+	else:
+		is_special_customer = false
+		special_customer_chapter = ""
+		special_customer_reward_multiplier = 1.0
+		special_customer_portrait = ""
 
-	scoop_state = ScoopState.IDLE
-	_hide_challenge_ui()
+		# สุ่มลูกค้าพิเศษจากบทที่มีอยู่สำหรับวันนี้
+		var story_chapter: String = str(StoryData.RANDOM_CUSTOMER_STORIES.get(level_id, ""))
+		if story_chapter != "" and not GameState.has_seen_chapter(story_chapter) and not GameState.special_customer_triggered_this_level and randf() < 0.18:
+			var data: Dictionary = StoryData.SPECIAL_CUSTOMERS.get(story_chapter, {})
+			if not data.is_empty():
+				GameState.start_special_customer(story_chapter, data.get("order", {}))
+				GameState.start_story(story_chapter, "res://Game.tscn")
+				get_tree().change_scene_to_file("res://VisualNovel.tscn")
+				return
 
-	var avail_containers := _available_container_keys()
-	var order_container: String = avail_containers[randi() % avail_containers.size()]
-	var capacity: int = GelatoData.container_capacity(order_container)
+	# ถ้าไม่มีออเดอร์จากเนื้อเรื่อง แปลว่าเป็นลูกค้าปกติ
+	if current_order.is_empty():
+		scoop_state = ScoopState.IDLE
+		_hide_challenge_ui()
 
-	var avail := _available_flavor_keys()
-	avail.shuffle()
-	var flavor_count: int = min(capacity, avail.size())
-	var order_flavors: Array = avail.slice(0, flavor_count)
+		var avail_containers := _available_container_keys()
+		var order_container: String = avail_containers[randi() % avail_containers.size()]
+		var capacity: int = GelatoData.container_capacity(order_container)
 
-	# ท็อปปิ้งจะเริ่มสั่งได้ตั้งแต่ Day 1 เท่านั้น
-	# Day 0 ต้องไม่มีท็อปปิ้งในออเดอร์โดยเด็ดขาด
-	var order_toppings: Array = []
-	if GameState.are_toppings_unlocked():
-		var topping_keys: Array = []
-		for topping_key in GelatoData.TOPPING_ORDER:
-			if GelatoData.TOPPINGS.has(topping_key):
-				topping_keys.append(topping_key)
-		topping_keys.shuffle()
-		var topping_count: int = randi_range(0, min(MAX_TOPPING_CAPACITY, topping_keys.size()))
-		order_toppings = topping_keys.slice(0, topping_count)
+		var avail := _available_flavor_keys()
+		avail.shuffle()
+		var flavor_count: int = min(capacity, avail.size())
+		var order_flavors: Array = avail.slice(0, flavor_count)
 
-	current_order = {"container": order_container, "flavors": order_flavors, "toppings": order_toppings}
+		var order_toppings: Array = []
+		if GameState.are_toppings_unlocked():
+			var topping_keys: Array = []
+			for topping_key in GelatoData.TOPPING_ORDER:
+				if GelatoData.TOPPINGS.has(topping_key):
+					topping_keys.append(topping_key)
+			topping_keys.shuffle()
+			var topping_count: int = randi_range(0, min(MAX_TOPPING_CAPACITY, topping_keys.size()))
+			order_toppings = topping_keys.slice(0, topping_count)
 
-	var text := "ภาชนะ: %s\n" % GelatoData.container_name(order_container)
+		current_order = {"container": order_container, "flavors": order_flavors, "toppings": order_toppings}
+
+	# แสดงออเดอร์ ทั้งลูกค้าปกติและลูกค้าพิเศษ
+	var order_container: String = str(current_order.get("container", ""))
+	var order_flavors: Array = current_order.get("flavors", [])
+	var order_toppings: Array = current_order.get("toppings", [])
+
+	var text := "ภาชนะ: %s\\\n" % GelatoData.container_name(order_container)
 	var flavor_names: Array = []
 	for k in order_flavors:
 		flavor_names.append(GelatoData.flavor_name(k))
@@ -596,7 +655,9 @@ func _spawn_customer() -> void:
 		var topping_names: Array = []
 		for k in order_toppings:
 			topping_names.append(GelatoData.topping_name(k))
-		text += "\nท็อปปิ้ง: " + " + ".join(topping_names)
+		text += "\\\nท็อปปิ้ง: " + " + ".join(topping_names)
+	if is_special_customer:
+		text = "★ ลูกค้าพิเศษ ★\\\n" + text + "\\\nทำสำเร็จรับเงิน x%.1f!" % special_customer_reward_multiplier
 	order_label.text = text
 
 	patience_max = max(12.0, 20.0 - customers_served * 0.3)
@@ -614,6 +675,11 @@ func _spawn_customer() -> void:
 
 
 func _update_queue_faces() -> void:
+	if is_special_customer and special_customer_portrait != "":
+		var tex := load(StoryData.portrait_path(special_customer_portrait))
+		for portrait in queue_portraits:
+			portrait.texture = tex
+		return
 	if customer_textures.is_empty():
 		return
 	for portrait in queue_portraits:
@@ -844,13 +910,15 @@ func _serve() -> void:
 		for k in order_toppings:
 			value_sum += int(GelatoData.TOPPINGS[k]["value"])
 		var reward := 5 + value_sum + combo * 3
+		if is_special_customer:
+			reward = int(round(reward * special_customer_reward_multiplier))
 		if GameState.upgrade_coin_boost:
 			reward = int(round(reward * 1.1))
 		coins_earned += reward
 		combo += 1
 		max_combo = max(max_combo, combo)
 		customers_satisfied += 1
-		message_label.text = "เสิร์ฟถูกใจ! +%d เหรียญ" % reward
+		message_label.text = ("★ ลูกค้าพิเศษ! +%d เหรียญ ★" if is_special_customer else "เสิร์ฟถูกใจ! +%d เหรียญ") % reward
 		SFX.play("coin")
 		_customer_left(true)
 	elif not container_ok:
@@ -878,6 +946,10 @@ func _customer_left(satisfied: bool) -> void:
 		SFX.play("error")
 	customers_served += 1
 	current_order = {}
+	is_special_customer = false
+	special_customer_chapter = ""
+	special_customer_reward_multiplier = 1.0
+	special_customer_portrait = ""
 	scoop_pending_key = ""
 	chosen_container = ""
 	cup_flavor_contents.clear()

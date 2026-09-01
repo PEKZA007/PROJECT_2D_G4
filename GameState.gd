@@ -66,6 +66,10 @@ var seen_chapters := {}
 var seen_tutorial_days := {}
 var pending_story_chapter: String = ""
 var pending_story_next_scene: String = "res://LevelSelect.tscn"
+# --- ลูกค้าพิเศษ ---
+# เก็บออเดอร์ของลูกค้าพิเศษไว้ขณะเปลี่ยนไปฉาก Visual Novel แล้วกลับมาที่ร้าน
+var pending_special_customer: Dictionary = {}
+var special_customer_triggered_this_level := false
 
 # --- Last run (read by Results.gd, not persisted to disk) ---
 var last_run := {
@@ -100,6 +104,22 @@ func mark_story_seen(id: String) -> void:
 func start_story(chapter_id: String, next_scene: String) -> void:
 	pending_story_chapter = chapter_id
 	pending_story_next_scene = next_scene
+
+
+func start_special_customer(chapter_id: String, order: Dictionary) -> void:
+	# ออเดอร์ถูกกำหนดไว้ก่อนเข้าเนื้อเรื่อง เพื่อให้คำสั่งซื้อในบทสนทนา
+	# ตรงกับสิ่งที่ผู้เล่นต้องทำหลังจบเนื้อเรื่อง
+	pending_special_customer = {
+		"chapter": chapter_id,
+		"order": order.duplicate(true),
+	}
+	special_customer_triggered_this_level = true
+
+
+func take_pending_special_customer() -> Dictionary:
+	var result := pending_special_customer.duplicate(true)
+	pending_special_customer.clear()
+	return result
 
 
 func has_seen_tutorial(day_id: int) -> bool:

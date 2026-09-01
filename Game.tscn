@@ -11,7 +11,6 @@
 [ext_resource type="PackedScene" path="res://PausePanel.tscn" id="11"]
 [ext_resource type="Texture2D" uid="uid://cpjdqj36u0h2i" path="res://assets/gelato/cabinet/counter_with_gelato.png" id="12"]
 [ext_resource type="StyleBox" uid="uid://i5d545va6tw8" path="res://theme/style_bottom_bar.tres" id="14"]
-[ext_resource type="StyleBox" uid="uid://djpblr1nirh0a" path="res://theme/style_lock_overlay.tres" id="15"]
 [ext_resource type="StyleBox" uid="uid://bly0kwosd6sno" path="res://theme/style_hud_pill.tres" id="16"]
 [ext_resource type="Script" uid="uid://cbrhqa1ru4mab" path="res://CounterHotspot.gd" id="17"]
 [ext_resource type="Script" uid="uid://bubtq2dknl2kj" path="res://ChallengeArc.gd" id="18"]
@@ -80,6 +79,7 @@ mouse_filter = 2
 texture = ExtResource("12")
 
 [node name="TubPistachio" type="TextureRect" parent="." unique_id=1600000010]
+visible = false
 offset_left = 602.0
 offset_top = 695.0
 offset_right = 841.0
@@ -88,6 +88,7 @@ mouse_filter = 2
 texture = ExtResource("20")
 
 [node name="TubCookiesCream" type="TextureRect" parent="." unique_id=1600000011]
+visible = false
 offset_left = 815.0
 offset_top = 699.0
 offset_right = 1030.0
@@ -96,6 +97,7 @@ mouse_filter = 2
 texture = ExtResource("21")
 
 [node name="TubStrawberryCheesecake" type="TextureRect" parent="." unique_id=1600000012]
+visible = false
 offset_left = 1025.0
 offset_top = 700.0
 offset_right = 1231.0
@@ -104,6 +106,7 @@ mouse_filter = 2
 texture = ExtResource("22")
 
 [node name="TubDarkChocolate" type="TextureRect" parent="." unique_id=1600000013]
+visible = false
 offset_left = 1231.0
 offset_top = 691.0
 offset_right = 1444.0
@@ -112,6 +115,7 @@ mouse_filter = 2
 texture = ExtResource("23")
 
 [node name="TubLemon" type="TextureRect" parent="." unique_id=1600000014]
+visible = false
 offset_left = 1433.0
 offset_top = 685.0
 offset_right = 1642.0
@@ -120,6 +124,7 @@ mouse_filter = 2
 texture = ExtResource("24")
 
 [node name="TubChocMint" type="TextureRect" parent="." unique_id=1600000015]
+visible = false
 offset_left = 1612.0
 offset_top = 689.0
 offset_right = 1852.0
@@ -204,23 +209,6 @@ script = ExtResource("17")
 metadata/ingredient_key = "pistachio"
 metadata/kind = "flavor"
 
-[node name="LockOverlay" type="Panel" parent="HotspotFlavorPistachio" unique_id=280999375]
-visible = false
-layout_mode = 0
-offset_right = 174.0
-offset_bottom = 410.0
-mouse_filter = 2
-theme_override_styles/panel = ExtResource("15")
-
-[node name="LockLabel" type="Label" parent="HotspotFlavorPistachio/LockOverlay" unique_id=1416798675]
-layout_mode = 0
-offset_right = 174.0
-offset_bottom = 410.0
-theme_override_font_sizes/font_size = 26
-text = "ล็อก"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="HotspotFlavorCookiesCream" type="Button" parent="." unique_id=159881828]
 offset_left = 848.0
 offset_top = 600.0
@@ -231,23 +219,6 @@ flat = true
 script = ExtResource("17")
 metadata/ingredient_key = "cookies_cream"
 metadata/kind = "flavor"
-
-[node name="LockOverlay" type="Panel" parent="HotspotFlavorCookiesCream" unique_id=1846607597]
-visible = false
-layout_mode = 0
-offset_right = 172.0
-offset_bottom = 410.0
-mouse_filter = 2
-theme_override_styles/panel = ExtResource("15")
-
-[node name="LockLabel" type="Label" parent="HotspotFlavorCookiesCream/LockOverlay" unique_id=1469024706]
-layout_mode = 0
-offset_right = 172.0
-offset_bottom = 410.0
-theme_override_font_sizes/font_size = 26
-text = "ล็อก"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="HotspotFlavorStrawberryCheesePie" type="Button" parent="." unique_id=781104689]
 offset_left = 1045.0
@@ -260,23 +231,6 @@ script = ExtResource("17")
 metadata/ingredient_key = "strawberry_cheesecake"
 metadata/kind = "flavor"
 
-[node name="LockOverlay" type="Panel" parent="HotspotFlavorStrawberryCheesePie" unique_id=2020054667]
-visible = false
-layout_mode = 0
-offset_right = 171.0
-offset_bottom = 410.0
-mouse_filter = 2
-theme_override_styles/panel = ExtResource("15")
-
-[node name="LockLabel" type="Label" parent="HotspotFlavorStrawberryCheesePie/LockOverlay" unique_id=374238325]
-layout_mode = 0
-offset_right = 171.0
-offset_bottom = 410.0
-theme_override_font_sizes/font_size = 26
-text = "ล็อก"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="HotspotFlavorDarkChocolate" type="Button" parent="." unique_id=1577325913]
 offset_left = 1241.0
 offset_top = 600.0
@@ -287,23 +241,6 @@ flat = true
 script = ExtResource("17")
 metadata/ingredient_key = "dark_chocolate"
 metadata/kind = "flavor"
-
-[node name="LockOverlay" type="Panel" parent="HotspotFlavorDarkChocolate" unique_id=1903673567]
-visible = false
-layout_mode = 0
-offset_right = 175.0
-offset_bottom = 410.0
-mouse_filter = 2
-theme_override_styles/panel = ExtResource("15")
-
-[node name="LockLabel" type="Label" parent="HotspotFlavorDarkChocolate/LockOverlay" unique_id=2013943125]
-layout_mode = 0
-offset_right = 175.0
-offset_bottom = 410.0
-theme_override_font_sizes/font_size = 26
-text = "ล็อก"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="HotspotFlavorLemon" type="Button" parent="." unique_id=1445367347]
 offset_left = 1441.0
@@ -316,23 +253,6 @@ script = ExtResource("17")
 metadata/ingredient_key = "lemon"
 metadata/kind = "flavor"
 
-[node name="LockOverlay" type="Panel" parent="HotspotFlavorLemon" unique_id=356558347]
-visible = false
-layout_mode = 0
-offset_right = 170.0
-offset_bottom = 410.0
-mouse_filter = 2
-theme_override_styles/panel = ExtResource("15")
-
-[node name="LockLabel" type="Label" parent="HotspotFlavorLemon/LockOverlay" unique_id=614749890]
-layout_mode = 0
-offset_right = 170.0
-offset_bottom = 410.0
-theme_override_font_sizes/font_size = 26
-text = "ล็อก"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="HotspotFlavorChocMint" type="Button" parent="." unique_id=226399106]
 offset_left = 1629.0
 offset_top = 600.0
@@ -343,23 +263,6 @@ flat = true
 script = ExtResource("17")
 metadata/ingredient_key = "choc_mint"
 metadata/kind = "flavor"
-
-[node name="LockOverlay" type="Panel" parent="HotspotFlavorChocMint" unique_id=29825283]
-visible = false
-layout_mode = 0
-offset_right = 176.0
-offset_bottom = 410.0
-mouse_filter = 2
-theme_override_styles/panel = ExtResource("15")
-
-[node name="LockLabel" type="Label" parent="HotspotFlavorChocMint/LockOverlay" unique_id=1529088650]
-layout_mode = 0
-offset_right = 176.0
-offset_bottom = 410.0
-theme_override_font_sizes/font_size = 26
-text = "ล็อก"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="CatSprite" type="TextureRect" parent="." unique_id=1600000023]
 offset_left = 652.0
@@ -441,13 +344,6 @@ text = "เมนู"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
-
-[node name="BottomBar" type="Panel" parent="." unique_id=1415727902]
-offset_top = 1006.0
-offset_right = 1920.0
-offset_bottom = 1080.0
-mouse_filter = 2
-theme_override_styles/panel = ExtResource("14")
 
 [node name="CoinsPill" type="Panel" parent="." unique_id=2001000001]
 offset_left = 24.0
@@ -570,6 +466,13 @@ texture = ExtResource("28")
 position = Vector2(469, 990)
 texture = ExtResource("30")
 
+[node name="BottomBar" type="Panel" parent="." unique_id=1415727902]
+offset_top = 1006.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+mouse_filter = 2
+theme_override_styles/panel = ExtResource("14")
+
 [node name="BuildStage" type="Control" parent="." unique_id=1860896294]
 layout_mode = 3
 anchors_preset = 0
@@ -580,8 +483,6 @@ offset_bottom = 580.0
 
 [node name="LayerCup" type="TextureRect" parent="BuildStage" unique_id=622293745]
 layout_mode = 0
-offset_left = 0.0
-offset_top = 0.0
 offset_right = 410.0
 offset_bottom = 410.0
 mouse_filter = 2
@@ -620,8 +521,6 @@ stretch_mode = 5
 
 [node name="LayerContainerFront" type="TextureRect" parent="BuildStage" unique_id=1440859010]
 layout_mode = 0
-offset_left = 0.0
-offset_top = 0.0
 offset_right = 410.0
 offset_bottom = 410.0
 mouse_filter = 2
@@ -630,8 +529,6 @@ stretch_mode = 5
 
 [node name="LayerTopping" type="TextureRect" parent="BuildStage" unique_id=47187461]
 layout_mode = 0
-offset_left = 0.0
-offset_top = 0.0
 offset_right = 410.0
 offset_bottom = 410.0
 mouse_filter = 2
@@ -640,8 +537,6 @@ stretch_mode = 5
 
 [node name="EmptyStageLabel" type="Label" parent="BuildStage" unique_id=1970024503]
 layout_mode = 0
-offset_left = 0.0
-offset_top = 0.0
 offset_right = 410.0
 offset_bottom = 410.0
 theme_override_colors/font_color = Color(0.470588, 0.470588, 0.470588, 1)
