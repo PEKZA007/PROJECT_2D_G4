@@ -1,6 +1,5 @@
 res://ChallengeArc.gd
 res://CounterHotspot.gd
-res://Credits.gd
 res://CupDropZone.gd
 res://CursorFX.gd
 res://DecorCard.gd
@@ -15,7 +14,6 @@ res://LevelSelect.gd
 res://MainMenu.gd
 res://PauseController.gd
 res://Results.gd
-res://Settings.gd
 res://SFX.gd
 res://Shop.gd
 res://ShopEquipmentCard.gd
@@ -42,4 +40,5 @@ res://theme/style_owned_button.tres
 res://theme/style_tab_button.tres
 res://theme/style_tab_button_active.tres
 res://theme/style_translucent_panel.tres
-res://VisualNovel.tscn
+res://Game.tscn
+res://MainMenu.tscn

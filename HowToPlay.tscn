@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://HowToPlay.gd" id="1"]
 [ext_resource type="StyleBoxFlat" path="res://theme/style_locked_button.tres" id="2"]
@@ -6,6 +6,9 @@
 [ext_resource type="StyleBoxFlat" path="res://theme/style_menu_action_button.tres" id="4"]
 [ext_resource type="Texture2D" path="res://assets/icons/arrow_back.svg" id="5"]
 [ext_resource type="Texture2D" path="res://assets/backgrounds/menu_howto.png" id="6"]
+[ext_resource type="StyleBoxFlat" path="res://theme/style_tab_button.tres" id="7"]
+[ext_resource type="StyleBoxFlat" path="res://theme/style_tab_button_active.tres" id="8"]
+[ext_resource type="Texture2D" path="res://assets/backgrounds/howto_tutorial_overview.png" id="9"]
 
 [node name="HowToPlay" type="Node2D"]
 script = ExtResource("1")
@@ -60,14 +63,47 @@ theme_override_colors/font_hover_color = Color(0.105882, 0.294118, 0.615686, 1)
 theme_override_colors/font_pressed_color = Color(0.105882, 0.294118, 0.615686, 1)
 text = "เริ่มเล่น"
 
-[node name="Card1" type="Panel" parent="."]
+[node name="Tabs" type="HBoxContainer" parent="."]
+offset_left = 760.0
+offset_top = 100.0
+offset_right = 1160.0
+offset_bottom = 152.0
+theme_override_constants/separation = 17
+
+[node name="Page1TabButton" type="Button" parent="Tabs"]
+custom_minimum_size = Vector2(190.0, 52.0)
+theme_override_styles/normal = ExtResource("8")
+theme_override_styles/hover = ExtResource("8")
+theme_override_styles/pressed = ExtResource("8")
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0.105882, 0.294118, 0.615686, 1)
+theme_override_colors/font_hover_color = Color(0.105882, 0.294118, 0.615686, 1)
+theme_override_colors/font_pressed_color = Color(0.105882, 0.294118, 0.615686, 1)
+theme_override_colors/font_focus_color = Color(0.105882, 0.294118, 0.615686, 1)
+text = "ขั้นตอนเล่น"
+
+[node name="Page2TabButton" type="Button" parent="Tabs"]
+custom_minimum_size = Vector2(190.0, 52.0)
+theme_override_styles/normal = ExtResource("7")
+theme_override_styles/hover = ExtResource("7")
+theme_override_styles/pressed = ExtResource("7")
+theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(0.105882, 0.294118, 0.615686, 1)
+theme_override_colors/font_hover_color = Color(0.105882, 0.294118, 0.615686, 1)
+theme_override_colors/font_pressed_color = Color(0.105882, 0.294118, 0.615686, 1)
+theme_override_colors/font_focus_color = Color(0.105882, 0.294118, 0.615686, 1)
+text = "ภาพรวม"
+
+[node name="Page1" type="Node2D" parent="."]
+
+[node name="Card1" type="Panel" parent="Page1"]
 offset_left = 93.0
-offset_top = 116.0
+offset_top = 160.0
 offset_right = 472.0
-offset_bottom = 548.0
+offset_bottom = 592.0
 theme_override_styles/panel = ExtResource("3")
 
-[node name="Icon1" type="Label" parent="Card1"]
+[node name="Icon1" type="Label" parent="Page1/Card1"]
 offset_top = 14.0
 offset_right = 379.0
 offset_bottom = 90.0
@@ -76,7 +112,7 @@ theme_override_colors/font_color = Color(0.855, 0.098, 0.169, 1)
 horizontal_alignment = 1
 text = "1"
 
-[node name="StepTitle1" type="Label" parent="Card1"]
+[node name="StepTitle1" type="Label" parent="Page1/Card1"]
 offset_top = 96.0
 offset_right = 379.0
 offset_bottom = 156.0
@@ -86,7 +122,7 @@ horizontal_alignment = 1
 autowrap_mode = 2
 text = "เลือกภาชนะก่อน"
 
-[node name="StepDesc1" type="Label" parent="Card1"]
+[node name="StepDesc1" type="Label" parent="Page1/Card1"]
 offset_left = 20.0
 offset_top = 166.0
 offset_right = 359.0
@@ -97,14 +133,14 @@ horizontal_alignment = 1
 autowrap_mode = 2
 text = "ลากภาชนะที่ลูกค้าสั่งมาวาง: โคน (1 รส) ถ้วยเล็ก (2 รส) หรือถ้วยใหญ่ (3 รส)"
 
-[node name="Card2" type="Panel" parent="."]
+[node name="Card2" type="Panel" parent="Page1"]
 offset_left = 545.0
-offset_top = 116.0
+offset_top = 160.0
 offset_right = 924.0
-offset_bottom = 548.0
+offset_bottom = 592.0
 theme_override_styles/panel = ExtResource("3")
 
-[node name="Icon2" type="Label" parent="Card2"]
+[node name="Icon2" type="Label" parent="Page1/Card2"]
 offset_top = 14.0
 offset_right = 379.0
 offset_bottom = 90.0
@@ -113,7 +149,7 @@ theme_override_colors/font_color = Color(0.855, 0.098, 0.169, 1)
 horizontal_alignment = 1
 text = "2"
 
-[node name="StepTitle2" type="Label" parent="Card2"]
+[node name="StepTitle2" type="Label" parent="Page1/Card2"]
 offset_top = 96.0
 offset_right = 379.0
 offset_bottom = 156.0
@@ -123,7 +159,7 @@ horizontal_alignment = 1
 autowrap_mode = 2
 text = "ลากวัตถุดิบแทนการกด"
 
-[node name="StepDesc2" type="Label" parent="Card2"]
+[node name="StepDesc2" type="Label" parent="Page1/Card2"]
 offset_left = 20.0
 offset_top = 166.0
 offset_right = 359.0
@@ -134,14 +170,14 @@ horizontal_alignment = 1
 autowrap_mode = 2
 text = "ลากรสหรือท็อปปิ้งจากเคาน์เตอร์ไปวางบนถ้วย/โคนได้โดยตรง"
 
-[node name="Card3" type="Panel" parent="."]
+[node name="Card3" type="Panel" parent="Page1"]
 offset_left = 996.0
-offset_top = 116.0
+offset_top = 160.0
 offset_right = 1375.0
-offset_bottom = 548.0
+offset_bottom = 592.0
 theme_override_styles/panel = ExtResource("3")
 
-[node name="Icon3" type="Label" parent="Card3"]
+[node name="Icon3" type="Label" parent="Page1/Card3"]
 offset_top = 14.0
 offset_right = 379.0
 offset_bottom = 90.0
@@ -150,7 +186,7 @@ theme_override_colors/font_color = Color(0.855, 0.098, 0.169, 1)
 horizontal_alignment = 1
 text = "3"
 
-[node name="StepTitle3" type="Label" parent="Card3"]
+[node name="StepTitle3" type="Label" parent="Page1/Card3"]
 offset_top = 96.0
 offset_right = 379.0
 offset_bottom = 156.0
@@ -160,7 +196,7 @@ horizontal_alignment = 1
 autowrap_mode = 2
 text = "ตักเจลาโต้ให้ตรงจังหวะ"
 
-[node name="StepDesc3" type="Label" parent="Card3"]
+[node name="StepDesc3" type="Label" parent="Page1/Card3"]
 offset_left = 20.0
 offset_top = 166.0
 offset_right = 359.0
@@ -171,14 +207,14 @@ horizontal_alignment = 1
 autowrap_mode = 2
 text = "ลากรสที่ลูกค้าสั่งมาวางบนภาชนะ แล้วกด SPACE ตอนตัวชี้อยู่ในโซนสีเขียวพอดี"
 
-[node name="Card4" type="Panel" parent="."]
+[node name="Card4" type="Panel" parent="Page1"]
 offset_left = 1447.0
-offset_top = 116.0
+offset_top = 160.0
 offset_right = 1826.0
-offset_bottom = 548.0
+offset_bottom = 592.0
 theme_override_styles/panel = ExtResource("3")
 
-[node name="Icon4" type="Label" parent="Card4"]
+[node name="Icon4" type="Label" parent="Page1/Card4"]
 offset_top = 14.0
 offset_right = 379.0
 offset_bottom = 90.0
@@ -187,7 +223,7 @@ theme_override_colors/font_color = Color(0.855, 0.098, 0.169, 1)
 horizontal_alignment = 1
 text = "4"
 
-[node name="StepTitle4" type="Label" parent="Card4"]
+[node name="StepTitle4" type="Label" parent="Page1/Card4"]
 offset_top = 96.0
 offset_right = 379.0
 offset_bottom = 156.0
@@ -197,7 +233,7 @@ horizontal_alignment = 1
 autowrap_mode = 2
 text = "ใส่ท็อปปิ้งตามสั่ง"
 
-[node name="StepDesc4" type="Label" parent="Card4"]
+[node name="StepDesc4" type="Label" parent="Page1/Card4"]
 offset_left = 20.0
 offset_top = 166.0
 offset_right = 359.0
@@ -208,14 +244,14 @@ horizontal_alignment = 1
 autowrap_mode = 2
 text = "หลังตักเจลาโต้อย่างน้อย 1 ครั้ง ลากท็อปปิ้งที่ลูกค้าขอมาใส่เพิ่มได้ตามสั่ง"
 
-[node name="Card5" type="Panel" parent="."]
+[node name="Card5" type="Panel" parent="Page1"]
 offset_left = 93.0
-offset_top = 591.0
+offset_top = 635.0
 offset_right = 472.0
-offset_bottom = 1023.0
+offset_bottom = 1067.0
 theme_override_styles/panel = ExtResource("3")
 
-[node name="Icon5" type="Label" parent="Card5"]
+[node name="Icon5" type="Label" parent="Page1/Card5"]
 offset_top = 14.0
 offset_right = 379.0
 offset_bottom = 90.0
@@ -224,7 +260,7 @@ theme_override_colors/font_color = Color(0.855, 0.098, 0.169, 1)
 horizontal_alignment = 1
 text = "5"
 
-[node name="StepTitle5" type="Label" parent="Card5"]
+[node name="StepTitle5" type="Label" parent="Page1/Card5"]
 offset_top = 96.0
 offset_right = 379.0
 offset_bottom = 156.0
@@ -234,7 +270,7 @@ horizontal_alignment = 1
 autowrap_mode = 2
 text = "เสิร์ฟให้ตรงออเดอร์"
 
-[node name="StepDesc5" type="Label" parent="Card5"]
+[node name="StepDesc5" type="Label" parent="Page1/Card5"]
 offset_left = 20.0
 offset_top = 166.0
 offset_right = 359.0
@@ -245,14 +281,14 @@ horizontal_alignment = 1
 autowrap_mode = 2
 text = "ครบตามที่ลูกค้าสั่งแล้ว กด SPACE หรือปุ่ม \"เสิร์ฟ\" เพื่อส่งออเดอร์ให้ลูกค้า"
 
-[node name="Card6" type="Panel" parent="."]
+[node name="Card6" type="Panel" parent="Page1"]
 offset_left = 545.0
-offset_top = 591.0
+offset_top = 635.0
 offset_right = 924.0
-offset_bottom = 1023.0
+offset_bottom = 1067.0
 theme_override_styles/panel = ExtResource("3")
 
-[node name="Icon6" type="Label" parent="Card6"]
+[node name="Icon6" type="Label" parent="Page1/Card6"]
 offset_top = 14.0
 offset_right = 379.0
 offset_bottom = 90.0
@@ -261,7 +297,7 @@ theme_override_colors/font_color = Color(0.855, 0.098, 0.169, 1)
 horizontal_alignment = 1
 text = "6"
 
-[node name="StepTitle6" type="Label" parent="Card6"]
+[node name="StepTitle6" type="Label" parent="Page1/Card6"]
 offset_top = 96.0
 offset_right = 379.0
 offset_bottom = 156.0
@@ -271,7 +307,7 @@ horizontal_alignment = 1
 autowrap_mode = 2
 text = "อย่าให้ลูกค้าหมดความอดทน"
 
-[node name="StepDesc6" type="Label" parent="Card6"]
+[node name="StepDesc6" type="Label" parent="Page1/Card6"]
 offset_left = 20.0
 offset_top = 166.0
 offset_right = 359.0
@@ -282,14 +318,14 @@ horizontal_alignment = 1
 autowrap_mode = 2
 text = "แถบความอดทนของลูกค้าจะลดลงเรื่อยๆ ถ้าหมดก่อนเสิร์ฟ ลูกค้าจะเดินหนีและคอมโบจะรีเซ็ต"
 
-[node name="Card7" type="Panel" parent="."]
+[node name="Card7" type="Panel" parent="Page1"]
 offset_left = 996.0
-offset_top = 591.0
+offset_top = 635.0
 offset_right = 1375.0
-offset_bottom = 1023.0
+offset_bottom = 1067.0
 theme_override_styles/panel = ExtResource("3")
 
-[node name="Icon7" type="Label" parent="Card7"]
+[node name="Icon7" type="Label" parent="Page1/Card7"]
 offset_top = 14.0
 offset_right = 379.0
 offset_bottom = 90.0
@@ -298,7 +334,7 @@ theme_override_colors/font_color = Color(0.855, 0.098, 0.169, 1)
 horizontal_alignment = 1
 text = "7"
 
-[node name="StepTitle7" type="Label" parent="Card7"]
+[node name="StepTitle7" type="Label" parent="Page1/Card7"]
 offset_top = 96.0
 offset_right = 379.0
 offset_bottom = 156.0
@@ -308,7 +344,7 @@ horizontal_alignment = 1
 autowrap_mode = 2
 text = "คอมโบยิ่งเยอะยิ่งดี"
 
-[node name="StepDesc7" type="Label" parent="Card7"]
+[node name="StepDesc7" type="Label" parent="Page1/Card7"]
 offset_left = 20.0
 offset_top = 166.0
 offset_right = 359.0
@@ -319,14 +355,14 @@ horizontal_alignment = 1
 autowrap_mode = 2
 text = "เสิร์ฟถูกต้องติดต่อกันเพื่อสะสมคอมโบและรับโบนัสเหรียญพิเศษ"
 
-[node name="Card8" type="Panel" parent="."]
+[node name="Card8" type="Panel" parent="Page1"]
 offset_left = 1447.0
-offset_top = 591.0
+offset_top = 635.0
 offset_right = 1826.0
-offset_bottom = 1023.0
+offset_bottom = 1067.0
 theme_override_styles/panel = ExtResource("3")
 
-[node name="Icon8" type="Label" parent="Card8"]
+[node name="Icon8" type="Label" parent="Page1/Card8"]
 offset_top = 14.0
 offset_right = 379.0
 offset_bottom = 90.0
@@ -335,7 +371,7 @@ theme_override_colors/font_color = Color(0.855, 0.098, 0.169, 1)
 horizontal_alignment = 1
 text = "8"
 
-[node name="StepTitle8" type="Label" parent="Card8"]
+[node name="StepTitle8" type="Label" parent="Page1/Card8"]
 offset_top = 96.0
 offset_right = 379.0
 offset_bottom = 156.0
@@ -345,7 +381,7 @@ horizontal_alignment = 1
 autowrap_mode = 2
 text = "เก็บเหรียญไปอัปเกรด"
 
-[node name="StepDesc8" type="Label" parent="Card8"]
+[node name="StepDesc8" type="Label" parent="Page1/Card8"]
 offset_left = 20.0
 offset_top = 166.0
 offset_right = 359.0
@@ -355,3 +391,15 @@ theme_override_colors/font_color = Color(0.470588, 0.4, 0.4, 1)
 horizontal_alignment = 1
 autowrap_mode = 2
 text = "ใช้เหรียญที่ได้ปลดล็อกรสชาติใหม่ อุปกรณ์ และของตกแต่งร้านในร้านค้า"
+
+[node name="Page2" type="Node2D" parent="."]
+visible = false
+
+[node name="TutorialImage" type="TextureRect" parent="Page2"]
+offset_left = 93.0
+offset_top = 160.0
+offset_right = 1826.0
+offset_bottom = 1067.0
+texture = ExtResource("9")
+expand_mode = 1
+stretch_mode = 5

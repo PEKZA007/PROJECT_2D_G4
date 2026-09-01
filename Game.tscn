@@ -555,23 +555,33 @@ offset_bottom = 681.0
 
 [node name="Portrait" type="TextureRect" parent="QueueSlot1" unique_id=173090732]
 layout_mode = 0
-offset_left = -39.0
-offset_top = -126.0
-offset_right = 293.0
-offset_bottom = 240.0
+offset_left = -118.0
+offset_top = -173.0
+offset_right = 347.0
+offset_bottom = 347.0
 expand_mode = 1
 stretch_mode = 5
+
+[node name="RegisterDesk2" type="Sprite2D" parent="." unique_id=1590069043]
+position = Vector2(340, 768)
+texture = ExtResource("28")
+
+[node name="TrashBin" type="Sprite2D" parent="." unique_id=2078089918]
+position = Vector2(469, 990)
+texture = ExtResource("30")
 
 [node name="BuildStage" type="Control" parent="." unique_id=1860896294]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 880.0
-offset_top = 160.0
-offset_right = 1290.0
-offset_bottom = 570.0
+offset_left = 1020.0
+offset_top = 170.0
+offset_right = 1430.0
+offset_bottom = 580.0
 
 [node name="LayerCup" type="TextureRect" parent="BuildStage" unique_id=622293745]
 layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
 offset_right = 410.0
 offset_bottom = 410.0
 mouse_filter = 2
@@ -580,30 +590,38 @@ stretch_mode = 5
 
 [node name="LayerScoopBack" type="TextureRect" parent="BuildStage" unique_id=1139464106]
 layout_mode = 0
-offset_right = 410.0
-offset_bottom = 410.0
+offset_left = 145.0
+offset_top = 10.0
+offset_right = 555.0
+offset_bottom = 420.0
 mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
 [node name="LayerScoopMid" type="TextureRect" parent="BuildStage" unique_id=1577321495]
 layout_mode = 0
-offset_right = 410.0
-offset_bottom = 410.0
+offset_left = 145.0
+offset_top = 10.0
+offset_right = 555.0
+offset_bottom = 420.0
 mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
 [node name="LayerScoopFront" type="TextureRect" parent="BuildStage" unique_id=588188398]
 layout_mode = 0
-offset_right = 410.0
-offset_bottom = 410.0
+offset_left = 145.0
+offset_top = 10.0
+offset_right = 555.0
+offset_bottom = 420.0
 mouse_filter = 2
 expand_mode = 1
 stretch_mode = 5
 
 [node name="LayerContainerFront" type="TextureRect" parent="BuildStage" unique_id=1440859010]
 layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
 offset_right = 410.0
 offset_bottom = 410.0
 mouse_filter = 2
@@ -612,6 +630,8 @@ stretch_mode = 5
 
 [node name="LayerTopping" type="TextureRect" parent="BuildStage" unique_id=47187461]
 layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
 offset_right = 410.0
 offset_bottom = 410.0
 mouse_filter = 2
@@ -620,21 +640,22 @@ stretch_mode = 5
 
 [node name="EmptyStageLabel" type="Label" parent="BuildStage" unique_id=1970024503]
 layout_mode = 0
+offset_left = 0.0
+offset_top = 0.0
 offset_right = 410.0
 offset_bottom = 410.0
 theme_override_colors/font_color = Color(0.470588, 0.470588, 0.470588, 1)
 theme_override_font_sizes/font_size = 22
-text = "ลากภาชนะมาวางก่อนเลย"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="DropZone" type="Panel" parent="." unique_id=170428491]
 self_modulate = Color(1, 1, 1, 0)
-offset_left = 880.0
-offset_top = 160.0
-offset_right = 1290.0
-offset_bottom = 570.0
+offset_left = 1023.0
+offset_top = 186.0
+offset_right = 1433.0
+offset_bottom = 596.0
 script = ExtResource("7")
 
 [node name="ChallengePanel" type="Panel" parent="." unique_id=84076464]
@@ -753,9 +774,10 @@ text = "ท็อปปิ้ง"
 vertical_alignment = 1
 
 [node name="ToppingTray" type="HBoxContainer" parent="." unique_id=618209408]
-visible = false
-offset_left = 340.0
-offset_top = 954.0
+offset_left = -264.0
+offset_top = 713.0
+offset_right = -68.0
+offset_bottom = 769.0
 theme_override_constants/separation = 14
 
 [node name="Topping1" parent="ToppingTray" unique_id=1112054451 instance=ExtResource("10")]

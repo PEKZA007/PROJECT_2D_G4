@@ -178,13 +178,12 @@ ok_button_text = "เริ่มใหม่"
 dialog_text = "การเริ่มเกมใหม่จะลบความคืบหน้าทั้งหมด (เหรียญ ดาว รสชาติ อุปกรณ์ และของตกแต่งที่ปลดล็อกไว้)
 คุณแน่ใจหรือไม่?"
 
-
-[node name="PlayerNameDialog" type="AcceptDialog" parent="."]
+[node name="PlayerNameDialog" type="AcceptDialog" parent="." unique_id=1137597023]
 title = "ตั้งชื่อผู้เล่น"
-ok_button_text = "เริ่มเกม"
 size = Vector2i(720, 300)
+ok_button_text = "เริ่มเกม"
 
-[node name="Prompt" type="Label" parent="PlayerNameDialog"]
+[node name="Prompt" type="Label" parent="PlayerNameDialog" unique_id=536182751]
 offset_left = 35.0
 offset_top = 55.0
 offset_right = 685.0
@@ -193,11 +192,10 @@ theme_override_font_sizes/font_size = 26
 text = "ชื่อของคุณจะถูกใช้ในบทสนทนา"
 horizontal_alignment = 1
 
-[node name="NameEdit" type="LineEdit" parent="PlayerNameDialog"]
+[node name="NameEdit" type="LineEdit" parent="PlayerNameDialog" unique_id=1769454319]
 offset_left = 80.0
 offset_top = 125.0
 offset_right = 640.0
 offset_bottom = 195.0
 theme_override_font_sizes/font_size = 30
 placeholder_text = "ใส่ชื่อผู้เล่น"
-horizontal_alignment = 1

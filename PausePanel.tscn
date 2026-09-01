@@ -58,7 +58,7 @@ theme_override_colors/font_color = Color(0.105882, 0.294118, 0.615686, 1)
 theme_override_colors/font_hover_color = Color(0.105882, 0.294118, 0.615686, 1)
 theme_override_colors/font_pressed_color = Color(0.105882, 0.294118, 0.615686, 1)
 theme_override_colors/font_focus_color = Color(0.105882, 0.294118, 0.615686, 1)
-text = "📖 อ่านระบบสอนเล่นอีกครั้ง"
+text = "[?] อ่านระบบสอนเล่นอีกครั้ง"
 
 [node name="QuitButton" type="Button" parent="Card"]
 offset_left = 100.0
