@@ -436,7 +436,7 @@ func _tutorial_pages() -> Array:
 - วันนี้ยังไม่มีท็อปปิ้ง
 
 ทำตามออเดอร์ที่เห็นได้เลย ไม่ต้องเดาของที่ล็อกไว้"],
-				[" พร้อมเปิดร้าน!", "จำง่าย ๆ: ภาชนะ → ตักรส → กด SPACE ตามจังหวะ → เสิร์ฟ
+				[" พร้อมเปิดร้าน!", "จำง่าย ๆ: ภาชนะ  ตักรส  กด SPACE ตามจังหวะ  เสิร์ฟ
 
 พรุ่งนี้จะปลดล็อกท็อปปิ้งเพิ่ม!
 
@@ -480,9 +480,9 @@ func _tutorial_pages() -> Array:
 - ลูกค้าจะสุ่มออเดอร์จากของที่ปลดล็อกแล้วเท่านั้น"],
 				[" เริ่มขายแบบเต็มร้าน!", "ตอนนี้จำกติกาการปลดล็อกได้แล้ว:
 
-Day 0 → 3 รส / ไม่มีท็อปปิ้ง
-Day 1 → 3 รส / มีท็อปปิ้ง
-Day 2+ → 6 รส / มีท็อปปิ้ง
+Day 0  3 รส / ไม่มีท็อปปิ้ง
+Day 1  3 รส / มีท็อปปิ้ง
+Day 2ขึ้นไป  6 รส / มีท็อปปิ้ง
 
 กด “เริ่มเล่น” แล้วลุยเลย!"]
 			]
@@ -499,7 +499,7 @@ func _update_tutorial_ui() -> void:
 	tutorial_title.text = pages[tutorial_step][0]
 	tutorial_body.text = pages[tutorial_step][1]
 	tutorial_progress.text = "ขั้นตอน %d / %d" % [tutorial_step + 1, pages.size()]
-	tutorial_button.text = "เริ่มเล่น" if tutorial_step == pages.size() - 1 else "ถัดไป  →"
+	tutorial_button.text = "เริ่มเล่น" if tutorial_step == pages.size() - 1 else "ถัดไป "
 
 
 func _on_tutorial_button_pressed() -> void:
