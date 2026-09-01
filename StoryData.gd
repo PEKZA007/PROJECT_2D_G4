@@ -110,33 +110,33 @@ const CHAPTERS := {
 
 	# --- ลูกค้าพิเศษสุ่มรายวัน ---
 	"special_day0": [
-		{"speaker": "???", "portrait": "CustomerA.png", "text": "*กริ่ง* ร้านกลับมาเปิดแล้วจริงๆ สินค้าขึ้นชื่อของที่นี่ต้องลองสักหน่อย!"},
+		{"speaker": "???", "portrait": "Student.png", "text": "*กริ่ง* ร้านกลับมาเปิดแล้วจริงๆ สินค้าขึ้นชื่อของที่นี่ต้องลองสักหน่อย!"},
 		{"speaker": "แพรวา", "portrait": "Player.png", "text": "ยินดีต้อนรับค่ะ วันนี้รับอะไรดีคะ"},
-		{"speaker": "ลูกค้าพิเศษ", "portrait": "CustomerA.png", "text": "ขอโคนรสช็อกโกแลตมินต์หนึ่งอันครับ อยากลองรสต้นตำรับของร้าน"},
+		{"speaker": "ลูกค้าพิเศษ", "portrait": "Student.png", "text": "ขอโคนรสช็อกโกแลตมินต์หนึ่งอันครับ อยากลองรสต้นตำรับของร้าน"},
 		{"speaker": "แพรวา", "portrait": "Player.png", "text": "ได้เลยค่ะ เดี๋ยวจัดให้เลย!"},
 	],
 	"special_day1": [
-		{"speaker": "???", "portrait": "CustomerB.png", "text": "วันนี้อยากให้รางวัลตัวเองหน่อย ร้านนี้มีท็อปปิ้งแล้วใช่ไหมนะ?"},
+		{"speaker": "???", "portrait": "Employee.png", "text": "วันนี้อยากให้รางวัลตัวเองหน่อย ร้านนี้มีท็อปปิ้งแล้วใช่ไหมนะ?"},
 		{"speaker": "แพรวา", "portrait": "Player.png", "text": "มีแล้วค่ะ อยากได้แบบไหนบอกได้เลยนะคะ"},
-		{"speaker": "ลูกค้าพิเศษ", "portrait": "CustomerB.png", "text": "งั้นเอาถ้วยเล็กคุกกี้แอนด์ครีม เพิ่มท็อปปิ้งคุกกี้ครับ!"},
+		{"speaker": "ลูกค้าพิเศษ", "portrait": "Employee.png", "text": "งั้นเอาถ้วยเล็กคุกกี้แอนด์ครีม เพิ่มท็อปปิ้งคุกกี้ครับ!"},
 		{"speaker": "แพรวา", "portrait": "Player.png", "text": "รับออเดอร์ค่ะ!"},
 	],
 	"special_day2": [
-		{"speaker": "???", "portrait": "CustomerD.png", "text": "ได้ยินว่าร้านนี้กลับมาเปิดแล้ว แถมมีรสใหม่ครบเลยนี่นา"},
+		{"speaker": "???", "portrait": "UniversityStudent.png", "text": "ได้ยินว่าร้านนี้กลับมาเปิดแล้ว แถมมีรสใหม่ครบเลยนี่นา"},
 		{"speaker": "แพรวา", "portrait": "Player.png", "text": "ใช่ค่ะ วันนี้มีครบทั้ง 6 รสแล้ว รับอะไรดีคะ"},
-		{"speaker": "ลูกค้าพิเศษ", "portrait": "CustomerD.png", "text": "ขอถ้วยใหญ่ เลมอนกับพิสตาชิโอ แล้วเพิ่มท็อปปิ้งถั่วครับ"},
+		{"speaker": "ลูกค้าพิเศษ", "portrait": "UniversityStudent.png", "text": "ขอถ้วยใหญ่ เลมอนกับพิสตาชิโอ แล้วเพิ่มท็อปปิ้งถั่วครับ"},
 		{"speaker": "แพรวา", "portrait": "Player.png", "text": "ได้เลยค่ะ!"},
 	],
 	"special_day4": [
-		{"speaker": "???", "portrait": "CustomerF.png", "text": "ช่วงนี้ทำงานหนักมาก ขออะไรหวานๆ เติมพลังหน่อยแล้วกัน"},
+		{"speaker": "???", "portrait": "Employee.png", "text": "ช่วงนี้ทำงานหนักมาก ขออะไรหวานๆ เติมพลังหน่อยแล้วกัน"},
 		{"speaker": "แพรวา", "portrait": "Player.png", "text": "รับอะไรดีคะ วันนี้ร้านเรามีครบทุกอย่างเลยค่ะ"},
-		{"speaker": "ลูกค้าพิเศษ", "portrait": "CustomerF.png", "text": "ขอโคนดาร์กช็อกโกแลต เพิ่มท็อปปิ้งสตรอเบอร์รี่ครับ"},
+		{"speaker": "ลูกค้าพิเศษ", "portrait": "Employee.png", "text": "ขอโคนดาร์กช็อกโกแลต เพิ่มท็อปปิ้งสตรอเบอร์รี่ครับ"},
 		{"speaker": "แพรวา", "portrait": "Player.png", "text": "รับทราบค่ะ!"},
 	],
 	"special_day7": [
-		{"speaker": "???", "portrait": "CustomerA.png", "text": "เห็นคนพูดถึงร้านนี้เยอะมาก วันนี้เลยต้องมาลองด้วยตัวเอง"},
+		{"speaker": "???", "portrait": "Influencer.png", "text": "เห็นคนพูดถึงร้านนี้เยอะมาก วันนี้เลยต้องมาลองด้วยตัวเอง"},
 		{"speaker": "แพรวา", "portrait": "Player.png", "text": "ขอบคุณที่แวะมานะคะ อยากลองเมนูไหนเป็นพิเศษไหมคะ"},
-		{"speaker": "ลูกค้าพิเศษ", "portrait": "CustomerA.png", "text": "เอาแบบจัดเต็มครับ! ถ้วยใหญ่ สตรอเบอร์รี่ชีสเค้กกับดาร์กช็อกโกแลต แล้วเพิ่มท็อปปิ้งคุกกี้"},
+		{"speaker": "ลูกค้าพิเศษ", "portrait": "Influencer.png", "text": "เอาแบบจัดเต็มค่ะ! ถ้วยใหญ่ สตรอเบอร์รี่ชีสเค้กกับดาร์กช็อกโกแลต แล้วเพิ่มท็อปปิ้งคุกกี้"},
 		{"speaker": "แพรวา", "portrait": "Player.png", "text": "จัดให้เลยค่ะ!"},
 	],
 
@@ -167,14 +167,14 @@ const LEVEL_INTRO_CHAPTERS := {
 # ลูกค้าพิเศษ: เมื่อสุ่มเจอจะเปิด Visual Novel ก่อน แล้วกลับมาพร้อมออเดอร์ที่ระบุไว้ตรงนี้
 # reward_multiplier > 1 ทำให้ลูกค้าพิเศษจ่ายเงินมากกว่าลูกค้าปกติ
 const SPECIAL_CUSTOMERS := {
-	"special_day0": {"portrait": "CustomerA.png", "order": {"container": "cone", "flavors": ["choc_mint"], "toppings": []}, "reward_multiplier": 2.5},
-	"special_day1": {"portrait": "CustomerB.png", "order": {"container": "small_cup", "flavors": ["cookies_cream"], "toppings": ["cookie"]}, "reward_multiplier": 2.5},
-	"special_day2": {"portrait": "CustomerD.png", "order": {"container": "large_cup", "flavors": ["lemon", "pistachio"], "toppings": ["peanuts"]}, "reward_multiplier": 2.5},
-	"day3": {"portrait": "CustomerC.png", "order": {"container": "large_cup", "flavors": ["pistachio", "strawberry_cheesecake"], "toppings": ["strawberry"]}, "reward_multiplier": 2.5},
-	"special_day4": {"portrait": "CustomerF.png", "order": {"container": "cone", "flavors": ["dark_chocolate"], "toppings": ["strawberry"]}, "reward_multiplier": 2.5},
+	"special_day0": {"portrait": "Student.png", "order": {"container": "cone", "flavors": ["choc_mint"], "toppings": []}, "reward_multiplier": 2.5},
+	"special_day1": {"portrait": "Employee.png", "order": {"container": "small_cup", "flavors": ["cookies_cream"], "toppings": ["cookie"]}, "reward_multiplier": 2.5},
+	"special_day2": {"portrait": "UniversityStudent.png", "order": {"container": "large_cup", "flavors": ["lemon", "pistachio"], "toppings": ["peanuts"]}, "reward_multiplier": 2.5},
+	"day3": {"portrait": "Student.png", "order": {"container": "large_cup", "flavors": ["pistachio", "strawberry_cheesecake"], "toppings": ["strawberry"]}, "reward_multiplier": 2.5},
+	"special_day4": {"portrait": "Employee.png", "order": {"container": "cone", "flavors": ["dark_chocolate"], "toppings": ["strawberry"]}, "reward_multiplier": 2.5},
 	"day5": {"portrait": "UniversityStudent.png", "order": {"container": "small_cup", "flavors": ["dark_chocolate"], "toppings": ["cookie"]}, "reward_multiplier": 2.5},
 	"day6": {"portrait": "Employee.png", "order": {"container": "cone", "flavors": ["pistachio"], "toppings": []}, "reward_multiplier": 2.5},
-	"special_day7": {"portrait": "CustomerA.png", "order": {"container": "large_cup", "flavors": ["strawberry_cheesecake", "dark_chocolate"], "toppings": ["cookie"]}, "reward_multiplier": 2.5},
+	"special_day7": {"portrait": "Influencer.png", "order": {"container": "large_cup", "flavors": ["strawberry_cheesecake", "dark_chocolate"], "toppings": ["cookie"]}, "reward_multiplier": 2.5},
 }
 
 

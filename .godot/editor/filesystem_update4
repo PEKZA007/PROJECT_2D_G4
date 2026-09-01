@@ -42,3 +42,8 @@ res://theme/style_tab_button_active.tres
 res://theme/style_translucent_panel.tres
 res://Game.tscn
 res://MainMenu.tscn
+res://VisualNovel.tscn
+res://Credits.tscn
+res://Shop.tscn
+res://Credits.gd
+res://theme/style_menu_corner_button.tres

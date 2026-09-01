@@ -72,6 +72,27 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 color = Color(0.552941, 0.333333, 0.141176, 1)
 
+[node name="QueueSlot1" type="Control" parent="." unique_id=1138193044]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 334.0
+offset_top = 471.0
+offset_right = 544.0
+offset_bottom = 681.0
+
+[node name="Portrait" type="TextureRect" parent="QueueSlot1" unique_id=173090732]
+layout_mode = 0
+offset_left = -118.0
+offset_top = -173.0
+offset_right = 347.0
+offset_bottom = 347.0
+expand_mode = 1
+stretch_mode = 5
+
+[node name="RegisterDesk2" type="Sprite2D" parent="." unique_id=1590069043]
+position = Vector2(340, 768)
+texture = ExtResource("28")
+
 [node name="CounterArt" type="TextureRect" parent="." unique_id=192656985]
 offset_right = 1920.0
 offset_bottom = 1080.0
@@ -282,10 +303,10 @@ focus_mode = 0
 flat = true
 
 [node name="TrashBinSprite" type="TextureRect" parent="." unique_id=1600000024]
-offset_left = 362.0
-offset_top = 951.0
+offset_left = 346.0
+offset_top = 937.0
 offset_right = 588.0
-offset_bottom = 1083.0
+offset_bottom = 1074.0
 mouse_filter = 2
 texture = ExtResource("30")
 
@@ -399,72 +420,50 @@ theme_override_font_sizes/font_size = 30
 horizontal_alignment = 1
 
 [node name="OrderBoxPanel" type="Panel" parent="." unique_id=728170200]
-offset_left = 735.0
+clip_contents = true
+offset_left = 610.0
 offset_top = 12.0
-offset_right = 1185.0
-offset_bottom = 155.0
+offset_right = 1310.0
+offset_bottom = 168.0
 theme_override_styles/panel = ExtResource("2")
 
-[node name="OrderBoxCaption" type="Label" parent="." unique_id=249220613]
-offset_left = 752.0
-offset_top = 17.0
-offset_right = 1168.0
-offset_bottom = 44.0
+[node name="OrderBoxCaption" type="Label" parent="OrderBoxPanel" unique_id=249220613]
+offset_left = 17.0
+offset_top = 5.0
+offset_right = 683.0
+offset_bottom = 32.0
 theme_override_colors/font_color = Color(0.470588, 0.470588, 0.470588, 1)
 theme_override_font_sizes/font_size = 22
 text = "คำสั่งลูกค้า"
 horizontal_alignment = 1
 
-[node name="OrderLabel" type="Label" parent="." unique_id=353131590]
-offset_left = 752.0
-offset_top = 45.0
-offset_right = 1168.0
-offset_bottom = 108.0
+[node name="OrderLabel" type="Label" parent="OrderBoxPanel" unique_id=353131590]
+offset_left = 17.0
+offset_top = 33.0
+offset_right = 683.0
+offset_bottom = 109.0
 theme_override_colors/font_color = Color(0.117647, 0.117647, 0.117647, 1)
 theme_override_font_sizes/font_size = 20
 horizontal_alignment = 1
+vertical_alignment = 1
 autowrap_mode = 2
+clip_text = true
 
-[node name="PatienceCaption" type="Label" parent="." unique_id=1066535894]
-offset_left = 752.0
-offset_top = 110.0
-offset_right = 852.0
-offset_bottom = 128.0
+[node name="PatienceCaption" type="Label" parent="OrderBoxPanel" unique_id=1066535894]
+offset_left = 17.0
+offset_top = 111.0
+offset_right = 117.0
+offset_bottom = 129.0
 theme_override_colors/font_color = Color(0.470588, 0.470588, 0.470588, 1)
 theme_override_font_sizes/font_size = 16
 text = "ความอดทน"
 
-[node name="PatienceBar" type="ProgressBar" parent="." unique_id=1496979616]
-offset_left = 752.0
-offset_top = 130.0
-offset_right = 1168.0
-offset_bottom = 148.0
+[node name="PatienceBar" type="ProgressBar" parent="OrderBoxPanel" unique_id=1496979616]
+offset_left = 17.0
+offset_top = 131.0
+offset_right = 683.0
+offset_bottom = 149.0
 show_percentage = false
-
-[node name="QueueSlot1" type="Control" parent="." unique_id=1138193044]
-layout_mode = 3
-anchors_preset = 0
-offset_left = 334.0
-offset_top = 471.0
-offset_right = 544.0
-offset_bottom = 681.0
-
-[node name="Portrait" type="TextureRect" parent="QueueSlot1" unique_id=173090732]
-layout_mode = 0
-offset_left = -118.0
-offset_top = -173.0
-offset_right = 347.0
-offset_bottom = 347.0
-expand_mode = 1
-stretch_mode = 5
-
-[node name="RegisterDesk2" type="Sprite2D" parent="." unique_id=1590069043]
-position = Vector2(340, 768)
-texture = ExtResource("28")
-
-[node name="TrashBin" type="Sprite2D" parent="." unique_id=2078089918]
-position = Vector2(469, 990)
-texture = ExtResource("30")
 
 [node name="BottomBar" type="Panel" parent="." unique_id=1415727902]
 offset_top = 1006.0
@@ -592,10 +591,10 @@ mouse_filter = 2
 script = ExtResource("18")
 
 [node name="ClearButton" type="Button" parent="." unique_id=1921247105]
-offset_left = 590.0
-offset_top = 662.375
-offset_right = 780.0
-offset_bottom = 719.75
+offset_left = 365.0
+offset_top = 876.0
+offset_right = 555.0
+offset_bottom = 933.375
 theme_override_colors/font_color = Color(0.105882, 0.294118, 0.615686, 1)
 theme_override_colors/font_focus_color = Color(0.105882, 0.294118, 0.615686, 1)
 theme_override_colors/font_pressed_color = Color(0.105882, 0.294118, 0.615686, 1)

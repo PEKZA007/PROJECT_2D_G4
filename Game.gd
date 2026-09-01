@@ -99,8 +99,8 @@ var tutorial_button: Button
 @onready var progress_label: Label = $ProgressLabel
 @onready var combo_label: Label = $ComboLabel
 @onready var message_label: Label = $MessageLabel
-@onready var order_label: Label = $OrderLabel
-@onready var patience_bar: ProgressBar = $PatienceBar
+@onready var order_label: Label = $OrderBoxPanel/OrderLabel
+@onready var patience_bar: ProgressBar = $OrderBoxPanel/PatienceBar
 @onready var scoop_status_label: Label = $ScoopStatusLabel
 @onready var clear_button: Button = $ClearButton
 @onready var serve_button: Button = $ServeButton
@@ -423,20 +423,20 @@ func _tutorial_pages() -> Array:
 	match level_id:
 		0:
 			return [
-				["[*] สอนเล่น: Day 0", "วันนี้เริ่มจากพื้นฐานก่อน
+				[" สอนเล่น: Day 0", "วันนี้เริ่มจากพื้นฐานก่อน
 
 1. ลากภาชนะมาวางตรงพื้นที่ทำเจลาโต้
 2. ดูออเดอร์ แล้วลากรสที่ลูกค้าสั่ง
 3. บางวันอาจมี “ลูกค้าพิเศษ” สุ่มเข้ามา — จะตัดเข้าเนื้อเรื่องก่อนสั่ง
 4. ตอนตัก ให้กด SPACE ให้ตรงจังหวะ
 5. เมื่อทำครบแล้ว กด “เสิร์ฟ” หรือ SPACE"],
-				["[*] ของที่ใช้ได้วันนี้", "Day 0 มีเจลาโต้แค่ 3 รสแรกเท่านั้น
+				[" ของที่ใช้ได้วันนี้", "Day 0 มีเจลาโต้แค่ 3 รสแรกเท่านั้น
 
 - ลูกค้าจะสั่งเฉพาะรสที่ปลดล็อกแล้ว
 - วันนี้ยังไม่มีท็อปปิ้ง
 
 ทำตามออเดอร์ที่เห็นได้เลย ไม่ต้องเดาของที่ล็อกไว้"],
-				["[*] พร้อมเปิดร้าน!", "จำง่าย ๆ: ภาชนะ → ตักรส → กด SPACE ตามจังหวะ → เสิร์ฟ
+				[" พร้อมเปิดร้าน!", "จำง่าย ๆ: ภาชนะ → ตักรส → กด SPACE ตามจังหวะ → เสิร์ฟ
 
 พรุ่งนี้จะปลดล็อกท็อปปิ้งเพิ่ม!
 
@@ -444,20 +444,20 @@ func _tutorial_pages() -> Array:
 			]
 		1:
 			return [
-				["[*] สอนเล่น: Day 1", "วันนี้รูปแบบการเล่นเหมือนเดิม แต่มีของใหม่เพิ่มเข้ามา
+				[" สอนเล่น: Day 1", "วันนี้รูปแบบการเล่นเหมือนเดิม แต่มีของใหม่เพิ่มเข้ามา
 
 1. อ่านออเดอร์
 2. ทำเจลาโต้ตามรสที่ลูกค้าต้องการ
 3. ถ้ามีท็อปปิ้ง ให้ลากท็อปปิ้งใส่
 4. แล้วกดเสิร์ฟ"],
-				["[*] ปลดล็อกท็อปปิ้ง!", "ตั้งแต่ Day 1 เป็นต้นไป ลูกค้าสามารถสั่งท็อปปิ้งได้
+				[" ปลดล็อกท็อปปิ้ง!", "ตั้งแต่ Day 1 เป็นต้นไป ลูกค้าสามารถสั่งท็อปปิ้งได้
 
 - เจลาโต้ยังมีแค่ 3 รสแรก
 - ท็อปปิ้งจะปรากฏในออเดอร์เมื่อถูกสุ่ม
 - ลูกค้าพิเศษจะมีเนื้อเรื่องและออเดอร์เฉพาะตัว
 
 ลูกค้าจะไม่สั่งรสเจลาโต้ที่ยังล็อกอยู่"],
-				["[*] พร้อมเสิร์ฟ!", "ถ้าออเดอร์เขียนว่า “ท็อปปิ้ง” ให้ใส่ท็อปปิ้งก่อนเสิร์ฟ
+				[" พร้อมเสิร์ฟ!", "ถ้าออเดอร์เขียนว่า “ท็อปปิ้ง” ให้ใส่ท็อปปิ้งก่อนเสิร์ฟ
 
 ถ้าไม่มีท็อปปิ้ง ก็เสิร์ฟได้เลยหลังทำรสครบ
 
@@ -465,7 +465,7 @@ func _tutorial_pages() -> Array:
 			]
 		2:
 			return [
-				["[*] สอนเล่น: Day 2", "วันนี้ร้านมีเจลาโต้ครบทุก 6 รสแล้ว!
+				[" สอนเล่น: Day 2", "วันนี้ร้านมีเจลาโต้ครบทุก 6 รสแล้ว!
 
 ขั้นตอนยังเหมือนเดิม:
 1. อ่านออเดอร์
@@ -473,12 +473,12 @@ func _tutorial_pages() -> Array:
 3. ตักรสตามออเดอร์
 4. ใส่ท็อปปิ้งถ้ามี
 5. เสิร์ฟ"],
-				["[*] ปลดล็อกเจลาโต้ครบทุก 6 รส!", "ตั้งแต่ Day 2 เป็นต้นไป รสเจลาโต้ทั้ง 6 รสเปิดให้ใช้งาน
+				[" ปลดล็อกเจลาโต้ครบทุก 6 รส!", "ตั้งแต่ Day 2 เป็นต้นไป รสเจลาโต้ทั้ง 6 รสเปิดให้ใช้งาน
 
 ลูกค้าจึงสามารถสั่งรสใหม่ได้ทั้งหมด
 
 - ลูกค้าจะสุ่มออเดอร์จากของที่ปลดล็อกแล้วเท่านั้น"],
-				["[*] เริ่มขายแบบเต็มร้าน!", "ตอนนี้จำกติกาการปลดล็อกได้แล้ว:
+				[" เริ่มขายแบบเต็มร้าน!", "ตอนนี้จำกติกาการปลดล็อกได้แล้ว:
 
 Day 0 → 3 รส / ไม่มีท็อปปิ้ง
 Day 1 → 3 รส / มีท็อปปิ้ง
@@ -646,7 +646,7 @@ func _spawn_customer() -> void:
 	var order_flavors: Array = current_order.get("flavors", [])
 	var order_toppings: Array = current_order.get("toppings", [])
 
-	var text := "ภาชนะ: %s\\\n" % GelatoData.container_name(order_container)
+	var text := "ภาชนะ: %s \n" % GelatoData.container_name(order_container)
 	var flavor_names: Array = []
 	for k in order_flavors:
 		flavor_names.append(GelatoData.flavor_name(k))
@@ -655,10 +655,11 @@ func _spawn_customer() -> void:
 		var topping_names: Array = []
 		for k in order_toppings:
 			topping_names.append(GelatoData.topping_name(k))
-		text += "\\\nท็อปปิ้ง: " + " + ".join(topping_names)
+		text += " ท็อปปิ้ง: " + " + ".join(topping_names)
 	if is_special_customer:
-		text = "★ ลูกค้าพิเศษ ★\\\n" + text + "\\\nทำสำเร็จรับเงิน x%.1f!" % special_customer_reward_multiplier
+		text = " ลูกค้าพิเศษ \n" + text + "\nทำสำเร็จรับเงิน x%.1f!" % special_customer_reward_multiplier
 	order_label.text = text
+	_fit_order_label_text()
 
 	patience_max = max(12.0, 20.0 - customers_served * 0.3)
 	if GameState.upgrade_patience_boost:
@@ -672,6 +673,28 @@ func _spawn_customer() -> void:
 	cup_topping_contents.clear()
 	_refresh_build_visual()
 	_update_queue_faces()
+
+
+func _fit_order_label_text() -> void:
+	# ลดขนาดฟอนต์ของกล่องคำสั่งลูกค้าอัตโนมัติตามความยาวข้อความ
+	# เพื่อป้องกันไม่ให้ข้อความล้น/หลุดออกไปนอกกรอบกล่องคำสั่ง
+	# (กล่องยังเปิด clip_contents ไว้เป็นตัวกันขั้นสุดท้ายอีกชั้นหนึ่งด้วย)
+	if order_label == null:
+		return
+	var line_count: int = order_label.text.count("\n") + 1
+	var longest_line_len: int = 0
+	for line in order_label.text.split("\n"):
+		longest_line_len = max(longest_line_len, line.length())
+
+	var font_size := 20
+	if line_count >= 4 or longest_line_len > 34:
+		font_size = 14
+	elif line_count >= 3 or longest_line_len > 26:
+		font_size = 16
+	elif longest_line_len > 18:
+		font_size = 18
+
+	order_label.add_theme_font_size_override("font_size", font_size)
 
 
 func _update_queue_faces() -> void:
@@ -918,7 +941,7 @@ func _serve() -> void:
 		combo += 1
 		max_combo = max(max_combo, combo)
 		customers_satisfied += 1
-		message_label.text = ("★ ลูกค้าพิเศษ! +%d เหรียญ ★" if is_special_customer else "เสิร์ฟถูกใจ! +%d เหรียญ") % reward
+		message_label.text = (" ลูกค้าพิเศษ! +%d เหรียญ ★" if is_special_customer else "เสิร์ฟถูกใจ! +%d เหรียญ") % reward
 		SFX.play("coin")
 		_customer_left(true)
 	elif not container_ok:

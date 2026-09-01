@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://d1cfrjqs74nlj"]
 
 [ext_resource type="Script" uid="uid://cikgl4se51vfm" path="res://Credits.gd" id="1"]
-[ext_resource type="StyleBoxFlat" path="res://theme/style_menu_corner_button.tres" id="2"]
-[ext_resource type="Texture2D" path="res://assets/icons/arrow_back.svg" id="3"]
-[ext_resource type="Texture2D" path="res://assets/backgrounds/menu_credits.png" id="4"]
+[ext_resource type="StyleBox" path="res://theme/style_menu_corner_button.tres" id="2"]
+[ext_resource type="Texture2D" uid="uid://bwtqhoaehtstk" path="res://assets/icons/arrow_back.svg" id="3"]
+[ext_resource type="Texture2D" uid="uid://jsybpf22xvt2" path="res://assets/backgrounds/menu_credits.png" id="4"]
 
 [node name="Credits" type="Node2D" unique_id=1446544331]
 script = ExtResource("1")
@@ -29,9 +29,8 @@ theme_override_styles/normal = ExtResource("2")
 theme_override_styles/pressed = ExtResource("2")
 theme_override_styles/hover = ExtResource("2")
 icon = ExtResource("3")
-expand_icon = true
 icon_alignment = 1
-vertical_icon_alignment = 1
+expand_icon = true
 
 [node name="GameNameLabel" type="Label" parent="." unique_id=890685053]
 offset_left = 60.0
@@ -61,7 +60,7 @@ offset_right = 860.0
 offset_bottom = 234.0
 theme_override_colors/font_color = Color(0.105882, 0.294118, 0.615686, 1)
 theme_override_font_sizes/font_size = 26
-text = "เป๊กinwza007"
+text = "683380306-1 นายปีติภัทร มีคำนิล "
 horizontal_alignment = 1
 
 [node name="ArtSectionLabel" type="Label" parent="." unique_id=180087605]
@@ -81,7 +80,7 @@ offset_right = 860.0
 offset_bottom = 308.0
 theme_override_colors/font_color = Color(0.105882, 0.294118, 0.615686, 1)
 theme_override_font_sizes/font_size = 26
-text = "แพรวา"
+text = "683380081-9 นางสาวธวัลรัตน์ นิยมพงษ์"
 horizontal_alignment = 1
 
 [node name="AudioSectionLabel" type="Label" parent="." unique_id=1536179314]
@@ -91,7 +90,7 @@ offset_right = 860.0
 offset_bottom = 348.0
 theme_override_colors/font_color = Color(0.717647, 0.34902, 0.372549, 1)
 theme_override_font_sizes/font_size = 20
-text = "ดนตรีและเสียงประกอบ"
+text = "ดนตรีเนื้อเนื้อเรื่องและเสียงประกอบ"
 horizontal_alignment = 1
 
 [node name="SoundLable" type="Label" parent="." unique_id=493709558]
@@ -101,7 +100,7 @@ offset_right = 860.0
 offset_bottom = 382.0
 theme_override_colors/font_color = Color(0.105882, 0.294118, 0.615686, 1)
 theme_override_font_sizes/font_size = 26
-text = "บอสคิว"
+text = "683380281-1 นายฤตภัค สร้อยแก้ว"
 horizontal_alignment = 1
 
 [node name="EngineSectionLabel" type="Label" parent="." unique_id=313573936]
@@ -131,6 +130,6 @@ offset_right = 860.0
 offset_bottom = 530.0
 theme_override_colors/font_color = Color(0.717647, 0.34902, 0.372549, 1)
 theme_override_font_sizes/font_size = 22
-autowrap_mode = 2
 text = "ขอบคุณที่มาเล่น GOOD GOODS GELATO HOUSE นะ!"
 horizontal_alignment = 1
+autowrap_mode = 2

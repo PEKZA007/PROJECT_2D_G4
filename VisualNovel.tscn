@@ -4,7 +4,7 @@
 [ext_resource type="StyleBox" uid="uid://bxcvt0a7vmov8" path="res://theme/style_empty.tres" id="2"]
 [ext_resource type="StyleBox" uid="uid://bj38l8b6o5nc7" path="res://theme/style_floor_band.tres" id="3"]
 [ext_resource type="StyleBox" uid="uid://c53shtv216ael" path="res://theme/style_name_tag.tres" id="4"]
-[ext_resource type="Texture2D" uid="uid://j7vsxpjrgbff" path="res://assets/backgrounds/decor_previews/preview_tropical.png" id="4_cu7tb"]
+[ext_resource type="Texture2D" uid="uid://bqqdkf0a8iloy" path="res://assets/backgrounds/layers/room_backdrop.png" id="4_cu7tb"]
 [ext_resource type="StyleBox" uid="uid://cga32c45fh22g" path="res://theme/style_dialogue_box.tres" id="5"]
 [ext_resource type="StyleBox" uid="uid://dr5q1jg3tkhyn" path="res://theme/style_dark_button.tres" id="6"]
 [ext_resource type="AudioStream" uid="uid://b7bd75yfegsoc" path="res://assets/audio/menu_theme.mp3" id="7"]
@@ -31,9 +31,9 @@ texture = ExtResource("9")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="PreviewTropical" type="Sprite2D" parent="." unique_id=2047273626]
-position = Vector2(882.0001, 535)
-scale = Vector2(4.34375, 5.5102043)
+[node name="RoomBackdrop" type="Sprite2D" parent="." unique_id=1326057698]
+position = Vector2(960.5, 544.5)
+scale = Vector2(0.9953125, 1.0083333)
 texture = ExtResource("4_cu7tb")
 
 [node name="FloorBand" type="Panel" parent="." unique_id=1622891790]

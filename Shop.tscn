@@ -1,215 +1,232 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene format=3 uid="uid://csyiesh358ft2"]
 
-[ext_resource type="Script" path="res://Shop.gd" id="1"]
-[ext_resource type="StyleBoxFlat" path="res://theme/style_locked_button.tres" id="2"]
-[ext_resource type="StyleBoxFlat" path="res://theme/style_tab_button.tres" id="3"]
+[ext_resource type="Script" uid="uid://v5sydrhm58lu" path="res://Shop.gd" id="1"]
+[ext_resource type="StyleBox" uid="uid://c8ywdg3hjfc3g" path="res://theme/style_locked_button.tres" id="2"]
+[ext_resource type="StyleBox" uid="uid://bixmnfo3guiht" path="res://theme/style_tab_button.tres" id="3"]
 [ext_resource type="PackedScene" path="res://ShopEquipmentCard.tscn" id="5"]
-[ext_resource type="StyleBoxFlat" path="res://theme/style_tab_button_active.tres" id="7"]
 [ext_resource type="PackedScene" path="res://DecorCard.tscn" id="8"]
-[ext_resource type="Texture2D" path="res://assets/icons/arrow_back.svg" id="9"]
+[ext_resource type="Texture2D" uid="uid://bwtqhoaehtstk" path="res://assets/icons/arrow_back.svg" id="9"]
 [ext_resource type="PackedScene" path="res://SkinCard.tscn" id="10"]
 
-[node name="Shop" type="Node2D"]
+[node name="Shop" type="Node2D" unique_id=852436829]
 script = ExtResource("1")
 
-[node name="Background" type="ColorRect" parent="."]
-offset_left = 0.0
+[node name="Background" type="ColorRect" parent="." unique_id=1147540896]
 offset_right = 1920.0
 offset_bottom = 1080.0
 color = Color(0.988235, 0.984314, 0.941176, 1)
 
-[node name="BackButton" type="Button" parent="."]
+[node name="BackButton" type="Button" parent="." unique_id=880695890]
 offset_left = 183.75
 offset_top = 33.75
 offset_right = 268.125
 offset_bottom = 118.125
-theme_override_styles/normal = ExtResource("2")
-theme_override_styles/hover = ExtResource("2")
-theme_override_styles/pressed = ExtResource("2")
-theme_override_font_sizes/font_size = 40
 theme_override_colors/font_color = Color(0.105882, 0.294118, 0.615686, 1)
-theme_override_colors/font_hover_color = Color(0.105882, 0.294118, 0.615686, 1)
-theme_override_colors/font_pressed_color = Color(0.105882, 0.294118, 0.615686, 1)
 theme_override_colors/font_focus_color = Color(0.105882, 0.294118, 0.615686, 1)
+theme_override_colors/font_pressed_color = Color(0.105882, 0.294118, 0.615686, 1)
+theme_override_colors/font_hover_color = Color(0.105882, 0.294118, 0.615686, 1)
+theme_override_font_sizes/font_size = 40
+theme_override_styles/normal = ExtResource("2")
+theme_override_styles/pressed = ExtResource("2")
+theme_override_styles/hover = ExtResource("2")
 icon = ExtResource("9")
-expand_icon = true
 icon_alignment = 1
-vertical_icon_alignment = 1
+expand_icon = true
 
-[node name="Title" type="Label" parent="."]
-offset_left = 0.0
+[node name="Title" type="Label" parent="." unique_id=414970838]
 offset_top = 42.188
 offset_right = 1920.0
 offset_bottom = 126.562
-theme_override_font_sizes/font_size = 58
 theme_override_colors/font_color = Color(0.105882, 0.294118, 0.615686, 1)
-horizontal_alignment = 1
+theme_override_font_sizes/font_size = 58
 text = "ร้านค้า"
+horizontal_alignment = 1
 
-[node name="CoinLabel" type="Label" parent="."]
+[node name="CoinLabel" type="Label" parent="." unique_id=1218656680]
 offset_left = 1466.25
 offset_top = 50.625
 offset_right = 1736.25
 offset_bottom = 91.125
-theme_override_font_sizes/font_size = 38
 theme_override_colors/font_color = Color(0.705882, 0.470588, 0, 1)
-horizontal_alignment = 2
+theme_override_font_sizes/font_size = 38
 text = "0 เหรียญ"
+horizontal_alignment = 2
 
-[node name="Tabs" type="HBoxContainer" parent="."]
+[node name="Tabs" type="HBoxContainer" parent="." unique_id=1864254314]
 offset_left = 200.625
 offset_top = 151.875
 offset_right = 900.0
 offset_bottom = 212.625
 theme_override_constants/separation = 17
 
-[node name="EquipmentTabButton" type="Button" parent="Tabs"]
+[node name="EquipmentTabButton" type="Button" parent="Tabs" unique_id=1389030075]
 custom_minimum_size = Vector2(219.375, 60.75)
-theme_override_styles/normal = ExtResource("3")
-theme_override_styles/hover = ExtResource("3")
-theme_override_styles/pressed = ExtResource("3")
-theme_override_font_sizes/font_size = 27
+layout_mode = 2
 theme_override_colors/font_color = Color(0.105882, 0.294118, 0.615686, 1)
-theme_override_colors/font_hover_color = Color(0.105882, 0.294118, 0.615686, 1)
-theme_override_colors/font_pressed_color = Color(0.105882, 0.294118, 0.615686, 1)
 theme_override_colors/font_focus_color = Color(0.105882, 0.294118, 0.615686, 1)
+theme_override_colors/font_pressed_color = Color(0.105882, 0.294118, 0.615686, 1)
+theme_override_colors/font_hover_color = Color(0.105882, 0.294118, 0.615686, 1)
+theme_override_font_sizes/font_size = 27
+theme_override_styles/normal = ExtResource("3")
+theme_override_styles/pressed = ExtResource("3")
+theme_override_styles/hover = ExtResource("3")
 text = "อุปกรณ์"
 
-[node name="DecorTabButton" type="Button" parent="Tabs"]
+[node name="DecorTabButton" type="Button" parent="Tabs" unique_id=2053349725]
 custom_minimum_size = Vector2(219.375, 60.75)
-theme_override_styles/normal = ExtResource("3")
-theme_override_styles/hover = ExtResource("3")
-theme_override_styles/pressed = ExtResource("3")
-theme_override_font_sizes/font_size = 27
+layout_mode = 2
 theme_override_colors/font_color = Color(0.105882, 0.294118, 0.615686, 1)
-theme_override_colors/font_hover_color = Color(0.105882, 0.294118, 0.615686, 1)
-theme_override_colors/font_pressed_color = Color(0.105882, 0.294118, 0.615686, 1)
 theme_override_colors/font_focus_color = Color(0.105882, 0.294118, 0.615686, 1)
+theme_override_colors/font_pressed_color = Color(0.105882, 0.294118, 0.615686, 1)
+theme_override_colors/font_hover_color = Color(0.105882, 0.294118, 0.615686, 1)
+theme_override_font_sizes/font_size = 27
+theme_override_styles/normal = ExtResource("3")
+theme_override_styles/pressed = ExtResource("3")
+theme_override_styles/hover = ExtResource("3")
 text = "ตกแต่งร้าน"
 
-[node name="SkinTabButton" type="Button" parent="Tabs"]
+[node name="SkinTabButton" type="Button" parent="Tabs" unique_id=1929350824]
 custom_minimum_size = Vector2(219.375, 60.75)
-theme_override_styles/normal = ExtResource("3")
-theme_override_styles/hover = ExtResource("3")
-theme_override_styles/pressed = ExtResource("3")
-theme_override_font_sizes/font_size = 27
+layout_mode = 2
 theme_override_colors/font_color = Color(0.105882, 0.294118, 0.615686, 1)
-theme_override_colors/font_hover_color = Color(0.105882, 0.294118, 0.615686, 1)
-theme_override_colors/font_pressed_color = Color(0.105882, 0.294118, 0.615686, 1)
 theme_override_colors/font_focus_color = Color(0.105882, 0.294118, 0.615686, 1)
+theme_override_colors/font_pressed_color = Color(0.105882, 0.294118, 0.615686, 1)
+theme_override_colors/font_hover_color = Color(0.105882, 0.294118, 0.615686, 1)
+theme_override_font_sizes/font_size = 27
+theme_override_styles/normal = ExtResource("3")
+theme_override_styles/pressed = ExtResource("3")
+theme_override_styles/hover = ExtResource("3")
 text = "สกิน"
 
-[node name="EquipmentPage" type="Control" parent="."]
-offset_left = 0.0
+[node name="EquipmentPage" type="Control" parent="." unique_id=397767350]
+layout_mode = 3
+anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
 mouse_filter = 2
 
-[node name="Card1" parent="EquipmentPage" instance=ExtResource("5")]
+[node name="Card1" parent="EquipmentPage" unique_id=1092168506 instance=ExtResource("5")]
+anchors_preset = 0
 offset_left = 450.0
 offset_top = 230.0
 offset_right = 838.125
 offset_bottom = 803.75
 scale = Vector2(0.68, 0.68)
 
-[node name="Card2" parent="EquipmentPage" instance=ExtResource("5")]
+[node name="Card2" parent="EquipmentPage" unique_id=1798758185 instance=ExtResource("5")]
+anchors_preset = 0
 offset_left = 828.0
 offset_top = 230.0
 offset_right = 1216.125
 offset_bottom = 803.75
 scale = Vector2(0.68, 0.68)
 
-[node name="Card3" parent="EquipmentPage" instance=ExtResource("5")]
+[node name="Card3" parent="EquipmentPage" unique_id=144315430 instance=ExtResource("5")]
+anchors_preset = 0
 offset_left = 1206.0
 offset_top = 230.0
 offset_right = 1594.125
 offset_bottom = 803.75
 scale = Vector2(0.68, 0.68)
 
-[node name="Card4" parent="EquipmentPage" instance=ExtResource("5")]
+[node name="Card4" parent="EquipmentPage" unique_id=570773428 instance=ExtResource("5")]
+anchors_preset = 0
 offset_left = 450.0
 offset_top = 650.0
 offset_right = 838.125
 offset_bottom = 1223.75
 scale = Vector2(0.68, 0.68)
 
-[node name="Card5" parent="EquipmentPage" instance=ExtResource("5")]
+[node name="Card5" parent="EquipmentPage" unique_id=51888671 instance=ExtResource("5")]
+anchors_preset = 0
 offset_left = 828.0
 offset_top = 650.0
 offset_right = 1216.125
 offset_bottom = 1223.75
 scale = Vector2(0.68, 0.68)
 
-[node name="Card6" parent="EquipmentPage" instance=ExtResource("5")]
+[node name="Card6" parent="EquipmentPage" unique_id=678993234 instance=ExtResource("5")]
+anchors_preset = 0
 offset_left = 1206.0
 offset_top = 650.0
 offset_right = 1594.125
 offset_bottom = 1223.75
 scale = Vector2(0.68, 0.68)
 
-[node name="DecorPage" type="Control" parent="."]
-offset_left = 0.0
+[node name="DecorPage" type="Control" parent="." unique_id=843349423]
+visible = false
+layout_mode = 3
+anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
-visible = false
 mouse_filter = 2
 
-[node name="Card1" parent="DecorPage" instance=ExtResource("8")]
+[node name="Card1" parent="DecorPage" unique_id=171486058 instance=ExtResource("8")]
+anchors_preset = 0
 offset_left = 403.0
 offset_top = 230.0
 offset_right = 757.375
 offset_bottom = 559.062
 
-[node name="Card2" parent="DecorPage" instance=ExtResource("8")]
+[node name="Card2" parent="DecorPage" unique_id=1929763779 instance=ExtResource("8")]
+anchors_preset = 0
 offset_left = 782.688
 offset_top = 230.0
 offset_right = 1137.062
 offset_bottom = 559.062
 
-[node name="Card3" parent="DecorPage" instance=ExtResource("8")]
+[node name="Card3" parent="DecorPage" unique_id=219784653 instance=ExtResource("8")]
+anchors_preset = 0
 offset_left = 1162.375
 offset_top = 230.0
 offset_right = 1516.75
 offset_bottom = 559.062
 
-[node name="Card4" parent="DecorPage" instance=ExtResource("8")]
+[node name="Card4" parent="DecorPage" unique_id=1176831353 instance=ExtResource("8")]
+anchors_preset = 0
 offset_left = 403.0
 offset_top = 599.0
 offset_right = 757.375
 offset_bottom = 928.062
 
-[node name="Card5" parent="DecorPage" instance=ExtResource("8")]
+[node name="Card5" parent="DecorPage" unique_id=84601225 instance=ExtResource("8")]
+anchors_preset = 0
 offset_left = 782.688
 offset_top = 599.0
 offset_right = 1137.062
 offset_bottom = 928.062
 
-[node name="Card6" parent="DecorPage" instance=ExtResource("8")]
+[node name="Card6" parent="DecorPage" unique_id=582748061 instance=ExtResource("8")]
+anchors_preset = 0
 offset_left = 1162.375
 offset_top = 599.0
 offset_right = 1516.75
 offset_bottom = 928.062
 
-[node name="SkinPage" type="Control" parent="."]
-offset_left = 0.0
+[node name="SkinPage" type="Control" parent="." unique_id=453438203]
+visible = false
+layout_mode = 3
+anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
-visible = false
 mouse_filter = 2
 
-[node name="Card1" parent="SkinPage" instance=ExtResource("10")]
+[node name="Card1" parent="SkinPage" unique_id=52259088 instance=ExtResource("10")]
+anchors_preset = 0
 offset_left = 403.0
 offset_top = 482.0
 offset_right = 757.375
 offset_bottom = 811.062
 
-[node name="Card2" parent="SkinPage" instance=ExtResource("10")]
+[node name="Card2" parent="SkinPage" unique_id=2128926853 instance=ExtResource("10")]
+anchors_preset = 0
 offset_left = 782.688
 offset_top = 482.0
 offset_right = 1137.062
 offset_bottom = 811.062
 
-[node name="Card3" parent="SkinPage" instance=ExtResource("10")]
+[node name="Card3" parent="SkinPage" unique_id=1806827524 instance=ExtResource("10")]
+anchors_preset = 0
 offset_left = 1162.375
 offset_top = 482.0
 offset_right = 1516.75
