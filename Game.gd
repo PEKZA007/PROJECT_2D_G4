@@ -607,7 +607,7 @@ func _spawn_customer() -> void:
 
 		# สุ่มลูกค้าพิเศษจากบทที่มีอยู่สำหรับวันนี้
 		var story_chapter: String = str(StoryData.RANDOM_CUSTOMER_STORIES.get(level_id, ""))
-		if story_chapter != "" and not GameState.has_seen_chapter(story_chapter) and not GameState.special_customer_triggered_this_level and randf() < 0.18:
+		if story_chapter != "" and not GameState.has_seen_chapter(story_chapter) and not GameState.special_customer_triggered_this_level and randf() < 0.67:
 			var data: Dictionary = StoryData.SPECIAL_CUSTOMERS.get(story_chapter, {})
 			if not data.is_empty():
 				GameState.start_special_customer(story_chapter, data.get("order", {}))
